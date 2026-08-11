@@ -85,9 +85,10 @@
     var grid = document.getElementById("pinned-grid");
     if (!grid) return;
 
-    var pinned = ARTIFACTS.filter(function (a) { return a.pinned; })
-      .sort(function (a, b) { return new Date(b.dateAdded) - new Date(a.dateAdded); })
-      .slice(0, 4);
+    // Home's pinned order follows ARTIFACTS array order, not dateAdded — so
+    // reordering the pinned row on Home is just reordering objects in
+    // data.js. Capped to 4 as a safety net if more than 4 get marked pinned.
+    var pinned = ARTIFACTS.filter(function (a) { return a.pinned; }).slice(0, 4);
 
     grid.innerHTML = pinned.map(artifactCardHTML).join("");
 

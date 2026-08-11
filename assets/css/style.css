@@ -198,6 +198,34 @@ section { position: relative; }
 .hero-meta .stat .num { font-family: var(--font-display); font-size: 32px; color: var(--blaze-orange); line-height: 1; }
 .hero-meta .stat .lbl { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--graphite); }
 
+/* ---- Full-width CTA band (dark topo, one orange focal button) --------- */
+.cta-band {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-7) 0;
+  border-top: 0.5px solid var(--border-dark);
+  border-bottom: 0.5px solid var(--border-dark);
+  background: var(--pitch-black);
+  text-align: center;
+}
+.cta-band .wrap {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
+}
+.cta-band h2 { max-width: 24ch; }
+.cta-band p { color: var(--gray-light); max-width: 52ch; }
+.btn-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: var(--space-2);
+  font-family: var(--font-display); font-size: 17px; letter-spacing: 0.06em;
+  padding: 16px 32px; border-radius: 2px;
+  background: var(--blaze-orange); color: var(--pitch-black);
+  transition: background 0.2s var(--ease), transform 0.15s var(--ease);
+}
+.btn-cta .arrow { transition: transform 0.2s var(--ease); }
+.btn-cta:hover { background: var(--orange-light); transform: translateY(-1px); }
+.btn-cta:hover .arrow { transform: translateX(4px); }
+
 /* ---- Legend / key bar ------------------------------------------------ */
 .legend-bar {
   padding: var(--space-3) 0;
