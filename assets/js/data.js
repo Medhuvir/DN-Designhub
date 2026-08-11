@@ -52,16 +52,15 @@ const TAGS = {
 
 const ARTIFACTS = [
   {
-    id: "seed-01",
-    title: "[Placeholder] Swap me for your first pinned artifact",
-    description: "This card is one of the 4 pinned to Home. Edit this object in data.js — set a real title, description, url, type, and tags, and it replaces this placeholder.",
-    url: "#",
-    type: "link",
-    tags: ["ai-workflows", "tools"],
+    id: "ux-skills-toolkit",
+    title: "UX / AI Workflow Skill Toolkit",
+    description: "11 Claude skills for UX, product, and service design practice, organized along the Double Diamond — research-method selection, persona synthesis, cognitive-load/conversion audits, persuasive-ux, plus a full AI-feature set (tuners, inputs, governors, trust-builders, identifiers). Built for scoping, auditing, and assessing work across the UX/service-design workflow.",
+    url: "downloads/ux-skills-toolkit.zip",
+    type: "download",
+    tags: ["ai-workflows", "ux-research", "frameworks"],
     pinned: true,
     dateAdded: "2026-08-11",
-    source: "",
-    placeholder: true,
+    source: "Dan Nemirovsky",
   },
   {
     id: "seed-02",
