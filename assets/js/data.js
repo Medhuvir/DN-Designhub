@@ -75,10 +75,7 @@ const ARTIFACTS = [
     pinned: false,
     dateAdded: "2026-08-11",
     source: "Figma",
-    // No thumbnail: figma.com is unreachable from this environment's network
-    // policy (confirmed via curl, WebFetch, and headless Chromium — all
-    // blocked at the egress proxy), so the og:image couldn't be pulled
-    // automatically. Add a `thumbnail` field once a real image is supplied.
+    thumbnail: "assets/img/thumbs/figma-claude-skills-for-design.png",
   },
   {
     id: "seed-02",
