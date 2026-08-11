@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DN Design Hub | A running archive of what's worth keeping</title>
+<meta name="description" content="Dan Nemirovsky's running, sharable archive of design/UX/AI artifacts — links, downloads, explainers, and videos worth keeping and passing on.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 808.74 880.46%22><path fill=%22%23F5F3EE%22 d=%22M483.25,334.48l206.42,241.28.31-574.37,118.76.12-.36,878.96-325.6-375.94-259.8,325.38c-17.87,16.82-37.4,26.87-61.91,27.91l-161.08-.44L.33,0l160.59.19c23.84.03,43.7,11.97,57.21,30.84l236.91,278.95-61.34,76.52L151.03,107.85c-7.44-12.39-17.88-15.78-35.51-13.86l-.03,658.43c13.06,1.32,23.67.74,36.1-2.51l331.66-415.43Z%22/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/hub.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <div class="lockup-group">
+      <a href="index.html" class="brand-lockup">
+        <img src="assets/img/dn-mark-white.svg" alt="DN Creative" class="mark">
+        <span class="brand-divider"></span>
+        <span>
+          <span class="brand-word">DN Creative</span>
+          <span class="brand-sub" style="display:block;">Design Studio</span>
+        </span>
+      </a>
+      <span class="hub-title-inline">Design Hub</span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="resources.html">Resources</a>
+    </div>
+    <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-panel">
+  <a href="index.html">Home</a>
+  <a href="resources.html">Resources</a>
+  <div class="mp-meta">
+    A running archive by Dan Nemirovsky, DN Creative
+  </div>
+</div>
+
+<header class="hero">
+  <div class="topo-bg"></div>
+  <div class="wrap">
+    <span class="eyebrow">DN Creative &middot; Design Hub</span>
+    <h1>A running archive of what's worth keeping.</h1>
+    <p class="lede">Links, downloads, explainers, and videos I come across in the day-to-day — design systems, AI/agent workflows, frameworks, branding, business — kept in one place so they're easy to find again and easy to share. Nothing here is a finished deliverable; it's the raw material a real one gets built from.</p>
+    <div class="hero-meta">
+      <div class="stat"><span class="num" id="total-count">—</span><span class="lbl">Total artifacts</span></div>
+      <div class="stat"><span class="num" id="tag-count">—</span><span class="lbl">Topic tags</span></div>
+      <div class="stat"><span class="num" id="pinned-count">—</span><span class="lbl">Pinned right now</span></div>
+      <div class="stat"><span class="num">v1</span><span class="lbl">Structure &middot; Aug 2026</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="wrap">
+  <div class="section" style="border-bottom: 0.5px solid var(--border-dark); padding-top: var(--space-6);">
+    <div class="section-head">
+      <span class="eyebrow">Pinned</span>
+      <h2>Top of mind right now.</h2>
+      <p>Four artifacts, swapped in and out as what's useful changes. The full, filterable archive lives on <a href="resources.html" style="color:var(--blaze-orange);">Resources</a>.</p>
+    </div>
+    <div class="artifact-grid cols-4 pinned-grid" id="pinned-grid"></div>
+  </div>
+
+  <div class="section" style="border-bottom: none;">
+    <div class="section-head">
+      <span class="eyebrow">How this hub works</span>
+      <h2>Four formats, tagged by topic.</h2>
+      <p>Every artifact is one of four formats and carries one or more topic tags — that's the whole taxonomy. Simple on purpose: this is a personal archive first, a shareable one second.</p>
+    </div>
+    <div class="format-row">
+      <div class="format-card"><span class="fico">🔗</span><h3>Link</h3><p>A page, tool, or site worth going back to.</p></div>
+      <div class="format-card"><span class="fico">⬇️</span><h3>Download</h3><p>A file worth keeping local — template, kit, PDF.</p></div>
+      <div class="format-card"><span class="fico">📄</span><h3>Explainer</h3><p>A write-up, method, or framework worth citing.</p></div>
+      <div class="format-card"><span class="fico">🎬</span><h3>Video</h3><p>A talk, demo, or walkthrough worth watching.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <div class="brand-lockup">
+        <img src="assets/img/dn-mark-white.svg" alt="DN Creative" class="mark" style="width:22px;">
+        <span class="brand-word" style="font-size:16px;">DN Creative</span>
+      </div>
+      <p class="footer-note">This hub is a living document — artifacts get added, re-tagged, and re-pinned as the archive grows. Structure stood up August 2026.</p>
+    </div>
+    <div class="footer-links">
+      <a href="resources.html">Resources</a>
+      <a href="https://dannemirovsky.com" target="_blank" rel="noopener">dannemirovsky.com</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

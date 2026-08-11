@@ -1,0 +1,81 @@
+/* ==========================================================================
+   DN Design Hub — component styles specific to artifact cards & the
+   pinned/resources grids. Shared by index.html and resources.html so the
+   card look can't drift between the two pages.
+   ========================================================================== */
+
+:root {
+  --type-link: var(--blaze-orange);
+  --type-download: var(--gray-light);
+  --type-explainer: var(--orange-light);
+  --type-video: var(--graphite);
+}
+
+/* ---- Artifact card ------------------------------------------------- */
+.artifact-grid { display: grid; gap: var(--space-3); grid-template-columns: 1fr; }
+@media (min-width: 640px) { .artifact-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1020px) { .artifact-grid.cols-4 { grid-template-columns: repeat(4, 1fr); } }
+
+.artifact-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 0.5px solid var(--border-dark);
+  background: var(--surface-dark);
+  padding: var(--space-3);
+  opacity: 0; transform: translateY(14px);
+  animation: cardIn 0.6s var(--ease) forwards;
+  transition: border-color 0.2s var(--ease);
+}
+.artifact-card::before {
+  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+  background: var(--gray-mid);
+}
+.artifact-card[data-type="link"]::before { background: var(--type-link); }
+.artifact-card[data-type="download"]::before { background: var(--type-download); }
+.artifact-card[data-type="explainer"]::before { background: var(--type-explainer); }
+.artifact-card[data-type="video"]::before { background: var(--type-video); }
+.artifact-card:hover { border-color: var(--border-dark-strong); }
+
+.ac-top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
+.ac-type {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--graphite);
+}
+.badge-placeholder {
+  background: transparent; color: var(--graphite); border: 0.5px dashed var(--gray-mid);
+  font-size: 9.5px;
+}
+
+.ac-title { font-family: var(--font-display); font-size: clamp(19px, 2.1vw, 23px); letter-spacing: 0.01em; margin: var(--space-1) 0 6px; line-height: 1.08; }
+.ac-desc { color: var(--gray-light); font-size: 14px; margin: 0 0 var(--space-2); flex-grow: 1; }
+.ac-source { font-size: 11.5px; color: var(--graphite); margin-bottom: var(--space-1); }
+
+.ac-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-top: auto; padding-top: var(--space-2); border-top: 0.5px solid var(--border-dark); }
+.ac-date { font-size: 11px; color: var(--graphite); }
+.ac-link {
+  font-family: var(--font-body); font-size: 12.5px; font-weight: 600; letter-spacing: 0.03em;
+  color: var(--blaze-orange); display: inline-flex; align-items: center; gap: 5px;
+}
+.ac-link:hover { color: var(--orange-light); }
+
+/* Pinned row on Home gets slightly more presence than the archive grid */
+.pinned-grid .artifact-card { padding: var(--space-3) var(--space-3) var(--space-2); }
+
+/* ---- Tag legend / filter chips ----------------------------------------- */
+.tag-chip { display: inline-flex; align-items: center; gap: 6px; }
+.tag-chip .swatch-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blaze-orange); }
+
+.tag-legend { display: flex; flex-direction: column; gap: 6px; }
+.tag-legend .tl-row { display: flex; gap: 8px; font-size: 12.5px; }
+.tag-legend .tl-row b { color: var(--gray-light); font-weight: 500; min-width: 12ch; }
+.tag-legend .tl-row span { color: var(--graphite); }
+
+/* ---- "How it works" strip on Home -------------------------------------- */
+.format-row { display: grid; gap: var(--space-2); grid-template-columns: 1fr; }
+@media (min-width: 640px) { .format-row { grid-template-columns: repeat(4, 1fr); } }
+.format-card { border: 0.5px solid var(--border-dark); background: var(--surface-dark); padding: var(--space-2) var(--space-2) var(--space-3); }
+.format-card .fico { font-size: 22px; }
+.format-card h3 { font-size: 17px; margin: 10px 0 4px; }
+.format-card p { font-size: 13px; color: var(--gray-light); margin: 0; }
