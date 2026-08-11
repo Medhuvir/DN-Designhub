@@ -58,8 +58,12 @@
     var placeholderBadge = a.placeholder
       ? '<span class="badge badge-placeholder" title="Scaffold content — replace in data.js">Placeholder</span>'
       : "";
+    var thumb = a.thumbnail
+      ? '<div class="ac-thumb"><img src="' + a.thumbnail + '" alt="" loading="lazy"></div>'
+      : "";
     return (
       '<article class="artifact-card" data-type="' + a.type + '" data-tags="' + a.tags.join(",") + '" data-id="' + a.id + '">' +
+        thumb +
         '<div class="ac-top">' +
           '<span class="ac-type">' + tc.icon + " " + tc.label + "</span>" +
           placeholderBadge +

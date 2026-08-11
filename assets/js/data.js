@@ -20,7 +20,11 @@
  *     another rather than letting the count drift.
  *   - dateAdded: "YYYY-MM-DD", used for the "Recently added" sort on
  *     Resources.
+ *   - thumbnail: optional. A URL or local path (e.g. `assets/img/...`) to
+ *     a 16:9 image shown at the top of the card. Omit the field entirely
+ *     if there's no image yet — the card layout doesn't require one.
  *
+
  * HOW TO ADD A NEW TAG
  * ---------------------
  * Add a key to TAGS with a `label` and one-line `desc`. The taxonomy
@@ -60,6 +64,21 @@ const ARTIFACTS = [
     pinned: true,
     dateAdded: "2026-08-11",
     source: "Dan Nemirovsky",
+  },
+  {
+    id: "figma-claude-skills-for-design",
+    title: "10 Claude Skills for Design To Improve Workflows",
+    description: "Figma's official resource-library roundup of 10 Claude Skills built for design work — reusable instruction sets Claude carries into every conversation to stay consistent with a team's design system. Covers Figma-built skills (e.g. /figma-generate-design, which builds from an approved component library) alongside community favorites like /audit-design-system and /contrast-auditor for WCAG contrast scoring.",
+    url: "https://www.figma.com/resource-library/claude-skills-for-design/",
+    type: "link",
+    tags: ["design"],
+    pinned: false,
+    dateAdded: "2026-08-11",
+    source: "Figma",
+    // No thumbnail: figma.com is unreachable from this environment's network
+    // policy (confirmed via curl, WebFetch, and headless Chromium — all
+    // blocked at the egress proxy), so the og:image couldn't be pulled
+    // automatically. Add a `thumbnail` field once a real image is supplied.
   },
   {
     id: "seed-02",
