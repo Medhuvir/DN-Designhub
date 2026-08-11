@@ -37,20 +37,23 @@ This is Dan's own reference, not a client deliverable — but built to be handed
 
 ---
 
-## 4. The tag taxonomy — provisional, expected to change
+## 4. The tag taxonomy — v2, still not locked
 
-**This is v1 and explicitly not locked** — the brief that produced this hub said as much ("tags are still to be scoped"). Treat `TAGS` in `data.js` as a starting proposal, not a spec:
+**Renegotiated August 11, 2026, replacing the original v1 8-tag list** (see §8 for the change log) — still treat `TAGS` in `data.js` as a working proposal, not a spec:
 
 | key | label | for |
 |---|---|---|
-| `ai-workflows` | AI & Agent Workflows | Tools, prompting patterns, agent setups worth reusing |
-| `design-systems` | Design Systems & UI | Component libraries, token systems, UI craft references |
-| `branding` | Branding & Identity | Identity systems, logo/type/color decisions, brand strategy |
-| `ux-research` | UX Research & Strategy | Research methods, behavioral principles, product-strategy reads |
-| `frameworks` | Frameworks & Methods | Named processes and mental models for running design work |
-| `business` | Freelance & Business | Pricing, contracts, positioning, running a design practice |
-| `inspiration` | Inspiration & Reference | Portfolio/visual reference — worth looking at, not necessarily using |
-| `tools` | Tools & Software | Software worth having in the kit |
+| `design` | Design | Visual craft, design systems, **and branding/identity** — branding doesn't get its own tag, it lives here |
+| `engineering` | Engineering | Dev/technical resources — code, tooling, technical implementation |
+| `ux` | UX | Interaction design, product experience, UX craft |
+| `research` | Research | Research methods and findings — user research, market/competitive reads |
+| `skills-agents` | Skills & Agents | Claude skills, agent workflows, AI tooling worth reusing |
+| `video` | Video | Talks, demos, walkthroughs — **deliberately overlaps with the Video format type**, see note below |
+| `inspiration` | Inspiration + Cool Shit | Things worth looking at just because they're great — no further justification needed |
+
+**The Video tag/format overlap is intentional, not an oversight** — flagged during the v1→v2 renegotiation (an artifact's `type` can be `"video"` *and* it can carry the `video` tag at the same time) and kept anyway at Dan's explicit call. Don't "fix" this by removing the tag or merging it into the format filter.
+
+**Business/Freelance is gone, not folded anywhere** — v1 had a `business` tag; v2 doesn't replace it with anything. If freelance/pricing/contracts content shows up, that's an open question to raise with Dan rather than silently reviving the old tag or mis-filing it under Design.
 
 Discipline for growing this list as real content gets added:
 - **Merge before you multiply.** If a new tag would only ever apply to 1–2 artifacts, it's probably a more specific case of one already in the table above — fold it in rather than fragmenting the filter list.
@@ -97,6 +100,8 @@ Worth naming explicitly so nobody "fixes" these back to match the sibling projec
 
 Initial structure stood up: two pages, the data-driven card/filter pattern, and a v1 tag taxonomy (§4), all modeled directly on `conspectus-design-hub`'s architecture per Dan's brief. **`ARTIFACTS` in `data.js` currently holds 8 placeholder entries (`placeholder: true`), not real curated content** — no actual links, downloads, explainers, or videos have been supplied yet, and none were guessed or invented to fill the gap. Each placeholder's `description` field doubles as inline documentation of what that slot's format/pinned/tag combination is for, so the schema is self-explanatory once real artifacts start replacing them. Next real session's first job should be swapping in Dan's actual finds and deleting the placeholders — see §3 for the exact edit pattern, and revisit §4's tag table once there's enough real content to see which tags actually earn their keep.
 
-**Same-day addendum — first real artifact added.** The `seed-01` placeholder pinned slot is now the **UX / AI Workflow Skill Toolkit** (`id: "ux-skills-toolkit"`): 11 Claude skills (double-diamond, ux-research-methods, ux-personas, general-design-review, cognitive-load-conversion, persuasive-ux, ai-tuners, ai-inputs, ai-governors, ai-trust-builders, ai-identifiers) for scoping, auditing, and assessing UX/service-design work, delivered as a zip. File lives at `downloads/ux-skills-toolkit.zip` (the source `.zip` as supplied, unmodified — not re-packaged or edited). Tagged `ai-workflows` + `ux-research` + `frameworks` since it genuinely spans all three; that's worth watching as more artifacts land — if most real entries end up carrying 3 tags, the taxonomy in §4 is probably still too coarse. 7 placeholders (`seed-02` through `seed-08`) remain and still need replacing.
+**Same-day addendum — first real artifact added.** The `seed-01` placeholder pinned slot is now the **UX / AI Workflow Skill Toolkit** (`id: "ux-skills-toolkit"`): 11 Claude skills (double-diamond, ux-research-methods, ux-personas, general-design-review, cognitive-load-conversion, persuasive-ux, ai-tuners, ai-inputs, ai-governors, ai-trust-builders, ai-identifiers) for scoping, auditing, and assessing UX/service-design work, delivered as a zip. File lives at `downloads/ux-skills-toolkit.zip` (the source `.zip` as supplied, unmodified — not re-packaged or edited). Originally tagged `ai-workflows` + `ux-research` + `frameworks` under the v1 taxonomy — see the same-day taxonomy addendum immediately below for what it's tagged now.
+
+**Same-day addendum — tag taxonomy renegotiated from v1 to v2, first real artifact retagged.** Dan replaced the original 8-tag v1 list with a tighter 7-tag v2 (§4): `design`, `engineering`, `ux`, `research`, `skills-agents`, `video`, `inspiration` (relabeled "Inspiration + Cool Shit"). Two explicit calls worth remembering so they don't get "corrected" back: (1) `video` deliberately coexists with the `video` format `type` — flagged as a possible redundancy, Dan said ignore it; (2) `branding` was folded into `design` rather than kept as its own tag or moved under `inspiration`. `business` (v1's Freelance & Business) was dropped outright with no replacement — not folded anywhere, see §4's note on this. The toolkit's tags moved from `ai-workflows`/`ux-research`/`frameworks` to `skills-agents`/`ux`/`research`. All 7 placeholder entries (`seed-02` through `seed-08`) were retagged to the v2 keys and, where their illustrative content no longer matched a surviving tag (the old "Business" and "Design Systems" example slots), rewritten so every v2 tag has at least one example artifact — `seed-06` now specifically documents the branding→design fold, `seed-07` covers `engineering`.
 
 **This file, and `data.js`, should be updated together whenever the taxonomy changes or the page structure grows past two pages — don't let the narrative in this file drift from what the data actually shows.**
