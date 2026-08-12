@@ -103,6 +103,18 @@ const ARTIFACTS = [
     thumbnail: "assets/img/thumbs/ui-ux-pro-max-skill.png",
   },
   {
+    id: "anatomy-of-agentic-system",
+    title: "The Anatomy of an Agentic System",
+    description: "Matthew Kruczek's Context Engineering essay on what actually turns a raw LLM into a working agent — the harness layers (agent loop, tool definitions, context management) plus the rules, hooks, skills, and memory that compose into a deterministic layer scaling automation beyond the model itself. Part of his ongoing series on agentic and multi-agent system architecture.",
+    url: "https://matthewkruczek.substack.com/p/the-anatomy-of-an-agentic-system",
+    type: "explainer",
+    tags: ["skills-agents", "engineering"],
+    pinned: true,
+    dateAdded: "2026-08-12",
+    source: "Matthew Kruczek",
+    thumbnail: "assets/img/thumbs/anatomy-of-agentic-system.png",
+  },
+  {
     id: "seed-04",
     title: "[Placeholder] A file worth keeping local",
     description: "type: \"download\" — templates, PDFs, kits, anything meant to be grabbed rather than browsed. Point url at the actual file (this repo's /downloads folder, or an external host). Unpinned now that the toolkit and the Figma link fill the download/link pinned slots — demoted rather than deleted, still a valid example.",
