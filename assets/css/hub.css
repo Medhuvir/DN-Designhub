@@ -46,6 +46,11 @@
 }
 .ac-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+/* Default: ac-body doesn't form its own box, so its children lay out
+   exactly as if they were direct children of .artifact-card (unchanged
+   vertical card). Full-width pinned cards override this — see below. */
+.ac-body { display: contents; }
+
 .ac-top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
 .ac-type {
   display: inline-flex; align-items: center; gap: 5px;
@@ -69,8 +74,20 @@
 }
 .ac-link:hover { color: var(--orange-light); }
 
-/* Pinned row on Home gets slightly more presence than the archive grid */
+/* ---- Pinned row on Home: single full-width column ---------------------- */
+.artifact-grid.pinned-grid { grid-template-columns: 1fr; }
 .pinned-grid .artifact-card { padding: var(--space-3) var(--space-3) var(--space-2); }
+
+@media (min-width: 780px) {
+  .pinned-grid .artifact-card { flex-direction: row; align-items: stretch; gap: var(--space-4); padding-bottom: var(--space-3); }
+  .pinned-grid .ac-thumb {
+    flex: 0 0 320px;
+    margin: calc(var(--space-3) * -1) 0 calc(var(--space-3) * -1) calc(var(--space-3) * -1);
+    aspect-ratio: auto;
+  }
+  .pinned-grid .ac-body { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
+  .pinned-grid .ac-desc { max-width: 70ch; }
+}
 
 /* ---- Tag legend / filter chips ----------------------------------------- */
 .tag-chip { display: inline-flex; align-items: center; gap: 6px; }

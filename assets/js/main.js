@@ -67,17 +67,19 @@
     return (
       '<article class="artifact-card" data-type="' + a.type + '" data-tags="' + a.tags.join(",") + '" data-id="' + a.id + '">' +
         thumb +
-        '<div class="ac-top">' +
-          '<span class="ac-type">' + tc.icon + " " + tc.label + "</span>" +
-          placeholderBadge +
-        "</div>" +
-        '<h3 class="ac-title">' + a.title + "</h3>" +
-        (a.source ? '<div class="ac-source">' + a.source + "</div>" : "") +
-        '<p class="ac-desc">' + a.description + "</p>" +
-        tagPillRow(a.tags) +
-        '<div class="ac-foot">' +
-          '<span class="ac-date">Added ' + fmtDate(a.dateAdded) + "</span>" +
-          '<a class="ac-link" href="' + a.url + '"' + ctaAttrs + ">" + ctaLabel + " &rarr;</a>" +
+        '<div class="ac-body">' +
+          '<div class="ac-top">' +
+            '<span class="ac-type">' + tc.icon + " " + tc.label + "</span>" +
+            placeholderBadge +
+          "</div>" +
+          '<h3 class="ac-title">' + a.title + "</h3>" +
+          (a.source ? '<div class="ac-source">' + a.source + "</div>" : "") +
+          '<p class="ac-desc">' + a.description + "</p>" +
+          tagPillRow(a.tags) +
+          '<div class="ac-foot">' +
+            '<span class="ac-date">Added ' + fmtDate(a.dateAdded) + "</span>" +
+            '<a class="ac-link" href="' + a.url + '"' + ctaAttrs + ">" + ctaLabel + " &rarr;</a>" +
+          "</div>" +
         "</div>" +
       "</article>"
     );
@@ -90,9 +92,9 @@
 
     // Home's pinned order follows ARTIFACTS array order, not dateAdded — so
     // reordering the pinned row on Home is just reordering objects in
-    // data.js. Capped to 4 as a safety net if more than 4 get marked pinned.
+    // data.js. Capped to 5 as a safety net if more than 5 get marked pinned.
     var visible = ARTIFACTS.filter(function (a) { return !a.placeholder; });
-    var pinned = visible.filter(function (a) { return a.pinned; }).slice(0, 4);
+    var pinned = visible.filter(function (a) { return a.pinned; }).slice(0, 5);
 
     grid.innerHTML = pinned.map(artifactCardHTML).join("");
 
