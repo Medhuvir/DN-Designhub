@@ -226,6 +226,13 @@ section { position: relative; }
 .btn-cta:hover { background: var(--orange-light); transform: translateY(-1px); }
 .btn-cta:hover .arrow { transform: translateX(4px); }
 
+.btn-row { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); margin-top: var(--space-2); }
+.btn-cta--outline {
+  background: transparent; color: var(--warm-white);
+  border: 0.5px solid var(--border-dark-strong);
+}
+.btn-cta--outline:hover { background: transparent; border-color: var(--blaze-orange); color: var(--blaze-orange); }
+
 /* ---- Legend / key bar ------------------------------------------------ */
 .legend-bar {
   padding: var(--space-3) 0;
