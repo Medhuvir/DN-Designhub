@@ -121,4 +121,24 @@ Styling reused this hub's own component system rather than importing anything fr
 
 **Same-day addendum — the About page's bio photo was supplied.** Dan uploaded the real headshot directly; it's stored at `assets/img/dan-headshot.jpg` (474×512, the source file as supplied, unresized) and wired into `about.html`'s bio section, which was restructured from a single text column into a two-up `.bio-layout` grid (photo left ≤320px, bio text right) — new CSS in `style.css` (`.bio-layout`, `.bio-photo-wrap`, `.bio-photo`), following the same pattern as the small orange accent rule used elsewhere in the brand system. This page is static and isn't wired through `data.js` (no artifact card, no `thumbnail` field) — it's a plain `<img>` in the page markup, unlike every other image on this hub.
 
+**Same-day addendum — an intake pipeline shipped: Notion inbox + weekly review Routine.** Dan wanted a way to drop links/files in from his phone without hand-editing `data.js`. He'd already built the capture point himself — a Notion page, **Design Hub Resource List** — before this was even proposed, so the pipeline was built around it rather than a new schema. Full mechanics are in the new §9 below. Two things worth flagging for whoever picks this up next: (1) `create_trigger`'s `connectors` parameter is disabled for this org ("not available for this organization") — the Routine below is self-bound to *this* persistent session specifically so it inherits the session's existing Notion access rather than needing a fresh grant, but that assumption was tested with a manual `fire_trigger` right after creation (see §9 for the result) rather than left to the first real Sunday run; (2) the Routine only ever drafts and reports — it never commits, pushes, or edits the Notion page on its own trigger, only after a human reply approves that run's batch.
+
+---
+
+## 9. Intake pipeline — Notion inbox + weekly review
+
+**Capture point:** [Design Hub Resource List](https://app.notion.com/p/Design-Hub-Resource-List-3ba59c09d03a80c4abb2e85ddf2acc00) (Notion, under "D\|N Creative LLC"). A plain table, not a database — Dan built this himself. Columns:
+
+| Column | Contains |
+|---|---|
+| Thumbnail (link) | An image URL or Notion file link, pasted as text |
+| Details | Free-text summary + `#hashtags` for topic tags |
+| Link | The destination URL |
+
+Drop a row in from any device with Notion installed — that's the entire capture action. No status field to set, nothing else required.
+
+**Weekly review:** a Routine (`DN Design Hub — Weekly Inbox Review`, Sunday 6pm ET / `0 22 * * 0` UTC, self-bound to this persistent session) wakes up, fetches the table, and diffs every row's `Link` against `ARTIFACTS[].url` in `assets/js/data.js` — anything not already present is new. For each new row it drafts a full artifact object (title/description via `WebFetch`, falling back to `WebSearch` for the egress-blocked domains already logged in §8: figma.com, dncreative.studio, dannemirovsky.com; `#hashtags` in Details mapped against the real 7-tag taxonomy in §4, flagging anything that doesn't match rather than inventing a tag; thumbnail carried over only if it's a real working image URL) and reports the batch back in-session for Dan to review. **Nothing is written, committed, or pushed until Dan approves that specific batch in a reply** — pinning is never inferred either, that's always Dan's explicit call. Once approved, the entries land in `data.js` per §3's normal edit pattern, get committed and pushed to the feature branch (main only if Dan says so, same as everything else in this repo), and the now-processed rows get deleted from the Notion table so it stays a live inbox rather than a growing log — the instructional example row and any still-unprocessed rows are left alone.
+
+If a future session needs to adjust the cadence or wording, the trigger ID and `update_trigger`/`fire_trigger` tools handle that — no need to delete and recreate unless the whole approach changes.
+
 **This file, and `data.js`, should be updated together whenever the taxonomy changes or the page structure grows past two pages — don't let the narrative in this file drift from what the data actually shows.**
