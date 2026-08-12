@@ -61,6 +61,9 @@
     var thumb = a.thumbnail
       ? '<div class="ac-thumb"><img src="' + a.thumbnail + '" alt="" loading="lazy"></div>'
       : "";
+    var isDownload = a.type === "download";
+    var ctaLabel = isDownload ? "Download" : "Open";
+    var ctaAttrs = isDownload ? ' download rel="noopener"' : ' target="_blank" rel="noopener"';
     return (
       '<article class="artifact-card" data-type="' + a.type + '" data-tags="' + a.tags.join(",") + '" data-id="' + a.id + '">' +
         thumb +
@@ -74,7 +77,7 @@
         tagPillRow(a.tags) +
         '<div class="ac-foot">' +
           '<span class="ac-date">Added ' + fmtDate(a.dateAdded) + "</span>" +
-          '<a class="ac-link" href="' + a.url + '" target="_blank" rel="noopener">Open &rarr;</a>' +
+          '<a class="ac-link" href="' + a.url + '"' + ctaAttrs + ">" + ctaLabel + " &rarr;</a>" +
         "</div>" +
       "</article>"
     );
