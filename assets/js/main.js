@@ -35,6 +35,12 @@
     });
   }
 
+  /* ---------------- Footer ---------------- */
+  function initFooterYear() {
+    var el = document.getElementById("footer-year");
+    if (el) el.textContent = new Date().getFullYear();
+  }
+
   /* ---------------- Helpers ---------------- */
   function fmtDate(iso) {
     var d = new Date(iso + "T00:00:00");
@@ -177,6 +183,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     initNav();
+    initFooterYear();
     renderPinned();
     renderResources();
   });
