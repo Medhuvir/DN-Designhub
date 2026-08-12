@@ -88,12 +88,13 @@
     // Home's pinned order follows ARTIFACTS array order, not dateAdded — so
     // reordering the pinned row on Home is just reordering objects in
     // data.js. Capped to 4 as a safety net if more than 4 get marked pinned.
-    var pinned = ARTIFACTS.filter(function (a) { return a.pinned; }).slice(0, 4);
+    var visible = ARTIFACTS.filter(function (a) { return !a.placeholder; });
+    var pinned = visible.filter(function (a) { return a.pinned; }).slice(0, 4);
 
     grid.innerHTML = pinned.map(artifactCardHTML).join("");
 
     var totalEl = document.getElementById("total-count");
-    if (totalEl) totalEl.textContent = ARTIFACTS.length;
+    if (totalEl) totalEl.textContent = visible.length;
     var tagEl = document.getElementById("tag-count");
     if (tagEl) tagEl.textContent = Object.keys(TAGS).length;
     var pinnedEl = document.getElementById("pinned-count");
@@ -156,7 +157,7 @@
 
     buildTagFilterChips();
 
-    var all = ARTIFACTS.slice().sort(function (a, b) {
+    var all = ARTIFACTS.filter(function (a) { return !a.placeholder; }).sort(function (a, b) {
       return new Date(b.dateAdded) - new Date(a.dateAdded);
     });
 
