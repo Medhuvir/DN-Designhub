@@ -115,6 +115,18 @@ const ARTIFACTS = [
     thumbnail: "assets/img/thumbs/anatomy-of-agentic-system.png",
   },
   {
+    id: "ux-skills-tony-moura",
+    title: "UX Skills — Agent Skills Built to Think Like a UX Designer",
+    description: "Tony Moura's open-source collection of 14 Claude/agent skills (user-grounding, frame, challenge, blindspots, state-sweep, critique, accessibility, content, system-fit, ripple, decision, handoff, pr, clear) built to augment AI agents working alongside UX designers, not replace them — helping catch what's missed, work with the real design system, and carry UX intent into engineering.",
+    url: "https://github.com/Tranz007/ux-skills",
+    type: "link",
+    tags: ["skills-agents", "ux", "design"],
+    pinned: false,
+    dateAdded: "2026-08-20",
+    source: "Tony Moura",
+    thumbnail: "assets/img/thumbs/ux-skills-tony-moura.png",
+  },
+  {
     id: "seed-04",
     title: "[Placeholder] A file worth keeping local",
     description: "type: \"download\" — templates, PDFs, kits, anything meant to be grabbed rather than browsed. Point url at the actual file (this repo's /downloads folder, or an external host). Unpinned now that the toolkit and the Figma link fill the download/link pinned slots — demoted rather than deleted, still a valid example.",
