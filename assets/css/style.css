@@ -317,9 +317,39 @@ section { position: relative; }
 }
 .empty-state .eyebrow { display: block; margin-bottom: 8px; }
 
-/* ---- Footer -------------------------------------------------------- */
-.site-footer { padding: var(--space-6) 0; }
-.footer-inner { display: flex; justify-content: flex-end; }
+/* ---- Footer: global dark brand sign-off, links back to DN Creative Studio -- */
+.site-footer {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-7) 0 var(--space-5);
+  border-top: 0.5px solid var(--border-dark);
+  background: var(--pitch-black);
+}
+.footer-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
+  text-align: center;
+}
+.footer-brand { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.footer-brand__mark { width: 40px; height: auto; }
+.footer-brand__lockup { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.footer-brand__word {
+  font-family: var(--font-display); font-size: 24px; letter-spacing: 0.02em; line-height: 1;
+  color: var(--warm-white);
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: color 0.2s var(--ease);
+}
+.footer-brand__sub {
+  font-family: var(--font-body); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--orange-dark);
+}
+.footer-brand__arrow {
+  display: inline-block; color: var(--blaze-orange);
+  opacity: 0; transform: translateX(-4px);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.footer-brand:hover .footer-brand__word { color: var(--blaze-orange); }
+.footer-brand:hover .footer-brand__arrow { opacity: 1; transform: translateX(0); }
 .footer-copy { font-size: 12.5px; color: var(--graphite); margin: 0; }
 
 /* ---- Utility -------------------------------------------------------- */
