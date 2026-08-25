@@ -151,6 +151,18 @@ const ARTIFACTS = [
     thumbnail: "https://raw.githubusercontent.com/NousResearch/hermes-agent/main/website/static/img/hermes-agent-banner.png",
   },
   {
+    id: "design-extract",
+    title: "designlang — Extract Design Systems from Any Live Website",
+    description: "An open-source CLI that reads a live website's DOM and extracts its entire design system — colors, typography, spacing, motion, layout patterns, and accessibility metrics — then emits it as W3C DTCG tokens, Tailwind config, Figma variables, or platform-native code (SwiftUI, Compose, Flutter). Built with Node.js and Playwright, with MCP server integration for Figma, shadcn/ui, VS Code, Cursor, and Claude Code.",
+    url: "https://github.com/Manavarya09/design-extract",
+    type: "link",
+    tags: ["engineering", "design", "skills-agents"],
+    pinned: false,
+    dateAdded: "2026-08-24",
+    source: "Manavarya09",
+    thumbnail: "assets/img/thumbs/design-extract.png",
+  },
+  {
     id: "seed-04",
     title: "[Placeholder] A file worth keeping local",
     description: "type: \"download\" — templates, PDFs, kits, anything meant to be grabbed rather than browsed. Point url at the actual file (this repo's /downloads folder, or an external host). Unpinned now that the toolkit and the Figma link fill the download/link pinned slots — demoted rather than deleted, still a valid example.",
