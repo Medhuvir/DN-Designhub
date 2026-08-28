@@ -163,6 +163,18 @@ const ARTIFACTS = [
     thumbnail: "assets/img/thumbs/design-extract.png",
   },
   {
+    id: "ai-created-ui",
+    title: "@ai-created/ui — Open-Source Design System for React",
+    description: "The open-source design system behind ai-created.com and every app that ships from the lab — 19 production-ready React components, a dark-first design token system, a Tailwind CSS preset, and Framer Motion utilities, distributed as raw TypeScript via GitHub release tags rather than a compiled package. One repo, one source of truth; consumer apps install it as a dependency instead of copying files. MIT licensed.",
+    url: "https://github.com/TheMarco/ai-created-ui",
+    type: "link",
+    tags: ["design", "engineering"],
+    pinned: false,
+    dateAdded: "2026-08-28",
+    source: "TheMarco",
+    thumbnail: "assets/img/thumbs/ai-created-ui.png",
+  },
+  {
     id: "seed-04",
     title: "[Placeholder] A file worth keeping local",
     description: "type: \"download\" — templates, PDFs, kits, anything meant to be grabbed rather than browsed. Point url at the actual file (this repo's /downloads folder, or an external host). Unpinned now that the toolkit and the Figma link fill the download/link pinned slots — demoted rather than deleted, still a valid example.",
