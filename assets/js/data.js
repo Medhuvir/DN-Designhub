@@ -46,12 +46,14 @@ const TYPE_COPY = {
 };
 
 const TAGS = {
-  "design":        { label: "Design", desc: "Visual craft, design systems, and branding/identity — branding lives here, not as its own tag." },
+  // desc is shown to visitors as the tag pill's tooltip: keep it public-facing
+  // (taxonomy decisions and internal notes belong in CLAUDE.md §4, not here)
+  "design":        { label: "Design", desc: "Visual craft, design systems, branding and identity." },
   "engineering":   { label: "Engineering", desc: "Dev/technical resources — code, tooling, technical implementation." },
   "ux":            { label: "UX", desc: "Interaction design, product experience, and UX craft." },
   "research":      { label: "Research", desc: "Research methods and findings — user research, market/competitive reads." },
   "skills-agents": { label: "Skills & Agents", desc: "Claude skills, agent workflows, and AI tooling worth reusing." },
-  "video":         { label: "Video", desc: "Talks, demos, and walkthroughs worth watching. Deliberately overlaps with the Video *format* — an artifact can be type:\"video\" and tagged Video at once, that's fine." },
+  "video":         { label: "Video", desc: "Talks, demos, and walkthroughs worth watching." },
   "inspiration":   { label: "Inspiration + Cool Shit", desc: "Things worth looking at just because they're great — no further justification needed." },
 };
 

@@ -113,8 +113,12 @@
     if (totalEl) totalEl.textContent = visible.length;
     var tagEl = document.getElementById("tag-count");
     if (tagEl) tagEl.textContent = Object.keys(TAGS).length;
-    var pinnedEl = document.getElementById("pinned-count");
-    if (pinnedEl) pinnedEl.textContent = pinned.length;
+    // Computed from the data so it never goes stale
+    var lastEl = document.getElementById("last-added");
+    if (lastEl && visible.length) {
+      var latest = visible.map(function (a) { return a.dateAdded; }).sort().pop();
+      lastEl.textContent = new Date(latest + "T00:00:00").toLocaleDateString("en-US", { month: "short", year: "numeric" });
+    }
   }
 
   /* ---------------- Resources: full archive render + filters ---------------- */
