@@ -238,7 +238,9 @@ section { position: relative; }
   max-width: 180px; padding-inline: 16px; margin-left: var(--space-3); visibility: visible; opacity: 1;
   transition: max-width 0.45s var(--ease), padding 0.45s var(--ease), margin 0.45s var(--ease), opacity 0.3s var(--ease) 0.1s, visibility 0s, background-color 0.2s var(--ease);
 }
-@media (max-width: 779px) { .is-handoff .nav-follow { margin-left: auto; } .nav-follow + .hamburger { margin-left: 12px; } }
+/* Phones: the hamburger keeps margin-left: auto (flush right) until Follow is
+   shown; then Follow takes the auto margin and the hamburger sits 12px after it */
+@media (max-width: 779px) { .is-handoff .nav-follow { margin-left: auto; } .is-handoff .nav-follow + .hamburger { margin-left: 12px; } }
 
 /* Condensed on scroll (desktop): 76 → 60px, the lockup's sub-label folds away */
 @media (min-width: 780px) {

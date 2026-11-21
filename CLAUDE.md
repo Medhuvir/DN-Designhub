@@ -46,13 +46,13 @@ Rendering happens at build time: `src/_includes/card.njk` is the one card used e
 
 **Rebuilt November 21, 2026 from what the resources actually contain, approved by Dan** (v1 → v2 history in §8). v2 had stopped filtering: Skills & Agents was on 10 of 12 resources and Engineering on 8. Dan's rule now: **topics must match the current links and their content** — when content shifts, re-derive rather than preserve labels.
 
-| key | label | for | count (Nov 21) |
+| key | label | for | count (Nov 21, after the Reading List batch) |
 |---|---|---|---|
-| `claude-skills` | Claude Skills | Skills and plugins you install into Claude or Claude Code | 7 |
-| `ux-research` | UX & Research | UX process, research methods, audits and critique | 3 |
-| `design-systems` | Design Systems & UI | Tokens, components, extracting a design system, building UI | 4 |
-| `agent-architecture` | Agent Architecture | How AI agents are structured, orchestrated and run | 4 |
-| `local-ai` | Local AI | Running models and agents on your own machine | 2 |
+| `claude-skills` | Claude Skills | Skills and plugins you install into Claude or Claude Code | 9 |
+| `ux-research` | UX & Research | UX process, research methods, audits and critique | 5 |
+| `design-systems` | Design Systems & UI | Tokens, components, extracting a design system, building UI | 7 |
+| `agent-architecture` | Agent Architecture | How AI agents are structured, orchestrated and run | 6 |
+| `local-ai` | Local AI | Running models and agents on your own machine | 3 |
 | `inspiration` | Inspiration + Cool Shit | Things worth looking at just because they're great | 0 (hidden) |
 
 - **Empty topics are hidden, not deleted:** the build makes filter chips, topic pages and the hero's Topics count only from topics at least one visible resource carries. Inspiration + Cool Shit stays defined (Dan added it) and appears automatically once something's tagged with it.
@@ -225,6 +225,6 @@ Verified at 1440px and 390px on all three pages: no page errors, no local 404s o
 
 **Phase 4, revised (Dan, Nov 21, 2026): no analytics on the hub.** Don't add an analytics script, tag manager or tracking pixel without asking him first. UTM tags on the outbound CTAs were only worth it alongside analytics, so they're dropped too (they could still help if dncreative.studio or dannemirovsky.com run analytics of their own; ask before adding). **Still open:** a GEO audit of the hub with the GEO-SEO Claude tool from the archive (on offer, not started), and Google Search Console, which is Dan's to set up: verify `hub.dncreative.studio` and submit `/sitemap.xml`.
 
-**Same-day addendum — five resources added from the Notion Reading List (radar week of Nov 16).** Hallmark (`hallmark-design-skill`), Astryx (`astryx-design-system`), last30days (`last30days-research-skill`), GBrain (`gbrain-agent-brain`) and Christine Vallaure's AI prototyping guide (`ai-prototyping-design-system`, an explainer). None pinned; `TAGS` and the topic colours are unchanged. The four GitHub descriptions were checked against their READMEs. The Vallaure entry was first drafted from a Notion note and search snippets, then rewritten against the article itself. Thumbnails and share cards were rendered locally with real fonts (seeds in `thumbs.json` / `og.json`). The hub now has 17 resources. Topic counts: Claude Skills 9, UX & Research 5, Design Systems & UI 7, Agent Architecture 6, Local AI 3 (§4's count column is the earlier snapshot).
+**Same-day addendum — five resources added from the Notion Reading List (radar week of Nov 16).** Hallmark (`hallmark-design-skill`), Astryx (`astryx-design-system`), last30days (`last30days-research-skill`), GBrain (`gbrain-agent-brain`) and Christine Vallaure's AI prototyping guide (`ai-prototyping-design-system`, an explainer). None pinned; `TAGS` and the topic colours are unchanged. The four GitHub descriptions were checked against their READMEs. The Vallaure entry was first drafted from a Notion note and search snippets, then rewritten against the article itself. Thumbnails and share cards were rendered locally with real fonts (seeds in `thumbs.json` / `og.json`). The hub now has 17 resources. Topic counts: Claude Skills 9, UX & Research 5, Design Systems & UI 7, Agent Architecture 6, Local AI 3.
 
 **This file, and `data.js`, should be updated together whenever the taxonomy or the page structure changes — don't let the narrative in this file drift from what the data actually shows.**
