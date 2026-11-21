@@ -63,12 +63,42 @@
     "seed": 1462389625
   },
   {
+    "id": "hallmark-design-skill",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Design Skill"
+  },
+  {
+    "id": "astryx-design-system",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Design System"
+  },
+  {
+    "id": "last30days-research-skill",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Research Skill"
+  },
+  {
+    "id": "gbrain-agent-brain",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Agent Brain"
+  },
+  {
+    "id": "ai-prototyping-design-system",
+    "icon": "substack",
+    "title": "Substack",
+    "sub": "Hands-On Guide"
+  },
+  {
     "id": "og-hub",
     "template": "og",
     "width": 1200,
     "height": 630,
     "out": "assets/img/og/hub.jpg",
-    "eyebrow": "DN Creative · Design Hub",
+    "eyebrow": "DN Creative \u00b7 Design Hub",
     "title": "One Hub to Rule Them All",
     "sub": "Free, curated resources for design, UX and AI work, from Dan Nemirovsky.",
     "url": "hub.dncreative.studio",
