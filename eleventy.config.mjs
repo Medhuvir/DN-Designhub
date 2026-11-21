@@ -41,6 +41,7 @@ export default function (config) {
   });
 
   config.addFilter("icon", icon);
+  config.addFilter("shortTitle", (t) => String(t).split(" — ")[0]);
 
   // JSON-LD: safe inside <script> ("<" escaped so "</script>" can't appear)
   config.addFilter("jsonld", (obj) => JSON.stringify(obj).replace(/</g, "\\u003c"));

@@ -45,7 +45,7 @@
 <link rel="stylesheet" href="/assets/css/hub.css">
 {%- block jsonld %}{% endblock %}
 </head>
-<body>
+<body{% if isHome %} class="page-home"{% endif %}>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <nav class="site-nav" aria-label="Primary">
@@ -61,16 +61,23 @@
       </a>
       <span class="hub-title-inline">Design Hub</span>
     </div>
+    {% set sid = "nav" %}{% set searchClass = "search--nav" %}{% include "search.njk" %}
     <div class="nav-links">
       <a href="{{ nav }}#featured">Featured</a>
       <a href="{{ nav }}#archive">Archive</a>
       <a href="{{ nav }}#about">About</a>
     </div>
+    {%- if heroCta %}
+    {#- Hands off from the hero's Follow button once it scrolls away (main.js),
+        so exactly one orange button is ever in view -#}
+    <a class="btn-cta btn-cta--sm nav-follow" href="{{ site.person.linkedin }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">Follow <span class="arrow arrow--out" aria-hidden="true">&nearr;</span><span class="sr-only"> Dan on LinkedIn (opens in a new tab)</span></a>
+    {%- endif %}
     <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
 <div class="mobile-panel" id="mobile-menu">
+  {% set sid = "menu" %}{% set searchClass = "search--menu" %}{% include "search.njk" %}
   <a href="{{ nav }}#featured">Featured</a>
   <a href="{{ nav }}#archive">Archive</a>
   <a href="{{ nav }}#about">About</a>
@@ -83,7 +90,7 @@
 
 <div class="wrap hub-layout">
   <div class="hub-main">
-    {% include "bio-strip.njk" %}
+    {% if bioStrip !== false %}{% include "bio-strip.njk" %}{% endif %}
     {% block content %}{% endblock %}
   </div>
   {% include "rail.njk" %}
@@ -106,6 +113,7 @@
 </footer>
 {% endblock %}
 
+<script type="application/json" id="search-index">{{ hub.searchIndex | jsonld | safe }}</script>
 <script src="/assets/js/topo-motion.js"></script>
 <script src="/assets/js/main.js"></script>
 </body>

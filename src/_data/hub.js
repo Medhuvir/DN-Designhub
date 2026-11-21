@@ -5,6 +5,7 @@
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const { icon, names: ICONS } = require("../../lib/icons.js");
 
 const file = path.join(__dirname, "../../assets/js/data.js");
 const { TYPE_COPY, TAGS, ARTIFACTS } = vm.runInNewContext(
@@ -26,6 +27,9 @@ ARTIFACTS.forEach((a, i) => {
   else a.tags.forEach((t) => { if (!TAGS[t]) errors.push(`${where}: unknown tag "${t}"`); });
   if (!/^\d{4}-\d{2}-\d{2}$/.test(a.dateAdded || "")) errors.push(`${where}: dateAdded must be YYYY-MM-DD`);
   ["title", "description", "url"].forEach((k) => { if (!a[k]) errors.push(`${where}: missing ${k}`); });
+});
+Object.keys(TAGS).forEach((k) => {
+  if (TAGS[k].icon && !ICONS.includes(TAGS[k].icon)) errors.push(`TAGS["${k}"]: unknown icon "${TAGS[k].icon}" (see lib/icons.js)`);
 });
 if (errors.length) throw new Error("assets/js/data.js has problems:\n  " + errors.join("\n  "));
 
@@ -55,6 +59,18 @@ resources.forEach((r) => {
     .map((x) => x.o);
 });
 
+// Inlined on every page for the nav search (no fetch, no server). Icons ride
+// along so results can show each topic's mark.
+const short = (t) => t.split(" — ")[0];
+const searchIndex = {
+  types: Object.fromEntries(Object.entries(TYPE_COPY).map(([k, t]) => [k, { label: t.label, icon: icon(t.icon) }])),
+  topics: topics.map((t) => ({ key: t.key, label: t.label, n: t.resources.length, icon: icon(TAGS[t.key].icon || "tag") })),
+  resources: resources.map((r) => ({
+    id: r.id, title: r.title, short: short(r.title), type: r.type, tags: r.tags,
+    source: r.source || "", text: [r.description, r.source, r.tags.map((t) => TAGS[t].label).join(" "), TYPE_COPY[r.type].label].join(" "),
+  })),
+};
+
 module.exports = {
   types: TYPE_COPY,
   tags: TAGS,
@@ -62,4 +78,5 @@ module.exports = {
   pinned,
   topics,
   latest: resources.length ? resources[0].dateAdded : null,
+  searchIndex,
 };

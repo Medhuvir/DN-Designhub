@@ -48,12 +48,14 @@ const TAGS = {
   // (taxonomy decisions and internal notes belong in CLAUDE.md §4, not here).
   // Topics are derived from what the resources actually contain. A topic with
   // no resources is hidden from the filters until something is tagged with it.
-  "claude-skills":      { label: "Claude Skills", desc: "Skills and plugins you install into Claude or Claude Code." },
-  "ux-research":        { label: "UX & Research", desc: "UX process, research methods, audits and critique." },
-  "design-systems":     { label: "Design Systems & UI", desc: "Tokens, components, extracting a design system, building UI." },
-  "agent-architecture": { label: "Agent Architecture", desc: "How AI agents are structured, orchestrated and run." },
-  "local-ai":           { label: "Local AI", desc: "Running models and agents on your own machine." },
-  "inspiration":        { label: "Inspiration + Cool Shit", desc: "Things worth looking at just because they're great." },
+  // icon: a key from lib/icons.js. Each topic's colour lives in hub.css
+  // (.t-<key>); a new topic without one falls back to neutral.
+  "claude-skills":      { label: "Claude Skills", icon: "puzzle", desc: "Skills and plugins you install into Claude or Claude Code." },
+  "ux-research":        { label: "UX & Research", icon: "eye", desc: "UX process, research methods, audits and critique." },
+  "design-systems":     { label: "Design Systems & UI", icon: "grid", desc: "Tokens, components, extracting a design system, building UI." },
+  "agent-architecture": { label: "Agent Architecture", icon: "nodes", desc: "How AI agents are structured, orchestrated and run." },
+  "local-ai":           { label: "Local AI", icon: "chip", desc: "Running models and agents on your own machine." },
+  "inspiration":        { label: "Inspiration + Cool Shit", icon: "bulb", desc: "Things worth looking at just because they're great." },
 };
 
 const ARTIFACTS = [

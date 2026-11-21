@@ -1,0 +1,12 @@
+{#- Resource search. Include with `sid` set (unique per page). main.js wires
+    every [data-search]; the index is the #search-index JSON in base.njk. -#}
+<div class="search{% if searchClass %} {{ searchClass }}{% endif %}" data-search>
+  <label class="search__field" for="q-{{ sid }}">
+    <span class="search__icon">{{ "search" | icon | safe }}</span>
+    <span class="sr-only">Search resources</span>
+    <input class="search__input" id="q-{{ sid }}" type="search" placeholder="Search {{ hub.resources.length }} resources" autocomplete="off" spellcheck="false"
+      role="combobox" aria-expanded="false" aria-controls="qp-{{ sid }}" aria-autocomplete="list">
+    <kbd class="search__kbd" aria-hidden="true">/</kbd>
+  </label>
+  <div class="search__panel" id="qp-{{ sid }}" hidden></div>
+</div>

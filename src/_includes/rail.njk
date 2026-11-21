@@ -11,7 +11,9 @@
     <p class="rail-role">Design Leader &middot; AI Builder &middot; Org Fixer</p>
     <p class="rail-bio">{{ site.person.bio }}</p>
     <p class="bio-location"><span class="icon">{{ "pin" | icon | safe }}</span>{{ site.person.location }}</p>
-    <a class="btn-cta btn-cta--block" href="{{ site.person.linkedin }}" target="_blank" rel="noopener">Follow on LinkedIn <span class="arrow arrow--out" aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
+    {#- On the home page the hero owns the orange Follow button (and hands it to
+        the nav), so the rail's copy is an outline there -#}
+    <a class="btn-cta btn-cta--block{% if railCta == 'outline' %} btn-cta--outline{% endif %}" href="{{ site.person.linkedin }}" target="_blank" rel="noopener">Follow on LinkedIn <span class="arrow arrow--out" aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
     <div class="rail-links">
       <a class="btn-cta btn-cta--outline btn-cta--block" href="{{ site.org.url }}" target="_blank" rel="noopener">DN Creative Studio <span class="arrow arrow--out" aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
       <a class="btn-cta btn-cta--outline btn-cta--block" href="{{ site.person.website }}" target="_blank" rel="noopener">dannemirovsky.com <span class="arrow arrow--out" aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span></a>
