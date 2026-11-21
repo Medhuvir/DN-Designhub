@@ -16,7 +16,7 @@
     {%- endif %}
     <p class="ac-desc">{{ a.description }}</p>
     <div class="pill-row">
-      {%- for t in a.tags %}<a class="pill" href="/topics/{{ t }}/" data-tag="{{ t }}" title="{{ hub.tags[t].desc }}">{{ hub.tags[t].label }}</a>{% endfor -%}
+      {%- for t in a.tags %}<a class="pill pill--topic t-{{ t }}" href="/topics/{{ t }}/" data-tag="{{ t }}" title="{{ hub.tags[t].desc }}">{{ (hub.tags[t].icon or "tag") | icon | safe }}{{ hub.tags[t].label }}</a>{% endfor -%}
     </div>
     <div class="ac-foot">
       <span class="ac-date">Added <time datetime="{{ a.dateAdded }}">{{ a.dateAdded | fmtDate }}</time></span>

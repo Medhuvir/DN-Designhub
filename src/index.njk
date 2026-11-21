@@ -80,30 +80,20 @@ bioStrip: false      # the hero's curator line does the strip's job here
       <div class="section-head">
         <span class="eyebrow">The archive</span>
         <h2>Everything kept, organized and filterable.</h2>
-        <p>Every link, download, explainer and video in one place. Filter by format or topic; every filtered view is a link you can share.</p>
+        <p>Every link, download, explainer and video in one place. Filter by topic; every filtered view is a link you can share.</p>
       </div>
 
-      <div class="filters">
-        <div class="filter-group" role="group" aria-label="Filter by format">
-          <span class="fg-label">Format</span>
-          <button class="chip is-active" type="button" data-filter-type="all" aria-pressed="true">All</button>
-          {%- for key, t in hub.types %}
-          <button class="chip" type="button" data-filter-type="{{ key }}" aria-pressed="false"><span class="icon">{{ t.icon | icon | safe }}</span>{{ t.label }}</button>
+      {#- One filter row: the topics, in their colours. Every card already
+          shows its format, so format filtering was dropped (Nov 21, 2026). -#}
+      <div class="filters archive-bar">
+        <div class="filter-group" role="group" aria-label="Filter by topic">
+          <button class="topic-chip topic-chip--filter is-active" type="button" data-filter-tag="all" aria-pressed="true">All<span class="topic-chip__n">{{ hub.resources.length }}</span></button>
+          {%- for t in hub.topics %}
+          <button class="topic-chip topic-chip--filter t-{{ t.key }}" type="button" data-filter-tag="{{ t.key }}" aria-pressed="false"><span class="topic-chip__icon">{{ (hub.tags[t.key].icon or "tag") | icon | safe }}</span>{{ t.label }}<span class="topic-chip__n">{{ t.resources.length }}</span></button>
           {%- endfor %}
         </div>
+        <p class="results-line">Showing <span id="results-count">{{ hub.resources.length }}</span> of <span id="resources-total">{{ hub.resources.length }}</span></p>
       </div>
-      <div class="filters filters--stacked">
-        <div class="filter-group" role="group" aria-label="Filter by topic">
-          <span class="fg-label">Topic</span>
-          <span class="filter-chips" id="tag-filter-group">
-            <button class="chip is-active" type="button" data-filter-tag="all" aria-pressed="true">All</button>
-            {%- for t in hub.topics %}
-            <button class="chip" type="button" data-filter-tag="{{ t.key }}" aria-pressed="false">{{ t.label }}</button>
-            {%- endfor %}
-          </span>
-        </div>
-      </div>
-      <p class="results-line">Showing <span id="results-count">{{ hub.resources.length }}</span> of <span id="resources-total">{{ hub.resources.length }}</span></p>
 
       <p class="sr-only" role="status" id="results-status"></p>
       <div class="artifact-grid" id="resources-grid">
@@ -114,22 +104,8 @@ bioStrip: false      # the hero's curator line does the strip's job here
 
       <div class="empty-state" id="resources-empty" hidden>
         <span class="eyebrow">No matches</span>
-        <p>Nothing here for that combination yet. Try another format or topic.</p>
+        <p>Nothing in this topic yet. Try another one.</p>
         <button class="chip" type="button" id="clear-filters">Clear filters</button>
-      </div>
-    </section>
-
-    <section class="section" id="how">
-      <div class="section-head">
-        <span class="eyebrow">How this hub works</span>
-        <h2>Four formats, tagged by topic.</h2>
-        <p>Every resource is one of four formats and carries one or more topic tags — that's the whole taxonomy. Simple on purpose: this is a personal archive first, a shareable one second.</p>
-      </div>
-      <div class="format-row">
-        <div class="format-card"><span class="fico">{{ "link" | icon | safe }}</span><h3>Link</h3><p>A page, tool, or site worth going back to.</p></div>
-        <div class="format-card"><span class="fico">{{ "download" | icon | safe }}</span><h3>Download</h3><p>A file worth keeping local — template, kit, PDF.</p></div>
-        <div class="format-card"><span class="fico">{{ "explainer" | icon | safe }}</span><h3>Explainer</h3><p>A write-up, method, or framework worth citing.</p></div>
-        <div class="format-card"><span class="fico">{{ "video" | icon | safe }}</span><h3>Video</h3><p>A talk, demo, or walkthrough worth watching.</p></div>
       </div>
     </section>
 

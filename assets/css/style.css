@@ -79,8 +79,9 @@ a { color: inherit; text-decoration: none; }
 .skip-link:focus { top: var(--space-2); }
 
 /* ---- Topographic texture: the live DN generator (assets/js/topo-motion.js)
-   One topo per page, hero only, at the standard intensity (1). Copy stays
-   readable through the Pitch Black overlay, never by fading the lines. ---- */
+   The hero's, at the standard intensity (1), plus the footer's gray one (Dan's
+   exception, see the footer block). Copy stays readable through a Pitch
+   Black overlay, never by fading the lines. ---- */
 .topo-canvas {
   position: absolute; inset: 0; z-index: 0;
   width: 100%; height: 100%; display: block;
@@ -358,10 +359,7 @@ section[id] { scroll-margin-top: var(--nav-height); }
   align-items: center;
   scroll-margin-top: var(--nav-height);   /* clears the sticky nav when scrolled to */
 }
-.filters--stacked { padding-top: 0; }
 .filter-group { display: flex; flex-wrap: wrap; gap: var(--space-1); align-items: center; }
-.filter-chips { display: contents; }
-.filter-group .fg-label { min-width: 7ch; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-light); margin-right: 4px; }
 .chip {
   display: inline-flex; align-items: center; gap: var(--space-1);
   font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.02em;
@@ -409,42 +407,28 @@ a.pill:hover { color: var(--warm-white); border-color: var(--gray-light); }
 }
 .empty-state .eyebrow { display: block; margin-bottom: 8px; }
 
-/* ---- Footer: global dark brand sign-off, links back to DN Creative Studio -- */
+/* ---- Footer: gray topo, the DN mark and the copyright -----------------
+   The live generator, desaturated with a CSS filter (Dan's call, Nov 21,
+   2026: a deliberate second topo on the page, the one exception to the
+   one-topo rule). A radial Pitch Black shade keeps the centre readable. */
 .site-footer {
-  position: relative;
-  overflow: hidden;
-  padding: var(--space-7) 0 var(--space-5);
+  position: relative; overflow: hidden;
+  padding: var(--space-8) 0 var(--space-6);
   border-top: 0.5px solid var(--border-dark);
   background: var(--surface-darker);
 }
-/* About keeps a bare copyright footer; Pitch Black so it doesn't merge
-   into the Surface Darker CTA band directly above it */
-.site-footer--plain { background: var(--pitch-black); }
+.topo-canvas--gray { filter: grayscale(1); }
+.footer-shade {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 90% at 50% 50%, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.55) 50%, rgba(10,10,10,0.15) 100%);
+}
 .footer-inner {
   position: relative; z-index: 1;
-  display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
   text-align: center;
 }
-.footer-brand { display: flex; flex-direction: column; align-items: center; gap: 10px; }  /* Lockup 2: 10px mark-to-text */
-.footer-brand__mark { width: 40px; height: auto; }
-.footer-brand__lockup { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.footer-brand__word {
-  font-family: var(--font-display); font-size: 24px; letter-spacing: 0.02em; line-height: 1;
-  color: var(--warm-white);
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: color 0.2s var(--ease);
-}
-.footer-brand__sub {
-  font-family: var(--font-body); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--blaze-orange);
-}
-.footer-brand__arrow {
-  display: inline-block; color: var(--blaze-orange);
-  opacity: 0; transform: translateX(-4px);
-  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
-}
-.footer-brand:hover .footer-brand__word { color: var(--blaze-orange); }
-.footer-brand:hover .footer-brand__arrow { opacity: 1; transform: translateX(0); }
+.footer-mark { display: block; }
+.footer-mark img { width: 40px; height: auto; }   /* Lockup 3, mark only */
 .footer-copy { font-size: 12.5px; color: var(--text-muted); margin: 0; }
 
 /* ---- Motion: scroll reveal with the brand stagger (.d1–.d6) ------------

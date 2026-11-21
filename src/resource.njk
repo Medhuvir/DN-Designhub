@@ -62,7 +62,7 @@ eleventyComputed:
         {%- if r.source %}<div><dt>From</dt><dd>{{ r.source }}</dd></div>{% endif %}
         <div><dt>Added</dt><dd><time datetime="{{ r.dateAdded }}">{{ r.dateAdded | fmtDate }}</time></dd></div>
         <div><dt>Topics</dt><dd class="pill-row pill-row--flush">
-          {%- for t in r.tags %}<a class="pill" href="/topics/{{ t }}/" title="{{ hub.tags[t].desc }}">{{ hub.tags[t].label }}</a>{% endfor -%}
+          {%- for t in r.tags %}<a class="pill pill--topic t-{{ t }}" href="/topics/{{ t }}/" title="{{ hub.tags[t].desc }}">{{ (hub.tags[t].icon or "tag") | icon | safe }}{{ hub.tags[t].label }}</a>{% endfor -%}
         </dd></div>
         <div><dt>Link</dt><dd><a class="text-link" href="{{ r.url | url }}"{% if isDl %} download{% else %} target="_blank"{% endif %} rel="noopener">
           {{- r.url | host if (r.url | host) else (r.url | url) }}</a></dd></div>

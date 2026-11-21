@@ -40,8 +40,10 @@
   /* ---------------- Archive filters ----------------
      Every card is in the HTML already (pre-rendered at build time from
      assets/js/data.js), so this only shows and hides them. Valid filter
-     values are read off the chips, so nothing here repeats the data. */
-  var activeFilters = { tag: "all", type: "all" };
+     values are read off the chips, so nothing here repeats the data.
+     Topic only: format filtering was dropped Nov 21, 2026 (every card shows
+     its format); an old ?type= link just lands on the full archive. */
+  var activeFilters = { tag: "all" };
 
   function chipValues(attr) {
     return [].map.call(document.querySelectorAll("[" + attr + "]"), function (c) {
@@ -50,28 +52,23 @@
   }
 
   // Links shared before the Nov 2026 topic refresh used the old tag keys.
-  // Map them to their closest new topic (old "video" tag -> the Video format).
+  // Map them to their closest new topic.
   var LEGACY_TAGS = {
     "skills-agents": "claude-skills", "ux": "ux-research", "research": "ux-research",
     "design": "design-systems", "engineering": "agent-architecture",
   };
 
-  // Filter state lives in the URL (?tag=…&type=…) so any filtered view can be
+  // Filter state lives in the URL (?tag=…) so any filtered view can be
   // shared as a link. Unknown values fall back to "all".
   function readFiltersFromURL() {
-    var tags = chipValues("data-filter-tag"), types = chipValues("data-filter-type");
-    var params = new URLSearchParams(window.location.search);
-    var tag = params.get("tag"), type = params.get("type");
-    if (tag === "video" && tags.indexOf("video") === -1) { tag = null; type = type || "video"; }
+    var tag = new URLSearchParams(window.location.search).get("tag");
     if (tag && LEGACY_TAGS[tag]) tag = LEGACY_TAGS[tag];
-    activeFilters.tag = tag && tags.indexOf(tag) !== -1 ? tag : "all";
-    activeFilters.type = type && types.indexOf(type) !== -1 ? type : "all";
+    activeFilters.tag = tag && chipValues("data-filter-tag").indexOf(tag) !== -1 ? tag : "all";
   }
 
   function writeFiltersToURL() {
     var params = new URLSearchParams();
     if (activeFilters.tag !== "all") params.set("tag", activeFilters.tag);
-    if (activeFilters.type !== "all") params.set("type", activeFilters.type);
     var qs = params.toString();
     // With filters active the URL lands on the archive; without, keep whatever
     // anchor the visitor arrived on (#about, #featured…) rather than dropping it
@@ -84,16 +81,10 @@
       c.classList.toggle("is-active", on);
       c.setAttribute("aria-pressed", on);
     });
-    document.querySelectorAll("[data-filter-type]").forEach(function (c) {
-      var on = c.getAttribute("data-filter-type") === activeFilters.type;
-      c.classList.toggle("is-active", on);
-      c.setAttribute("aria-pressed", on);
-    });
   }
 
   function setFilters(next) {
     if (next.tag) activeFilters.tag = next.tag;
-    if (next.type) activeFilters.type = next.type;
     syncChips();
     applyFilters();
     writeFiltersToURL();
@@ -103,11 +94,8 @@
     var cards = document.querySelectorAll("#resources-grid .artifact-card");
     var visibleCount = 0;
     cards.forEach(function (card) {
-      var type = card.getAttribute("data-type");
       var tags = card.getAttribute("data-tags").split(",");
-      var passType = activeFilters.type === "all" || activeFilters.type === type;
-      var passTag = activeFilters.tag === "all" || tags.indexOf(activeFilters.tag) !== -1;
-      var show = passType && passTag;
+      var show = activeFilters.tag === "all" || tags.indexOf(activeFilters.tag) !== -1;
       card.hidden = !show;
       if (show) visibleCount++;
     });
@@ -128,11 +116,8 @@
     document.querySelectorAll("[data-filter-tag]").forEach(function (chip) {
       chip.addEventListener("click", function () { setFilters({ tag: chip.getAttribute("data-filter-tag") }); });
     });
-    document.querySelectorAll("[data-filter-type]").forEach(function (chip) {
-      chip.addEventListener("click", function () { setFilters({ type: chip.getAttribute("data-filter-type") }); });
-    });
     var clear = document.getElementById("clear-filters");
-    if (clear) clear.addEventListener("click", function () { setFilters({ tag: "all", type: "all" }); });
+    if (clear) clear.addEventListener("click", function () { setFilters({ tag: "all" }); });
 
     // A card's topic pill links to that topic's page; on the home page it
     // filters the archive in place instead (new-tab clicks still open the page)

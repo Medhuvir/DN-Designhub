@@ -26,7 +26,7 @@ eleventyComputed:
         <li aria-current="page">{{ t.label }}</li>
       </ol>
     </nav>
-    <span class="eyebrow">Topic</span>
+    <span class="eyebrow topic-eyebrow t-{{ t.key }}">{{ (hub.tags[t.key].icon or "tag") | icon | safe }}Topic</span>
     <h1>{{ t.label }}</h1>
     <p class="lede">{{ t.desc }}</p>
     <div class="hero-meta">
@@ -52,8 +52,8 @@ eleventyComputed:
         <span class="eyebrow">Other topics</span>
         <h2>Keep digging.</h2>
       </div>
-      <div class="pill-row pill-row--flush">
-        {%- for o in hub.topics %}{% if o.key != t.key %}<a class="pill" href="/topics/{{ o.key }}/" title="{{ o.desc }}">{{ o.label }} ({{ o.resources.length }})</a>{% endif %}{% endfor -%}
+      <div class="topic-row">
+        {%- for o in hub.topics %}{% if o.key != t.key %}<a class="topic-chip t-{{ o.key }}" href="/topics/{{ o.key }}/" title="{{ o.desc }}"><span class="topic-chip__icon">{{ (hub.tags[o.key].icon or "tag") | icon | safe }}</span>{{ o.label }}<span class="topic-chip__n">{{ o.resources.length }}</span></a>{% endif %}{% endfor -%}
       </div>
       <p class="topic-more">Or <a class="text-link" href="/#archive">browse the whole archive</a>, filterable by format and topic.</p>
     </section>

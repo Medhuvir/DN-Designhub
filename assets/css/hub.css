@@ -96,9 +96,7 @@
   .pinned-grid .ac-desc { max-width: 70ch; }
 }
 
-/* ---- "How it works" strip on Home, hobby cards on About ----------------- */
-.format-row { display: grid; gap: var(--space-2); grid-template-columns: 1fr; }
-@media (min-width: 640px) { .format-row { grid-template-columns: repeat(4, 1fr); } }
+/* ---- Format cards: the hobby cards in About ---------------------------- */
 .format-card { border: 0.5px solid var(--border-dark); background: var(--surface-dark); padding: var(--space-2) var(--space-2) var(--space-3); }
 .format-card .fico { display: flex; width: 28px; height: 28px; color: var(--gray-light); }
 .format-card h3 { font-size: 28px; margin: 12px 0 4px; }   /* Display S */
@@ -205,6 +203,44 @@
 .sp-foot { display: flex; flex-wrap: wrap; gap: 14px; border-top: 0.5px solid var(--border-dark); margin-top: 6px; padding: 9px 16px 4px; font-size: 11px; color: var(--text-muted); }
 .sp-foot kbd { font: 600 10.5px/1 var(--font-body); border: 0.5px solid var(--border-dark-strong); padding: 2px 5px; border-radius: 2px; margin-right: 4px; color: var(--gray-light); }
 .sp-empty { padding: 10px 16px 4px; font-size: 13px; color: var(--gray-light); }
+
+/* ---- Topic tags on cards, the resource page and topic pages -------------- */
+.pill--topic {
+  --t: var(--gray-light);
+  gap: 5px; padding: 3px 10px 3px 7px; border-radius: 2px;
+  border-color: color-mix(in srgb, var(--t) 40%, transparent);
+  background: color-mix(in srgb, var(--t) 10%, transparent);
+  color: var(--t);
+}
+.pill--topic .icon-svg { width: 12px; height: 12px; }
+a.pill.pill--topic:hover, a.pill.pill--topic:focus-visible {
+  color: var(--t); border-color: var(--t);
+  background: color-mix(in srgb, var(--t) 16%, transparent);
+  box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--t) 65%, transparent);
+}
+a.pill.pill--topic { transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease), box-shadow 0.2s var(--ease); }
+
+/* ---- Archive filter: the topic chips as toggles ------------------------- */
+.archive-bar { justify-content: space-between; align-items: center; row-gap: var(--space-2); }
+.archive-bar .results-line { margin: 0; }
+@media (max-width: 639px) {   /* one swipeable row on phones, like the hero's */
+  .archive-bar .filter-group { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -24px; padding: 2px 24px; width: calc(100% + 48px); }
+  .archive-bar .filter-group::-webkit-scrollbar { display: none; }
+  .archive-bar .topic-chip { flex: none; }
+}
+button.topic-chip { font-family: var(--font-body); cursor: pointer; }
+.topic-chip--filter[aria-pressed="true"] {
+  border-color: var(--t); background: color-mix(in srgb, var(--t) 22%, rgba(10,10,10,0.6));
+  box-shadow: inset 0 0 0 0.5px var(--t);
+}
+.topic-chip--filter[data-filter-tag="all"] { --t: var(--warm-white); }
+.topic-chip--filter[data-filter-tag="all"][aria-pressed="true"] { background: var(--warm-white); color: var(--pitch-black); }
+.topic-chip--filter[data-filter-tag="all"][aria-pressed="true"] .topic-chip__n { color: var(--pitch-black); }
+
+/* Topic page: the topic's mark beside its eyebrow; other topics as chips */
+.topic-eyebrow { display: inline-flex; align-items: center; gap: 8px; }
+.topic-eyebrow .icon-svg { width: 16px; height: 16px; color: var(--t); }
+.topic-row { display: flex; flex-wrap: wrap; gap: var(--space-1); }
 
 /* Topic hues come last so they win over each component's neutral default */
 .t-claude-skills      { --t: #D9B55A; }
