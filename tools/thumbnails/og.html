@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<!-- Social share image (Open Graph / Twitter), 1200x630. Rendered by render.js. -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --pitch-black:#0A0A0A; --warm-white:#F5F3EE; --blaze-orange:#FF5E1A; --orange-light:#FF8050; --orange-dark:#CC4C16; }
+  html, body { margin:0; background:var(--pitch-black); overflow:hidden; }
+  .stage { position:relative; width:1200px; height:630px; }
+  canvas { position:absolute; inset:0; width:1200px; height:630px; }
+  /* Site-header standard: Pitch Black gradient on the copy side, topo alive on the far side */
+  .overlay { position:absolute; inset:0; background:linear-gradient(110deg, rgba(10,10,10,0.90) 0%, rgba(10,10,10,0.72) 42%, rgba(10,10,10,0.10) 100%); }
+  .copy { position:absolute; inset:0; padding:64px 72px; display:flex; flex-direction:column; color:var(--warm-white); }
+  .mark { height:44px; width:auto; display:block; align-self:flex-start; }
+  .eyebrow { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:0.22em; color:var(--blaze-orange); margin-top:auto; }
+  .title { font-family:'Bebas Neue',sans-serif; font-size:112px; line-height:0.92; letter-spacing:0.02em; max-width:9.5em; margin-top:14px; }
+  .sub { font-family:'DM Sans',sans-serif; font-weight:400; font-size:26px; line-height:1.4; color:rgba(245,243,238,0.82); margin-top:24px; max-width:32em; text-wrap:balance; }
+  .url { font-family:'DM Sans',sans-serif; font-weight:500; font-size:18px; letter-spacing:0.08em; color:rgba(245,243,238,0.55); margin-top:32px; }
+</style></head>
+<body><div class="stage">
+  <canvas id="topo"></canvas>
+  <div class="overlay"></div>
+  <div class="copy">
+    <img class="mark" src="../../assets/img/dn-mark-white.svg" alt="">
+    <div class="eyebrow" id="eyebrow"></div>
+    <div class="title" id="title"></div>
+    <div class="sub" id="sub"></div>
+    <div class="url" id="url"></div>
+  </div>
+</div>
+<script src="../../assets/js/topo-motion.js"></script>
+<script>
+  const q = new URLSearchParams(location.search);
+  for (const k of ['eyebrow', 'title', 'sub', 'url']) document.getElementById(k).textContent = q.get(k) || '';
+  TopoMotion.create(document.getElementById('topo'), {
+    static: true, seed: +q.get('seed'), width: 1200, height: 630, dpr: 1, background: '#0A0A0A',
+  });
+  document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body></html>

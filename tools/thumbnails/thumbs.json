@@ -61,5 +61,17 @@
     "title": "GitHub",
     "sub": "GEO Audit Tool",
     "seed": 1462389625
+  },
+  {
+    "id": "og-hub",
+    "template": "og",
+    "width": 1200,
+    "height": 630,
+    "out": "assets/img/og/hub.jpg",
+    "eyebrow": "DN Creative · Design Hub",
+    "title": "One Hub to Rule Them All",
+    "sub": "Free, curated resources for design, UX and AI work, from Dan Nemirovsky.",
+    "url": "hub.dncreative.studio",
+    "seed": 2464201190
   }
 ]

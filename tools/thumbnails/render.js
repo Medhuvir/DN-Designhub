@@ -48,20 +48,28 @@ async function localFonts(page) {
   const srv = await serve();
   const port = srv.address().port;
   const browser = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
-  const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
+  const page = await browser.newPage();
   if (fontsDir) await localFonts(page);
 
+  // Entries default to a card thumbnail (thumb.html, 1600x900, assets/img/thumbs/<id>.jpg).
+  // Others set template / width / height / out, e.g. the social share image:
+  //   { "id": "og-hub", "template": "og", "width": 1200, "height": 630,
+  //     "out": "assets/img/og/hub.jpg", "eyebrow": "…", "title": "…", "sub": "…", "url": "…" }
+  const FIELDS = ['icon', 'title', 'sub', 'eyebrow', 'url'];
   for (const t of spec) {
-    const out = path.join(ROOT, 'assets/img/thumbs', t.id + '.jpg');
+    const out = path.join(ROOT, t.out || path.join('assets/img/thumbs', t.id + '.jpg'));
     if (!all && fs.existsSync(out)) continue;
     if (!t.seed) t.seed = crypto.randomBytes(4).readUInt32BE(0);
-    const qs = new URLSearchParams({ seed: t.seed, icon: t.icon, title: t.title, sub: t.sub });
-    await page.goto(`http://localhost:${port}/tools/thumbnails/thumb.html?${qs}`, { waitUntil: 'networkidle' });
+    const params = { seed: t.seed };
+    for (const k of FIELDS) if (t[k]) params[k] = t[k];
+    await page.setViewportSize({ width: t.width || 1600, height: t.height || 900 });
+    await page.goto(`http://localhost:${port}/tools/thumbnails/${t.template || 'thumb'}.html?${new URLSearchParams(params)}`, { waitUntil: 'networkidle' });
     await page.waitForSelector('body[data-ready="1"]');
     const bebas = await page.evaluate(() => document.fonts.check('104px "Bebas Neue"'));
     if (!bebas) throw new Error(`Bebas Neue did not load for ${t.id}: pass --fonts <dir> with the woff2 files`);
+    fs.mkdirSync(path.dirname(out), { recursive: true });
     await page.screenshot({ path: out, type: 'jpeg', quality: 84 });
-    console.log(`${t.id}.jpg  seed ${t.seed}`);
+    console.log(`${path.relative(ROOT, out)}  seed ${t.seed}`);
   }
 
   fs.writeFileSync(SPEC, JSON.stringify(spec, null, 2) + '\n');
