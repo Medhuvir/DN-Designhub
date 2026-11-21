@@ -108,8 +108,10 @@ h2 { font-size: clamp(42px, 6vw, 80px); }
 h3 { font-size: clamp(28px, 2.4vw, 36px); line-height: 1; letter-spacing: 0.04em; }
 p  { font-size: 16px; color: var(--warm-white); }
 .lede { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.6; color: var(--gray-light); max-width: 62ch; }
-.small { font-size: 14px; color: var(--graphite); }
-.xsmall { font-size: 12px; color: var(--graphite); }
+
+/* ---- Icons (assets/js/icons.js): monochrome line icons, inherit colour --- */
+.icon { display: inline-flex; width: 1em; height: 1em; flex-shrink: 0; }
+.icon-svg { width: 100%; height: 100%; display: block; }
 
 /* ---- Layout helpers -------------------------------------------------- */
 .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
@@ -248,26 +250,21 @@ section { position: relative; }
 }
 .bio-photo-wrap::after { content: ''; display: block; width: 48px; height: 2px; margin-top: 16px; background: var(--gray-mid); }
 .bio-content p { max-width: 62ch; }
-
-/* ---- Legend / key bar ------------------------------------------------ */
-.legend-bar {
-  padding: var(--space-3) 0;
-  border-bottom: 0.5px solid var(--border-dark);
-  display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4);
-  font-size: 12px; color: var(--graphite);
-}
-.legend-bar strong { color: var(--gray-light); font-weight: 500; }
-.legend-item { display: flex; align-items: center; gap: 6px; }
+.bio-location { display: flex; align-items: center; gap: var(--space-1); margin-top: var(--space-2); font-size: 13px; color: var(--gray-light); }
 
 /* ---- Filter controls -------------------------------------------------- */
 .filters {
   padding: var(--space-3) 0;
   display: flex; flex-wrap: wrap; gap: var(--space-2);
   align-items: center;
+  scroll-margin-top: var(--nav-height);   /* clears the sticky nav when scrolled to */
 }
+.filters--stacked { padding-top: 0; }
 .filter-group { display: flex; flex-wrap: wrap; gap: var(--space-1); align-items: center; }
-.filter-group .fg-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--graphite); margin-right: 4px; }
+.filter-chips { display: contents; }
+.filter-group .fg-label { min-width: 7ch; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-light); margin-right: 4px; }
 .chip {
+  display: inline-flex; align-items: center; gap: var(--space-1);
   font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.02em;
   padding: 8px 16px; border-radius: 100px; border: 0.5px solid var(--border-dark-strong);
   background: transparent; color: var(--gray-light); cursor: pointer;
@@ -282,7 +279,10 @@ section { position: relative; }
   padding: 4px 12px; border-radius: 2px; white-space: nowrap;
 }
 
+.chip .icon { font-size: 14px; }
+
 .pill-row { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: var(--space-2) 0; }
+.pill-row--flush { margin: 0; }
 .pill {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
@@ -302,25 +302,12 @@ a.pill:hover { color: var(--warm-white); border-color: var(--gray-light); }
 
 /* ---- Cards / grids ----------------------------------------------------- */
 .grid { display: grid; gap: var(--space-2); }
-.grid-2 { grid-template-columns: 1fr; }
 .grid-3 { grid-template-columns: 1fr; }
-@media (min-width: 640px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 780px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
-
-.callout-orange {
-  background: var(--blaze-orange); color: var(--pitch-black);
-  padding: var(--space-4); margin: var(--space-2) 0 var(--space-5);
-  border-radius: 2px;
-}
-.callout-orange .eyebrow { color: rgba(10,10,10,0.6); }
-.callout-orange h3 { color: var(--pitch-black); margin-top: 8px; }
-.callout-orange p { color: rgba(10,10,10,0.82); font-size: 15px; }
-.callout-orange a { text-decoration: underline; }
-.callout-orange .pill { background: rgba(10,10,10,0.08); border-color: rgba(10,10,10,0.2); color: var(--pitch-black); }
 
 .empty-state {
   border: 0.5px dashed var(--border-dark-strong); padding: var(--space-6) var(--space-3);
-  text-align: center; color: var(--graphite); margin-top: var(--space-4);
+  text-align: center; color: var(--gray-light); margin-top: var(--space-4);
 }
 .empty-state .eyebrow { display: block; margin-bottom: 8px; }
 

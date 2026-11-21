@@ -36,11 +36,13 @@
  * is for and how it's meant to be kept current.
  */
 
+// `icon` is a key into the line-icon set in assets/js/icons.js (no emoji:
+// they bring colours outside the brand palette)
 const TYPE_COPY = {
-  link:      { icon: "🔗", label: "Link" },
-  download:  { icon: "⬇️", label: "Download" },
-  explainer: { icon: "📄", label: "Explainer" },
-  video:     { icon: "🎬", label: "Video" },
+  link:      { icon: "link",      label: "Link" },
+  download:  { icon: "download",  label: "Download" },
+  explainer: { icon: "explainer", label: "Explainer" },
+  video:     { icon: "video",     label: "Video" },
 };
 
 const TAGS = {

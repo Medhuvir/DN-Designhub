@@ -80,7 +80,7 @@
         thumb +
         '<div class="ac-body">' +
           '<div class="ac-top">' +
-            '<span class="ac-type">' + tc.icon + " " + tc.label + "</span>" +
+            '<span class="ac-type">' + DN_ICON(tc.icon) + tc.label + "</span>" +
             placeholderBadge +
           "</div>" +
           '<h3 class="ac-title">' + a.title + "</h3>" +
@@ -196,9 +196,9 @@
   function buildTagFilterChips() {
     var wrap = document.getElementById("tag-filter-group");
     if (!wrap) return;
-    var chips = ['<button class="chip is-active" data-filter-tag="all">All topics</button>'];
+    var chips = ['<button class="chip is-active" type="button" data-filter-tag="all">All</button>'];
     Object.keys(TAGS).forEach(function (key) {
-      chips.push('<button class="chip" data-filter-tag="' + key + '">' + TAGS[key].label + "</button>");
+      chips.push('<button class="chip" type="button" data-filter-tag="' + key + '">' + TAGS[key].label + "</button>");
     });
     wrap.innerHTML = chips.join("");
   }

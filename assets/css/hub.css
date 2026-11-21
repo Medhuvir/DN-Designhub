@@ -7,7 +7,6 @@
 /* ---- Artifact card ------------------------------------------------- */
 .artifact-grid { display: grid; gap: var(--space-3); grid-template-columns: 1fr; }
 @media (min-width: 640px) { .artifact-grid { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 1020px) { .artifact-grid.cols-4 { grid-template-columns: repeat(4, 1fr); } }
 
 .artifact-card {
   position: relative;
@@ -45,10 +44,11 @@
 
 .ac-top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
 .ac-type {
-  display: inline-flex; align-items: center; gap: 4px;
+  display: inline-flex; align-items: center; gap: var(--space-1);
   font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--graphite);
 }
+.ac-type .icon-svg { width: 14px; height: 14px; }
 .badge-placeholder {
   background: transparent; color: var(--graphite); border: 0.5px dashed var(--gray-mid);
   font-size: 9.5px;
@@ -88,19 +88,10 @@
   .pinned-grid .ac-desc { max-width: 70ch; }
 }
 
-/* ---- Tag legend / filter chips ----------------------------------------- */
-.tag-chip { display: inline-flex; align-items: center; gap: 6px; }
-.tag-chip .swatch-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blaze-orange); }
-
-.tag-legend { display: flex; flex-direction: column; gap: 6px; }
-.tag-legend .tl-row { display: flex; gap: 8px; font-size: 12.5px; }
-.tag-legend .tl-row b { color: var(--gray-light); font-weight: 500; min-width: 12ch; }
-.tag-legend .tl-row span { color: var(--graphite); }
-
-/* ---- "How it works" strip on Home -------------------------------------- */
+/* ---- "How it works" strip on Home, hobby cards on About ----------------- */
 .format-row { display: grid; gap: var(--space-2); grid-template-columns: 1fr; }
 @media (min-width: 640px) { .format-row { grid-template-columns: repeat(4, 1fr); } }
 .format-card { border: 0.5px solid var(--border-dark); background: var(--surface-dark); padding: var(--space-2) var(--space-2) var(--space-3); }
-.format-card .fico { font-size: 22px; }
+.format-card .fico { display: flex; width: 28px; height: 28px; color: var(--gray-light); }
 .format-card h3 { font-size: 28px; margin: 12px 0 4px; }   /* Display S */
 .format-card p { font-size: 13px; color: var(--gray-light); margin: 0; }
