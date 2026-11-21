@@ -254,8 +254,8 @@ const ARTIFACTS = [
   },
   {
     id: "ai-prototyping-design-system",
-    title: "AI Prototyping Inside Your Design System — A Hands-On Guide",
-    description: "Christine Vallaure's guide for design and product teams on prototyping in code with your real design system rather than an AI builder's lookalike components, including the MCP setup. Her argument: a \"connect your design system\" button isn't enough; the agent needs an inventory of what the system actually contains and a connection it can query. She's also clear about the precondition, a system in good enough shape to prototype with. Part 2 of her In-System Design series, also on UX Collective.",
+    title: "AI Prototyping Inside Your Design System — A Hands-On Guide for Design & Product Teams",
+    description: "Christine Vallaure's guide to prototyping in code with your real design system. AI builders with a \"connect your design system\" button read your system and rebuild their own lookalike, so the code a developer receives doesn't use your components. Her fix is two pieces: a manifest, a generated list of every component with its props, allowed values and defaults, and an MCP connection the agent queries instead of answering from memory. She walks through two routes, the Storybook MCP add-on and a custom design system MCP, then how a prototype is handed off from a design branch. Her caveat: it needs a system worth prototyping with. Part 2 of her In-System Design series.",
     url: "https://christinevallaure.substack.com/p/ai-prototyping-inside-your-design",
     type: "explainer",
     tags: ["design-systems", "ux-research"],
