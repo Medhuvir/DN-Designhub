@@ -47,13 +47,15 @@
     return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
   }
 
+  // Each tag pill is a link to that topic's filtered view, so a card's topics
+  // double as shareable entry points into the archive.
   function tagPillRow(tags) {
     return (
       '<div class="pill-row">' +
       tags.map(function (t) {
         var tag = TAGS[t];
         if (!tag) return "";
-        return '<span class="pill" title="' + tag.desc + '">' + tag.label + "</span>";
+        return '<a class="pill" href="resources.html?tag=' + t + '" data-tag="' + t + '" title="' + tag.desc + '">' + tag.label + "</a>";
       }).join("") +
       "</div>"
     );
@@ -115,6 +117,40 @@
   /* ---------------- Resources: full archive render + filters ---------------- */
   var activeFilters = { tag: "all", type: "all" };
 
+  // Filter state lives in the URL (?tag=…&type=…) so any filtered view can be
+  // shared as a link. Unknown values fall back to "all".
+  function readFiltersFromURL() {
+    var params = new URLSearchParams(window.location.search);
+    var tag = params.get("tag"), type = params.get("type");
+    activeFilters.tag = tag && TAGS[tag] ? tag : "all";
+    activeFilters.type = type && TYPE_COPY[type] ? type : "all";
+  }
+
+  function writeFiltersToURL() {
+    var params = new URLSearchParams();
+    if (activeFilters.tag !== "all") params.set("tag", activeFilters.tag);
+    if (activeFilters.type !== "all") params.set("type", activeFilters.type);
+    var qs = params.toString();
+    history.replaceState(null, "", window.location.pathname + (qs ? "?" + qs : ""));
+  }
+
+  function syncChips() {
+    document.querySelectorAll("[data-filter-tag]").forEach(function (c) {
+      c.classList.toggle("is-active", c.getAttribute("data-filter-tag") === activeFilters.tag);
+    });
+    document.querySelectorAll("[data-filter-type]").forEach(function (c) {
+      c.classList.toggle("is-active", c.getAttribute("data-filter-type") === activeFilters.type);
+    });
+  }
+
+  function setFilters(next) {
+    if (next.tag) activeFilters.tag = next.tag;
+    if (next.type) activeFilters.type = next.type;
+    syncChips();
+    applyFilters();
+    writeFiltersToURL();
+  }
+
   function applyFilters() {
     var cards = document.querySelectorAll(".artifact-card");
     var visibleCount = 0;
@@ -130,25 +166,27 @@
     var resultsEl = document.getElementById("results-count");
     if (resultsEl) resultsEl.textContent = visibleCount;
     var emptyEl = document.getElementById("resources-empty");
-    if (emptyEl) emptyEl.style.display = visibleCount === 0 ? "block" : "none";
+    if (emptyEl) emptyEl.hidden = visibleCount !== 0;
   }
 
-  function initFilters() {
+  function initFilters(list) {
     document.querySelectorAll("[data-filter-tag]").forEach(function (chip) {
-      chip.addEventListener("click", function () {
-        document.querySelectorAll("[data-filter-tag]").forEach(function (c) { c.classList.remove("is-active"); });
-        chip.classList.add("is-active");
-        activeFilters.tag = chip.getAttribute("data-filter-tag");
-        applyFilters();
-      });
+      chip.addEventListener("click", function () { setFilters({ tag: chip.getAttribute("data-filter-tag") }); });
     });
     document.querySelectorAll("[data-filter-type]").forEach(function (chip) {
-      chip.addEventListener("click", function () {
-        document.querySelectorAll("[data-filter-type]").forEach(function (c) { c.classList.remove("is-active"); });
-        chip.classList.add("is-active");
-        activeFilters.type = chip.getAttribute("data-filter-type");
-        applyFilters();
-      });
+      chip.addEventListener("click", function () { setFilters({ type: chip.getAttribute("data-filter-type") }); });
+    });
+    var clear = document.getElementById("clear-filters");
+    if (clear) clear.addEventListener("click", function () { setFilters({ tag: "all", type: "all" }); });
+
+    // On Resources, a card's tag pill filters in place instead of reloading
+    list.addEventListener("click", function (e) {
+      var pill = e.target.closest("a.pill[data-tag]");
+      if (!pill) return;
+      e.preventDefault();
+      setFilters({ tag: pill.getAttribute("data-tag") });
+      var bar = document.querySelector(".filters");
+      if (bar) bar.scrollIntoView({ block: "start" });
     });
   }
 
@@ -177,7 +215,10 @@
     var totalEl = document.getElementById("resources-total");
     if (totalEl) totalEl.textContent = all.length;
 
-    initFilters();
+    readFiltersFromURL();
+    writeFiltersToURL();   // normalise: drops unknown values from the address bar
+    syncChips();
+    initFilters(list);
     applyFilters();
   }
 

@@ -289,7 +289,8 @@ section { position: relative; }
   padding: 4px 12px; border-radius: 100px;
   background: var(--surface-darker); border: 0.5px solid var(--border-dark-strong); color: var(--gray-light);
 }
-.pill .ico { font-size: 11px; line-height: 1; }
+a.pill { transition: color 0.2s var(--ease), border-color 0.2s var(--ease); }
+a.pill:hover { color: var(--warm-white); border-color: var(--gray-light); }
 
 /* ---- Generic content section ------------------------------------------ */
 .section { padding-top: var(--section-y); padding-bottom: var(--section-y); border-bottom: 0.5px solid var(--border-dark); }
