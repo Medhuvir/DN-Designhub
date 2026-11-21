@@ -476,7 +476,7 @@ a.pill:hover { color: var(--warm-white); border-color: var(--gray-light); }
    and the page's one orange button, topic chips, and the New in ticker on
    the hero's bottom edge. Overflow stays visible so the search results can
    drop past the hero; z-index keeps them above the content below. */
-.hero--home { overflow: visible; z-index: 2; padding-bottom: 0; }
+.hero--home { overflow: visible; z-index: 2; padding-bottom: 0; background: var(--pitch-black); }   /* the ring's mix-blend-mode needs a backdrop inside this stacking context */
 .hero--home .topo-canvas, .hero--home .topo-overlay { overflow: hidden; }
 .hero__inner { position: relative; z-index: 2; padding-bottom: clamp(40px, 5vw, 64px); }   /* above the ticker, so results can overlap it */
 .hero-title { font-size: clamp(56px, 8vw, 120px); line-height: 0.93; max-width: none; }   /* Display L */
@@ -589,6 +589,7 @@ a.pill:hover { color: var(--warm-white); border-color: var(--gray-light); }
   right: max(24px, calc((100% - 1320px) / 2 + 24px));
   width: clamp(360px, 36vw, 560px);
   pointer-events: none;
+  mix-blend-mode: screen;   /* the canvas is opaque black: screen drops the black and only ever brightens */
   opacity: 0;
   transition: opacity 1.4s var(--ease) 0.6s;
 }

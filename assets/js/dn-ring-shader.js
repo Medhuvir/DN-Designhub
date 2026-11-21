@@ -52,10 +52,13 @@ if (host && wide.matches) {
 function init(THREE, gltf) {
   const q = new URLSearchParams(location.search);
   const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches || q.has('ring-still');
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' });
+  // opaque black, blended onto the page with CSS mix-blend-mode: screen (style.css). An alpha
+  // canvas let dim scanline rows composite as near-black over the topo: dark stripes. Screen
+  // can only brighten, so black is invisible and nothing on the page can be darkened.
+  const renderer = new THREE.WebGLRenderer({ alpha: false, antialias: true, powerPreference: 'low-power' });
   const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
   renderer.setPixelRatio(DPR);
-  renderer.setClearColor(0x000000, 0);
+  renderer.setClearColor(0x000000, 1);
   const cv = renderer.domElement;
   cv.setAttribute('aria-hidden', 'true');
   host.appendChild(cv);
@@ -115,7 +118,7 @@ function init(THREE, gltf) {
     uniform vec3 uOrange, uWhite, uGlow, uEmber;
     uniform sampler2D uMap;
     float noise(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
-    float scanF(float y)  { return 0.8 + 0.2 * smoothstep(-0.2, 1.0, sin(y * 520.0 - uTime * 14.0)); }
+    float scanF(float y)  { return 0.9 + 0.1 * smoothstep(-0.2, 1.0, sin(y * 520.0 - uTime * 14.0)); }
     float flickF()        { return 0.92 + 0.08 * noise(vec2(uTime * 24.0, 1.0)); }
     float breathe()       { return 0.85 + 0.15 * sin(uTime * 1.3); }
     // the inscription: orange on gold, so red well above green
@@ -256,8 +259,8 @@ function init(THREE, gltf) {
           float body = 1.0 - smoothstep(width * 0.35, width, x + (n - 0.5) * 0.7);
           float rise = (1.0 - smoothstep(0.35, 1.0, g.y)) * smoothstep(0.0, 0.22, g.y);
           float f = body * rise * (0.5 + n * 1.0);
-          float band = 0.75 + 0.25 * step(0.5, fract(uv.y * 90.0 + t * 0.6));   // scan bands drifting up
-          float drop = 0.55 + 0.45 * step(0.04, h(vec2(floor(uv.y * 90.0), floor(t * 6.0))));   // the odd row dims
+          float band = 0.9 + 0.1 * step(0.5, fract(uv.y * 90.0 + t * 0.6));   // faint scan bands drifting up
+          float drop = 0.8 + 0.2 * step(0.04, h(vec2(floor(uv.y * 90.0), floor(t * 6.0))));    // the odd row dims a touch
           vec3 col = mix(uEmber, uOrange, smoothstep(0.2, 0.75, f));
           col = mix(col, uWhite, smoothstep(0.85, 1.25, f) * 0.35);
           float a = clamp(f * band * drop * 0.42, 0.0, 0.6);
