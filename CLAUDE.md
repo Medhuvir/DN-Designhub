@@ -8,10 +8,10 @@
 
 DN Creative's own running archive — a sharable web hub for the links, downloads, explainers, videos, frameworks, and skills Dan Nemirovsky comes across in the day-to-day and wants to keep, revisit, and pass along. Unlike `conspectus-design-hub` (a client audit deliverable with a defined end state), this hub has no finish line — it's meant to grow indefinitely as an evolving personal reference.
 
-**Three pages, by design — keep it this small unless there's a real reason to grow it:**
-- `index.html` — **Home.** A short explainer of what this hub is and how it's organized, plus up to 5 artifacts pinned as the "top of mind" set.
-- `resources.html` — **Resources.** The full archive, filterable by format and by topic tag.
-- `about.html` — **About.** A short, personal bio page for Dan — added August 12, 2026, see §8's same-day addendum for what it does and doesn't carry over from the source `dncreative.studio/about` page.
+**One page, by design (since Nov 21, 2026 — Phase 1 of the re-architecture, see §8):** a standalone landing page / sales hub for Dan's followers.
+- `index.html` — **the hub.** Hero (live topo), then a main column — **Featured** (up to 5 pinned resources), the **Archive** (every resource, filterable by format and topic, filtered views shareable as `?tag=…&type=…#archive`), **How this hub works**, **About** (bio, tools, hobbies) — beside a sticky **right rail**: avatar, name, role, short bio, **Follow on LinkedIn** (the one solid-orange CTA), and outline buttons to DN Creative Studio, dannemirovsky.com and GitHub. Below 1100px the rail closes the page and a slim bio strip under the hero carries LinkedIn early.
+- `resources.html`, `about.html` — **redirect stubs only** (noindex, canonical to `/`), so old links land on `/#archive` (query string preserved) and `/#about`. Don't put content back in them.
+- `404.html` — branded "Off the map." page, also served for the internal files blocked in `netlify.toml`.
 
 This is scaffolding built ahead of real content — see §8 (Status) for exactly what's real vs. placeholder right now.
 
@@ -38,23 +38,22 @@ This is Dan's own reference, not a client deliverable — but built to be handed
 
 ---
 
-## 4. The tag taxonomy — v2, still not locked
+## 4. The tag taxonomy — v3, derived from content
 
-**Renegotiated August 11, 2026, replacing the original v1 8-tag list** (see §8 for the change log) — still treat `TAGS` in `data.js` as a working proposal, not a spec:
+**Rebuilt November 21, 2026 from what the resources actually contain, approved by Dan** (v1 → v2 history in §8). v2 had stopped filtering: Skills & Agents was on 10 of 12 resources and Engineering on 8. Dan's rule now: **topics must match the current links and their content** — when content shifts, re-derive rather than preserve labels.
 
-| key | label | for |
-|---|---|---|
-| `design` | Design | Visual craft, design systems, **and branding/identity** — branding doesn't get its own tag, it lives here |
-| `engineering` | Engineering | Dev/technical resources — code, tooling, technical implementation |
-| `ux` | UX | Interaction design, product experience, UX craft |
-| `research` | Research | Research methods and findings — user research, market/competitive reads |
-| `skills-agents` | Skills & Agents | Claude skills, agent workflows, AI tooling worth reusing |
-| `video` | Video | Talks, demos, walkthroughs — **deliberately overlaps with the Video format type**, see note below |
-| `inspiration` | Inspiration + Cool Shit | Things worth looking at just because they're great — no further justification needed |
+| key | label | for | count (Nov 21) |
+|---|---|---|---|
+| `claude-skills` | Claude Skills | Skills and plugins you install into Claude or Claude Code | 7 |
+| `ux-research` | UX & Research | UX process, research methods, audits and critique | 3 |
+| `design-systems` | Design Systems & UI | Tokens, components, extracting a design system, building UI | 4 |
+| `agent-architecture` | Agent Architecture | How AI agents are structured, orchestrated and run | 4 |
+| `local-ai` | Local AI | Running models and agents on your own machine | 2 |
+| `inspiration` | Inspiration + Cool Shit | Things worth looking at just because they're great | 0 (hidden) |
 
-**The Video tag/format overlap is intentional, not an oversight** — flagged during the v1→v2 renegotiation (an artifact's `type` can be `"video"` *and* it can carry the `video` tag at the same time) and kept anyway at Dan's explicit call. Don't "fix" this by removing the tag or merging it into the format filter.
-
-**Business/Freelance is gone, not folded anywhere** — v1 had a `business` tag; v2 doesn't replace it with anything. If freelance/pricing/contracts content shows up, that's an open question to raise with Dan rather than silently reviving the old tag or mis-filing it under Design.
+- **Empty topics are hidden, not deleted:** `main.js` builds filter chips (and the hero's Topics count) only from topics at least one visible resource carries. Inspiration + Cool Shit stays defined (Dan added it) and appears automatically once something's tagged with it.
+- **Retired in v3:** `design`, `engineering`, `ux`, `research`, `skills-agents`, `video`. The old Video tag duplicated the Video *format* filter. Old shared links still work: `LEGACY_TAGS` in `main.js` maps each to its nearest new topic (`?tag=video` → `?type=video`).
+- Tag `desc` strings are visitor-facing (pill tooltips) — keep notes like these here, not there.
 
 Discipline for growing this list as real content gets added:
 - **Merge before you multiply.** If a new tag would only ever apply to 1–2 artifacts, it's probably a more specific case of one already in the table above — fold it in rather than fragmenting the filter list.
@@ -81,11 +80,11 @@ This hub's chrome is **DN Creative's own brand system** (Bebas Neue + DM Sans, P
 
 *Brought in line with the updated `dn-creative-branding` skill on November 21, 2026 — see §8's addendum of that date for the audit and what changed.*
 
-- **Palette:** Pitch Black `#0A0A0A`, Warm White `#F5F3EE`, Blaze Orange `#FF5E1A` carry everything. **Orange budget: one orange focal element per surface.** Today that's the hero eyebrow on Home and Resources (`.eyebrow--accent`), About's "Always." (`.accent`), and the single solid `.btn-cta` in each CTA band. Eyebrows are neutral by default. The Lockup 1 sub-label ("Design Studio") and state cues (active nav underline, hover, the focus ring) are system chrome and don't count. Don't colour-code content with orange (card format used to be, via orange left rules — removed).
+- **Palette:** Pitch Black `#0A0A0A`, Warm White `#F5F3EE`, Blaze Orange `#FF5E1A` carry everything. **Orange budget: one orange focal element per surface.** On the hub that's the solid **Follow on LinkedIn** `.btn-cta` (rail, and the mobile bio strip's LinkedIn button), and on the 404 its "Back to the hub" button. Eyebrows, headings and stats are all neutral. Verified at every scroll position at 1440px and 390px: never more than one orange element in view. The Lockup 1 sub-label ("Design Studio") and state cues (active nav underline, hover, the focus ring) are system chrome and don't count. Don't colour-code content with orange.
 - **Small text:** use `--text-muted` (Warm White 55%, 5.4–5.7:1) for secondary text under 18px. Graphite fails WCAG AA there (3.1–3.7:1); keep it for rules and non-text.
 - **Type scale (skill names):** h1 = Display XL `clamp(72px, 11vw, 148px)`, h2 = Display M `clamp(42px, 6vw, 80px)`, CTA band h2 = Display L `clamp(56px, 8vw, 120px)`, card/format titles = Display S (28–36px, 0.04em), nav = Display XS (Bebas, 0.1em), eyebrows = Display Label. Bebas Neue for display, DM Sans (300–700, **600 loaded**) for everything else. Never a third chrome typeface.
 - **Spacing:** 8px base unit with a 4px half-step for component internals (`--space-1`…`--space-8`, `--space-12`). Section, hero and CTA vertical rhythm all use `--section-y` (96px desktop / 48px mobile, inside the skill's 80–120 / 40–60).
-- **Topo:** only ever from the generator, never an image. One live `<canvas data-topo-motion>` per page, **in the hero only**, at the standard intensity (1), with `.topo-overlay` (110° Pitch Black gradient) behind the copy — never fade the lines for readability. CTA bands and footers are Surface Darker, no topo (the skill allows one topo pattern per layout). `assets/js/topo-motion.js` is a copy of the skill's `scripts/topo-motion.js`; re-copy it if the skill updates.
+- **Topo:** only ever from the generator, never an image. One live `<canvas data-topo-motion>` per page, **in the hero only**, at the standard intensity (1), with `.topo-overlay` (110° Pitch Black gradient) behind the copy — never fade the lines for readability. The footer is Surface Darker, no topo (the skill allows one topo pattern per layout). `assets/js/topo-motion.js` is a copy of the skill's `scripts/topo-motion.js`; re-copy it if the skill updates.
 - **Thumbnails:** generated with `tools/thumbnails/render.js` (generator still + icon + label, real fonts, 1600×900 JPG), one fresh seed per thumbnail, recorded in `thumbs.json` so it can be reproduced byte for byte. Never screenshot an HTML mock with system fonts again — the renderer refuses to output if Bebas Neue didn't load. Supplied images (Figma, YouTube) are used as-is.
 - **Icons:** monochrome line icons from `assets/js/icons.js` (`data-icon="…"` in markup, `DN_ICON()` in JS). No emoji anywhere — they bring colours outside the palette.
 - **Motion:** `cubic-bezier(0.16, 1, 0.3, 1)` everywhere, no bounce. Grouped content (`.artifact-card`, `.format-card`) reveals on scroll with the skill's `.d1`–`.d6` stagger via a geometry check in `main.js` (`initReveal`) — not IntersectionObserver, which misses items an instant scroll jumps over. Card hover = the skill's 2px orange top-border reveal + arrow motion. Everything respects `prefers-reduced-motion`. Never `transition: all` (it animated the focus outline).
@@ -185,5 +184,17 @@ Verified at 1440px and 390px on all three pages: no page errors, no local 404s o
 **Phase 0 (shipped):** `netlify.toml` now 404s `/CLAUDE.md` and `/README.md` (and `/tools/*`) — this file was publicly readable on hub.dncreative.studio before this. **Caveat:** the GitHub repo itself is public (Netlify reports `public_repo: true`), so this file is still readable there. Making the repo private is Dan's call, in GitHub settings. Also new: a branded `404.html` ("Off the map.", root-absolute asset paths so it works at any depth, `noindex`); `robots.txt` (allow all, AI bots named explicitly, a Sitemap line to add in Phase 2); `rel="canonical"` on each page pointing at hub.dncreative.studio; Open Graph + Twitter `summary_large_image` tags on each page, built from that page's own title/description/canonical; and one 1200×630 share image, `assets/img/og/hub.jpg`, from a new `og` template in the thumbnail renderer (`tools/thumbnails/og.html`; `render.js` entries can now set `template`/`width`/`height`/`out`). Per-page and per-resource share images are Phase 3.
 
 **Phases still to come:** 1 = one-page layout + right rail + LinkedIn CTA + approved topics; 2 = Eleventy pre-render, per-resource pages (`/r/<slug>/`), topic pages, JSON-LD (Person with sameAs, Organization, ItemList), sitemap, RSS, `llms.txt`; 3 = per-page/per-resource share images, self-hosted fonts, responsive WebP thumbnails with fixed dimensions; 4 = analytics + UTM-tagged CTAs, GEO audit of the hub with the GEO-SEO Claude tool already in the archive, Search Console.
+
+**Same-day addendum — Phase 1 shipped: one-page landing hub, right rail, content-derived topics.** Per Dan's decisions above (§1 has the page structure, §4 the taxonomy):
+- **Topics v3** applied, one commit on its own: 12 resources retagged; old `?tag=` links mapped through `LEGACY_TAGS`.
+- **One page:** `index.html` holds Featured → Archive → How it works → About, beside the sticky rail. The LinkedIn CTA owns the page's orange; the hero eyebrow went neutral to make that unambiguous. `assets/img/dan-avatar.jpg` is a new 192px face crop of the headshot for the 64px rail and 48px strip avatars, because the full-body photo reads as a speck at that size. Container widened 1180 → 1320px for the two-column body. The old full-width CTA band is gone; the rail does its job.
+- **Old URLs:** `resources.html` / `about.html` are JS + meta-refresh stubs, not Netlify 301s. A static rule can't reliably carry `?tag=` into a `#fragment`, and the stubs are noindex with a canonical to `/`.
+- **Two bugs found and fixed while verifying:**
+  1. URL normalisation (`writeFiltersToURL`) dropped any `#hash` on load, so `/#about` arrived as `/`.
+  2. The post-render re-scroll to a `#hash` was smooth, raced the browser's own load-time fragment scroll, and overshot by 127px. It's now instant, re-run at `load` unless the visitor has already scrolled.
+- **Verified:** every entry path (deep filtered link, both legacy URLs, `#about`, `#featured`) lands its target exactly under the nav at 1440px; at 390px it lands 2–12px lower, heading fully visible. The orange budget holds at every scroll position at both widths. No page errors, no overflow, no local 404s.
+- Dead CSS from the old multi-page layout removed (`.accent`, `.eyebrow--accent`, `.section--continued`, the `→` card-arrow variant).
+
+**Next:** Phase 2 (Eleventy pre-render, per-resource and topic pages, JSON-LD, sitemap, RSS, `llms.txt`), as laid out in the Phase 0 addendum above.
 
 **This file, and `data.js`, should be updated together whenever the taxonomy changes or the page structure grows past two pages — don't let the narrative in this file drift from what the data actually shows.**

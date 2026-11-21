@@ -95,9 +95,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---- Type scale ---------------------------------------------------- */
-/* Orange budget: ONE orange focal element per surface. Eyebrows are neutral
-   by default; .eyebrow--accent marks the one that carries the signal (the
-   hero's). Logo sub-labels and state cues (active nav, hover, focus) are
+/* Orange budget: ONE orange focal element per surface. On the hub that's the
+   solid .btn-cta ("Follow on LinkedIn"); eyebrows and everything else stay
+   neutral. Logo sub-labels and state cues (active nav, hover, focus) are
    system chrome and don't count against the budget. */
 .eyebrow {
   font-family: var(--font-display);
@@ -106,8 +106,6 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   color: var(--gray-light);
 }
-.eyebrow--accent { color: var(--blaze-orange); }
-.accent { color: var(--blaze-orange); }
 .text-link {
   color: var(--warm-white);
   text-decoration: underline; text-decoration-color: var(--border-dark-strong);
@@ -349,7 +347,6 @@ a.pill:hover { color: var(--warm-white); border-color: var(--gray-light); }
 /* ---- Generic content section ------------------------------------------ */
 .section { padding-top: var(--section-y); padding-bottom: var(--section-y); border-bottom: 0.5px solid var(--border-dark); }
 .section--flush { border-bottom: none; }              /* no closing rule */
-.section--continued { padding-top: 0; }               /* follows a section with no break */
 .section-head { margin-bottom: var(--space-4); max-width: 70ch; }
 .section-head .eyebrow { margin-bottom: var(--space-1); }
 .section-head p { color: var(--gray-light); }

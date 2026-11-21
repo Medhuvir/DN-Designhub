@@ -73,9 +73,8 @@
 .ac-link:focus-visible { outline: none; }
 .ac-link:focus-visible::after { outline: 2px solid var(--blaze-orange); outline-offset: 3px; }
 .artifact-card .pill-row { position: relative; z-index: 2; }
-/* Arrow motion: ghost-link → slides right, external ↗ lifts out, download ↓ drops */
+/* Arrow motion: external ↗ lifts out, download ↓ drops */
 .ac-arrow { display: inline-block; transition: transform 0.2s var(--ease); }
-.artifact-card:hover .ac-arrow--next { transform: translateX(4px); }
 .artifact-card:hover .ac-arrow--out { transform: translate(3px, -3px); }
 .artifact-card:hover .ac-arrow--down { transform: translateY(3px); }
 

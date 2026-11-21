@@ -159,7 +159,9 @@
     if (activeFilters.tag !== "all") params.set("tag", activeFilters.tag);
     if (activeFilters.type !== "all") params.set("type", activeFilters.type);
     var qs = params.toString();
-    history.replaceState(null, "", window.location.pathname + (qs ? "?" + qs + "#archive" : ""));
+    // With filters active the URL lands on the archive; without, keep whatever
+    // anchor the visitor arrived on (#about, #featured…) rather than dropping it
+    history.replaceState(null, "", window.location.pathname + (qs ? "?" + qs + "#archive" : window.location.hash));
   }
 
   function syncChips() {
@@ -299,15 +301,28 @@
     check();
   }
 
+  // The browser jumps to #hash before the JS-rendered cards above it exist,
+  // so the target ends up off. Jump again once the page has its real height.
+  // Instant, not smooth: a smooth scroll here races the browser's own
+  // load-time fragment scroll and overshoots (measured: 127px).
+  function alignToHash() {
+    var target = window.location.hash && document.getElementById(window.location.hash.slice(1));
+    if (target) target.scrollIntoView({ block: "start", behavior: "instant" });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initNav();
     initFooterYear();
     renderPinned();
     renderResources();
     initReveal();
-    // The browser jumps to #hash before the cards above it render; jump again
-    // now that the page has its real height.
-    var target = window.location.hash && document.getElementById(window.location.hash.slice(1));
-    if (target) target.scrollIntoView({ block: "start" });
+    alignToHash();
+    // Images can still shift things before load; re-align then too, unless the
+    // visitor has already started scrolling on their own.
+    var touched = false;
+    ["wheel", "touchstart", "keydown", "pointerdown"].forEach(function (ev) {
+      window.addEventListener(ev, function () { touched = true; }, { once: true, passive: true });
+    });
+    window.addEventListener("load", function () { if (!touched) alignToHash(); });
   });
 })();
