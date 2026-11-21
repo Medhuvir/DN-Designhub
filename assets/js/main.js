@@ -58,7 +58,7 @@
       tags.map(function (t) {
         var tag = TAGS[t];
         if (!tag) return "";
-        return '<a class="pill" href="resources.html?tag=' + t + '" data-tag="' + t + '" title="' + tag.desc + '">' + tag.label + "</a>";
+        return '<a class="pill" href="?tag=' + t + '#archive" data-tag="' + t + '" title="' + tag.desc + '">' + tag.label + "</a>";
       }).join("") +
       "</div>"
     );
@@ -159,7 +159,7 @@
     if (activeFilters.tag !== "all") params.set("tag", activeFilters.tag);
     if (activeFilters.type !== "all") params.set("type", activeFilters.type);
     var qs = params.toString();
-    history.replaceState(null, "", window.location.pathname + (qs ? "?" + qs : ""));
+    history.replaceState(null, "", window.location.pathname + (qs ? "?" + qs + "#archive" : ""));
   }
 
   function syncChips() {
@@ -184,7 +184,7 @@
   }
 
   function applyFilters() {
-    var cards = document.querySelectorAll(".artifact-card");
+    var cards = document.querySelectorAll("#resources-grid .artifact-card");
     var visibleCount = 0;
     cards.forEach(function (card) {
       var type = card.getAttribute("data-type");
@@ -205,7 +205,7 @@
     if (emptyEl) emptyEl.hidden = visibleCount !== 0;
   }
 
-  function initFilters(list) {
+  function initFilters() {
     document.querySelectorAll("[data-filter-tag]").forEach(function (chip) {
       chip.addEventListener("click", function () { setFilters({ tag: chip.getAttribute("data-filter-tag") }); });
     });
@@ -215,14 +215,14 @@
     var clear = document.getElementById("clear-filters");
     if (clear) clear.addEventListener("click", function () { setFilters({ tag: "all", type: "all" }); });
 
-    // On Resources, a card's tag pill filters in place instead of reloading
-    list.addEventListener("click", function (e) {
+    // Any card's tag pill (featured or archive) filters the archive in place
+    document.addEventListener("click", function (e) {
       var pill = e.target.closest("a.pill[data-tag]");
       if (!pill) return;
       e.preventDefault();
       setFilters({ tag: pill.getAttribute("data-tag") });
-      var bar = document.querySelector(".filters");
-      if (bar) bar.scrollIntoView({ block: "start" });
+      var archive = document.getElementById("archive");
+      if (archive) archive.scrollIntoView({ block: "start" });
     });
   }
 
@@ -254,7 +254,7 @@
     readFiltersFromURL();
     writeFiltersToURL();   // normalise: drops unknown values from the address bar
     syncChips();
-    initFilters(list);
+    initFilters();
     applyFilters();
   }
 
@@ -305,5 +305,9 @@
     renderPinned();
     renderResources();
     initReveal();
+    // The browser jumps to #hash before the cards above it render; jump again
+    // now that the page has its real height.
+    var target = window.location.hash && document.getElementById(window.location.hash.slice(1));
+    if (target) target.scrollIntoView({ block: "start" });
   });
 })();
