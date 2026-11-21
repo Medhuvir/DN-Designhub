@@ -1,0 +1,29 @@
+---
+permalink: /llms.txt
+eleventyExcludeFromCollections: true
+---
+# {{ (site.name) | safe }}
+
+> {{ (site.description) | safe }}
+
+The hub is a free, public archive curated by {{ (site.person.name) | safe }} ({{ (site.person.role | replace("·", "/")) | safe }}, {{ (site.org.name) | safe }}). Every resource has its own page here with a summary, its format and topics, and a link to the original. The list below is the whole archive, newest first. Free to cite and share.
+
+## Topics
+{% for t in hub.topics %}
+- [{{ (t.label) | safe }}]({{ (site.url) | safe }}/topics/{{ (t.key) | safe }}/): {{ (t.desc) | safe }} {{ (t.resources.length) | safe }} resource{{ ("s" if t.resources.length != 1) | safe }}.
+{%- endfor %}
+
+## Resources
+{% for r in hub.resources %}
+- [{{ (r.title) | safe }}]({{ (site.url) | safe }}/r/{{ (r.id) | safe }}/): {{ (hub.types[r.type].label) | safe }}{% if r.source %} from {{ (r.source) | safe }}{% endif %}. {{ (r.description | oneLine) | safe }} Original: {{ (r.url | absUrl) | safe }}
+{%- endfor %}
+
+## About the curator
+- [{{ (site.person.name) | safe }} on LinkedIn]({{ (site.person.linkedin) | safe }}): follow for new resources.
+- [{{ (site.org.name) | safe }} Studio]({{ (site.org.url) | safe }}): Dan's design studio.
+- [dannemirovsky.com]({{ (site.person.website) | safe }}): portfolio.
+- [GitHub]({{ (site.person.github) | safe }})
+
+## Optional
+- [Atom feed]({{ (site.url) | safe }}/feed.xml): new resources as they're added.
+- [Sitemap]({{ (site.url) | safe }}/sitemap.xml)

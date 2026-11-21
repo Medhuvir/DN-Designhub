@@ -1,0 +1,60 @@
+---
+pagination:
+  data: hub.topics
+  size: 1
+  alias: t
+permalink: "/topics/{{ t.key }}/"
+eleventyComputed:
+  title: "{{ t.label | safe }}: free resources | DN Design Hub"
+  description: "{{ t.desc | safe }} {{ t.resources.length }} free, curated resources from Dan Nemirovsky."
+---
+{#- One crawlable page per topic (topics with no resources get no page) -#}
+{% extends "base.njk" %}
+
+{% block jsonld %}
+<script type="application/ld+json">{{ t | schemaTopic(hub) | jsonld | safe }}</script>
+{% endblock %}
+
+{% block hero %}
+<header class="hero hero--topic">
+  <canvas class="topo-canvas" data-topo-motion aria-hidden="true"></canvas>
+  <div class="topo-overlay"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Hub</a></li>
+        <li aria-current="page">{{ t.label }}</li>
+      </ol>
+    </nav>
+    <span class="eyebrow">Topic</span>
+    <h1>{{ t.label }}</h1>
+    <p class="lede">{{ t.desc }}</p>
+    <div class="hero-meta">
+      <div class="stat"><span class="num">{{ t.resources.length }}</span><span class="lbl">Resources</span></div>
+      <div class="stat"><span class="num">{{ t.latest | monthYear }}</span><span class="lbl">Last added</span></div>
+    </div>
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+    <section class="section section--flush">
+      <h2 class="sr-only">Resources in {{ t.label }}</h2>
+      <div class="artifact-grid">
+        {%- for a in t.resources %}
+        {% include "card.njk" %}
+        {%- endfor %}
+      </div>
+    </section>
+
+    <section class="section section--flush">
+      <div class="section-head">
+        <span class="eyebrow">Other topics</span>
+        <h2>Keep digging.</h2>
+      </div>
+      <div class="pill-row pill-row--flush">
+        {%- for o in hub.topics %}{% if o.key != t.key %}<a class="pill" href="/topics/{{ o.key }}/" title="{{ o.desc }}">{{ o.label }} ({{ o.resources.length }})</a>{% endif %}{% endfor -%}
+      </div>
+      <p class="topic-more">Or <a class="text-link" href="/#archive">browse the whole archive</a>, filterable by format and topic.</p>
+    </section>
+{% endblock %}

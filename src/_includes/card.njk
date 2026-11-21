@@ -1,0 +1,27 @@
+{#- One resource card. Expects `a` (a resource from hub.resources).
+    The title links to the resource's own page and stretches over the card;
+    "Open"/"Download" goes straight to the resource; topic pills open the
+    topic page (on the home page main.js filters the archive in place). -#}
+{%- set tc = hub.types[a.type] -%}
+{%- set isDl = a.type == "download" -%}
+<article class="artifact-card" data-type="{{ a.type }}" data-tags="{{ a.tags | join(',') }}" data-id="{{ a.id }}">
+  {%- if a.thumbnail %}
+  <div class="ac-thumb"><img src="{{ a.thumbnail | url }}" alt="" loading="lazy" decoding="async"></div>
+  {%- endif %}
+  <div class="ac-body">
+    <div class="ac-top"><span class="ac-type">{{ tc.icon | icon | safe }}{{ tc.label }}</span></div>
+    <h3 class="ac-title"><a class="ac-main" href="/r/{{ a.id }}/">{{ a.title }}</a></h3>
+    {%- if a.source %}
+    <div class="ac-source">{{ a.source }}</div>
+    {%- endif %}
+    <p class="ac-desc">{{ a.description }}</p>
+    <div class="pill-row">
+      {%- for t in a.tags %}<a class="pill" href="/topics/{{ t }}/" data-tag="{{ t }}" title="{{ hub.tags[t].desc }}">{{ hub.tags[t].label }}</a>{% endfor -%}
+    </div>
+    <div class="ac-foot">
+      <span class="ac-date">Added <time datetime="{{ a.dateAdded }}">{{ a.dateAdded | fmtDate }}</time></span>
+      <a class="ac-link" href="{{ a.url | url }}"{% if isDl %} download{% else %} target="_blank"{% endif %} rel="noopener">
+        {{- "Download" if isDl else "Open" }} <span class="ac-arrow ac-arrow--{{ 'down' if isDl else 'out' }}" aria-hidden="true">{% if isDl %}&darr;{% else %}&nearr;{% endif %}</span><span class="sr-only">: {{ a.title }}{{ "" if isDl else " (opens in a new tab)" }}</span></a>
+    </div>
+  </div>
+</article>

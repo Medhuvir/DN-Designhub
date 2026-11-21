@@ -1,7 +1,7 @@
 /**
  * DN Design Hub — shared behavior
- * Nav (incl. hamburger), Home pinned render, Resources render + filter.
- * Depends on data.js being loaded first.
+ * Nav (incl. hamburger), archive filters, scroll reveal.
+ * Every page is pre-rendered by Eleventy; nothing here builds content.
  */
 
 (function () {
@@ -28,14 +28,6 @@
         if (e.key === "Escape" && panel.classList.contains("is-open")) setOpen(false, true);
       });
     }
-
-    var path = window.location.pathname.split("/").pop() || "index.html";
-    document.querySelectorAll(".nav-links a, .mobile-panel a").forEach(function (a) {
-      var href = a.getAttribute("href");
-      if (href === path || (path === "" && href === "index.html")) {
-        a.classList.add("active");
-      }
-    });
   }
 
   /* ---------------- Footer ---------------- */
@@ -44,96 +36,16 @@
     if (el) el.textContent = new Date().getFullYear();
   }
 
-  /* ---------------- Helpers ---------------- */
-  function fmtDate(iso) {
-    var d = new Date(iso + "T00:00:00");
-    return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
-  }
-
-  // Each tag pill is a link to that topic's filtered view, so a card's topics
-  // double as shareable entry points into the archive.
-  function tagPillRow(tags) {
-    return (
-      '<div class="pill-row">' +
-      tags.map(function (t) {
-        var tag = TAGS[t];
-        if (!tag) return "";
-        return '<a class="pill" href="?tag=' + t + '#archive" data-tag="' + t + '" title="' + tag.desc + '">' + tag.label + "</a>";
-      }).join("") +
-      "</div>"
-    );
-  }
-
-  function artifactCardHTML(a) {
-    var tc = TYPE_COPY[a.type] || { icon: "", label: a.type };
-    var placeholderBadge = a.placeholder
-      ? '<span class="badge badge-placeholder" title="Scaffold content — replace in data.js">Placeholder</span>'
-      : "";
-    var thumb = a.thumbnail
-      ? '<div class="ac-thumb"><img src="' + a.thumbnail + '" alt="" loading="lazy"></div>'
-      : "";
-    var isDownload = a.type === "download";
-    var ctaLabel = isDownload ? "Download" : "Open";
-    var ctaAttrs = isDownload ? ' download rel="noopener"' : ' target="_blank" rel="noopener"';
-    var arrow = isDownload
-      ? '<span class="ac-arrow ac-arrow--down" aria-hidden="true">&darr;</span>'
-      : '<span class="ac-arrow ac-arrow--out" aria-hidden="true">&nearr;</span>';
-    return (
-      '<article class="artifact-card reveal" data-type="' + a.type + '" data-tags="' + a.tags.join(",") + '" data-id="' + a.id + '">' +
-        thumb +
-        '<div class="ac-body">' +
-          '<div class="ac-top">' +
-            '<span class="ac-type">' + DN_ICON(tc.icon) + tc.label + "</span>" +
-            placeholderBadge +
-          "</div>" +
-          '<h3 class="ac-title">' + a.title + "</h3>" +
-          (a.source ? '<div class="ac-source">' + a.source + "</div>" : "") +
-          '<p class="ac-desc">' + a.description + "</p>" +
-          tagPillRow(a.tags) +
-          '<div class="ac-foot">' +
-            '<span class="ac-date">Added ' + fmtDate(a.dateAdded) + "</span>" +
-            '<a class="ac-link" href="' + a.url + '"' + ctaAttrs + ">" + ctaLabel + " " + arrow +
-              '<span class="sr-only">: ' + a.title + (isDownload ? "" : " (opens in a new tab)") + "</span></a>" +
-          "</div>" +
-        "</div>" +
-      "</article>"
-    );
-  }
-
-  /* ---------------- Home: pinned render ---------------- */
-  function renderPinned() {
-    var grid = document.getElementById("pinned-grid");
-    if (!grid) return;
-
-    // Home's pinned order follows ARTIFACTS array order, not dateAdded — so
-    // reordering the pinned row on Home is just reordering objects in
-    // data.js. Capped to 5 as a safety net if more than 5 get marked pinned.
-    var visible = ARTIFACTS.filter(function (a) { return !a.placeholder; });
-    var pinned = visible.filter(function (a) { return a.pinned; }).slice(0, 5);
-
-    grid.innerHTML = pinned.map(artifactCardHTML).join("");
-
-    var totalEl = document.getElementById("total-count");
-    if (totalEl) totalEl.textContent = visible.length;
-    var tagEl = document.getElementById("tag-count");
-    if (tagEl) tagEl.textContent = usedTags().length;
-    // Computed from the data so it never goes stale
-    var lastEl = document.getElementById("last-added");
-    if (lastEl && visible.length) {
-      var latest = visible.map(function (a) { return a.dateAdded; }).sort().pop();
-      lastEl.textContent = new Date(latest + "T00:00:00").toLocaleDateString("en-US", { month: "short", year: "numeric" });
-    }
-  }
-
-  /* ---------------- Resources: full archive render + filters ---------------- */
+  /* ---------------- Archive filters ----------------
+     Every card is in the HTML already (pre-rendered at build time from
+     assets/js/data.js), so this only shows and hides them. Valid filter
+     values are read off the chips, so nothing here repeats the data. */
   var activeFilters = { tag: "all", type: "all" };
 
-  // Topics that at least one visible resource carries. Empty topics stay
-  // defined in data.js but don't show as filters or count as topics.
-  function usedTags() {
-    var used = {};
-    ARTIFACTS.forEach(function (a) { if (!a.placeholder) a.tags.forEach(function (t) { used[t] = true; }); });
-    return Object.keys(TAGS).filter(function (k) { return used[k]; });
+  function chipValues(attr) {
+    return [].map.call(document.querySelectorAll("[" + attr + "]"), function (c) {
+      return c.getAttribute(attr);
+    }).filter(function (v) { return v !== "all"; });
   }
 
   // Links shared before the Nov 2026 topic refresh used the old tag keys.
@@ -146,12 +58,13 @@
   // Filter state lives in the URL (?tag=…&type=…) so any filtered view can be
   // shared as a link. Unknown values fall back to "all".
   function readFiltersFromURL() {
+    var tags = chipValues("data-filter-tag"), types = chipValues("data-filter-type");
     var params = new URLSearchParams(window.location.search);
     var tag = params.get("tag"), type = params.get("type");
-    if (tag === "video" && !TAGS.video) { tag = null; type = type || "video"; }
+    if (tag === "video" && tags.indexOf("video") === -1) { tag = null; type = type || "video"; }
     if (tag && LEGACY_TAGS[tag]) tag = LEGACY_TAGS[tag];
-    activeFilters.tag = tag && usedTags().indexOf(tag) !== -1 ? tag : "all";
-    activeFilters.type = type && TYPE_COPY[type] ? type : "all";
+    activeFilters.tag = tag && tags.indexOf(tag) !== -1 ? tag : "all";
+    activeFilters.type = type && types.indexOf(type) !== -1 ? type : "all";
   }
 
   function writeFiltersToURL() {
@@ -194,7 +107,7 @@
       var passType = activeFilters.type === "all" || activeFilters.type === type;
       var passTag = activeFilters.tag === "all" || tags.indexOf(activeFilters.tag) !== -1;
       var show = passType && passTag;
-      card.style.display = show ? "" : "none";
+      card.hidden = !show;
       if (show) visibleCount++;
     });
     var resultsEl = document.getElementById("results-count");
@@ -208,6 +121,9 @@
   }
 
   function initFilters() {
+    var archive = document.getElementById("archive");
+    if (!document.getElementById("resources-grid")) return;   // only the home page has the archive
+
     document.querySelectorAll("[data-filter-tag]").forEach(function (chip) {
       chip.addEventListener("click", function () { setFilters({ tag: chip.getAttribute("data-filter-tag") }); });
     });
@@ -217,46 +133,19 @@
     var clear = document.getElementById("clear-filters");
     if (clear) clear.addEventListener("click", function () { setFilters({ tag: "all", type: "all" }); });
 
-    // Any card's tag pill (featured or archive) filters the archive in place
+    // A card's topic pill links to that topic's page; on the home page it
+    // filters the archive in place instead (new-tab clicks still open the page)
     document.addEventListener("click", function (e) {
       var pill = e.target.closest("a.pill[data-tag]");
-      if (!pill) return;
+      if (!pill || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
       e.preventDefault();
       setFilters({ tag: pill.getAttribute("data-tag") });
-      var archive = document.getElementById("archive");
       if (archive) archive.scrollIntoView({ block: "start" });
     });
-  }
-
-  function buildTagFilterChips() {
-    var wrap = document.getElementById("tag-filter-group");
-    if (!wrap) return;
-    var chips = ['<button class="chip is-active" type="button" data-filter-tag="all">All</button>'];
-    usedTags().forEach(function (key) {
-      chips.push('<button class="chip" type="button" data-filter-tag="' + key + '">' + TAGS[key].label + "</button>");
-    });
-    wrap.innerHTML = chips.join("");
-  }
-
-  function renderResources() {
-    var list = document.getElementById("resources-grid");
-    if (!list) return;
-
-    buildTagFilterChips();
-
-    var all = ARTIFACTS.filter(function (a) { return !a.placeholder; }).sort(function (a, b) {
-      return new Date(b.dateAdded) - new Date(a.dateAdded);
-    });
-
-    list.innerHTML = all.map(artifactCardHTML).join("");
-
-    var totalEl = document.getElementById("resources-total");
-    if (totalEl) totalEl.textContent = all.length;
 
     readFiltersFromURL();
     writeFiltersToURL();   // normalise: drops unknown values from the address bar
     syncChips();
-    initFilters();
     applyFilters();
   }
 
@@ -301,8 +190,8 @@
     check();
   }
 
-  // The browser jumps to #hash before the JS-rendered cards above it exist,
-  // so the target ends up off. Jump again once the page has its real height.
+  // Filtering on load can change the page height after the browser has
+  // already jumped to #hash, so jump again once things settle.
   // Instant, not smooth: a smooth scroll here races the browser's own
   // load-time fragment scroll and overshoots (measured: 127px).
   function alignToHash() {
@@ -313,8 +202,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     initNav();
     initFooterYear();
-    renderPinned();
-    renderResources();
+    initFilters();
     initReveal();
     alignToHash();
     // Images can still shift things before load; re-align then too, unless the

@@ -8,10 +8,13 @@
 
 DN Creative's own running archive — a sharable web hub for the links, downloads, explainers, videos, frameworks, and skills Dan Nemirovsky comes across in the day-to-day and wants to keep, revisit, and pass along. Unlike `conspectus-design-hub` (a client audit deliverable with a defined end state), this hub has no finish line — it's meant to grow indefinitely as an evolving personal reference.
 
-**One page, by design (since Nov 21, 2026 — Phase 1 of the re-architecture, see §8):** a standalone landing page / sales hub for Dan's followers.
-- `index.html` — **the hub.** Hero (live topo), then a main column — **Featured** (up to 5 pinned resources), the **Archive** (every resource, filterable by format and topic, filtered views shareable as `?tag=…&type=…#archive`), **How this hub works**, **About** (bio, tools, hobbies) — beside a sticky **right rail**: avatar, name, role, short bio, **Follow on LinkedIn** (the one solid-orange CTA), and outline buttons to DN Creative Studio, dannemirovsky.com and GitHub. Below 1100px the rail closes the page and a slim bio strip under the hero carries LinkedIn early.
-- `resources.html`, `about.html` — **redirect stubs only** (noindex, canonical to `/`), so old links land on `/#archive` (query string preserved) and `/#about`. Don't put content back in them.
-- `404.html` — branded "Off the map." page, also served for the internal files blocked in `netlify.toml`.
+**One hub page plus generated detail pages (Phase 1 and 2 of the Nov 21, 2026 re-architecture, see §8):** a standalone landing page / sales hub for Dan's followers. Every page is pre-rendered by Eleventy from `assets/js/data.js` (§5); templates live in `src/`.
+- `/` (`src/index.njk`) — **the hub.** Hero (live topo), then a main column — **Featured** (up to 5 pinned resources), the **Archive** (every resource, filterable by format and topic, filtered views shareable as `?tag=…&type=…#archive`), **How this hub works**, **About** (bio, tools, hobbies) — beside a sticky **right rail**: avatar, name, role, short bio, **Follow on LinkedIn** (the one solid-orange CTA), and outline buttons to DN Creative Studio, dannemirovsky.com and GitHub. Below 1100px the rail closes the page and a slim bio strip under the hero carries LinkedIn early.
+- `/r/<id>/` (`src/resource.njk`, one per resource) — the resource's own page: breadcrumb, format and source, full description, a Warm White **Open / Download** button (the page's orange stays the rail's LinkedIn), screenshot, facts, and up to 4 related resources. Its own canonical URL and social card, and the page AI answer engines cite. **The `id` in data.js is the URL slug: renaming an id breaks its link.**
+- `/topics/<key>/` (`src/topic.njk`, one per topic with resources) — every resource in that topic plus links to the other topics.
+- `/sitemap.xml`, `/feed.xml` (Atom, newest first), `/llms.txt` (plain-text guide to the hub for AI tools), `/robots.txt` — all generated from the same data.
+- `resources.html`, `about.html` (`src/`, copied as-is) — **redirect stubs only** (noindex, canonical to `/`), so old links land on `/#archive` (query string preserved) and `/#about`. Don't put content back in them.
+- `404.html` (`src/404.njk`) — branded "Off the map." page, also served for the internal files blocked in `netlify.toml`.
 
 This is scaffolding built ahead of real content — see §8 (Status) for exactly what's real vs. placeholder right now.
 
@@ -25,16 +28,16 @@ This is Dan's own reference, not a client deliverable — but built to be handed
 
 ## 3. The data model — how to actually update this thing
 
-**`assets/js/data.js` is the single source of truth.** Do not hand-edit either HTML page to add, change, re-tag, or re-pin an artifact — edit the data file and both pages re-render from it.
+**`assets/js/data.js` is the single source of truth.** Do not hand-edit templates to add, change, re-tag, or re-pin an artifact: edit the data file and the build regenerates every page from it. The file stays at this path (the Notion intake routine in §9 points at it) but is no longer loaded in the browser or published; `src/_data/hub.js` reads it at build time and **fails the build** on a duplicate or non-kebab-case `id`, an unknown `type` or tag, a bad `dateAdded`, or a missing title/description/url, so a typo never ships as a broken page.
 
 - `ARTIFACTS` — the array of every artifact. Each has an `id`, `title`, `description`, `url`, `type`, `tags` (array), `pinned` (bool), `dateAdded`, and optional `source`.
 - `type` is the **format** — exactly one of `"link"` / `"download"` / `"explainer"` / `"video"`. This is what the thing *is*, not what it's about. Copy/icon source for the badges: `TYPE_COPY`.
 - `tags` is the **topic** — one or more keys from `TAGS`. This is what the thing is *about*. An artifact can and often should carry more than one tag.
-- `pinned: true` surfaces an artifact in Home's pinned row. **Keep this at exactly 5 at a time** (raised from 4 on August 12, 2026, when the pinned row was refactored to a single full-width column — see §8) — Home's row is built as a capped stack, not an unbounded scrolling list. When something new earns a pin, demote one of the current five rather than letting the count drift past 5 (`main.js` only renders the first 5 pinned items if it does drift, but don't rely on that — it's a safety net, not the intended workflow). **Pinned order is the `ARTIFACTS` array order, not `dateAdded`** — to make something the Nth pinned card on Home, move its object to the Nth position among pinned entries in the array. This is a deliberate design choice so "pin this as the 2nd card" is a literal, one-line edit.
+- `pinned: true` surfaces an artifact in Home's pinned row. **Keep this at exactly 5 at a time** (raised from 4 on August 12, 2026, when the pinned row was refactored to a single full-width column — see §8) — Home's row is built as a capped stack, not an unbounded scrolling list. When something new earns a pin, demote one of the current five rather than letting the count drift past 5 (the build only renders the first 5 pinned items if it does drift, but don't rely on that — it's a safety net, not the intended workflow). **Pinned order is the `ARTIFACTS` array order, not `dateAdded`** — to make something the Nth pinned card on Home, move its object to the Nth position among pinned entries in the array. This is a deliberate design choice so "pin this as the 2nd card" is a literal, one-line edit.
 - **To add a new artifact:** copy an existing object, give it a unique `id`, fill in real values, and delete the `placeholder: true` flag (or delete the object if you're replacing a seed entry outright rather than editing it in place).
 - **To retire an artifact:** delete the object. There's no History/archive page for this hub the way there is on the Conspectus hub — dead links just get removed, nothing here needs an audit trail.
 
-`assets/js/main.js` handles rendering (pinned grid on Home, full grid + filters on Resources), the tag/format filter chips, and the mobile hamburger nav. It shouldn't need edits for routine content updates — only if the interaction model itself changes (e.g. adding a search box, changing how pins are chosen).
+Rendering happens at build time: `src/_includes/card.njk` is the one card used everywhere (the title links to `/r/<id>/` and covers the card; "Open"/"Download" goes straight to the resource; topic pills link to `/topics/<key>/`). `assets/js/main.js` only does behaviour on top of the finished HTML: the hamburger, archive filtering (show/hide the pre-rendered cards, filter state in the URL, a pill click on the home page filters in place instead of navigating), and the scroll reveal. With JavaScript off, every card is still there and visible. Neither file needs edits for routine content updates.
 
 ---
 
@@ -51,23 +54,26 @@ This is Dan's own reference, not a client deliverable — but built to be handed
 | `local-ai` | Local AI | Running models and agents on your own machine | 2 |
 | `inspiration` | Inspiration + Cool Shit | Things worth looking at just because they're great | 0 (hidden) |
 
-- **Empty topics are hidden, not deleted:** `main.js` builds filter chips (and the hero's Topics count) only from topics at least one visible resource carries. Inspiration + Cool Shit stays defined (Dan added it) and appears automatically once something's tagged with it.
+- **Empty topics are hidden, not deleted:** the build makes filter chips, topic pages and the hero's Topics count only from topics at least one visible resource carries. Inspiration + Cool Shit stays defined (Dan added it) and appears automatically once something's tagged with it.
 - **Retired in v3:** `design`, `engineering`, `ux`, `research`, `skills-agents`, `video`. The old Video tag duplicated the Video *format* filter. Old shared links still work: `LEGACY_TAGS` in `main.js` maps each to its nearest new topic (`?tag=video` → `?type=video`).
 - Tag `desc` strings are visitor-facing (pill tooltips) — keep notes like these here, not there.
 
 Discipline for growing this list as real content gets added:
 - **Merge before you multiply.** If a new tag would only ever apply to 1–2 artifacts, it's probably a more specific case of one already in the table above — fold it in rather than fragmenting the filter list.
-- If a tag stops earning its keep (nothing tagged with it, or everything tagged with it also carries a broader tag that covers it), cut it. `main.js` builds the filter chips directly from `TAGS`, so removing a key removes its chip automatically — no HTML to touch.
+- If a tag stops earning its keep (nothing tagged with it, or everything tagged with it also carries a broader tag that covers it), cut it. The build makes the filter chips and topic pages directly from `TAGS`, so removing a key removes its chip and page automatically (the old `/topics/<key>/` URL then 404s; add a redirect in `netlify.toml` if it was shared).
 - When the taxonomy does get renegotiated for real (not just incrementally), update this table and the `TAGS` object together, and note the change in §8 below the way the Conspectus hub logs taxonomy shifts in its own CLAUDE.md.
 
 ---
 
 ## 5. Deployment
 
-Static site, no build step, no framework, no package.json. Just HTML/CSS/vanilla JS — same approach as `conspectus-design-hub`.
+**Eleventy build (since Nov 21, 2026, Phase 2; this ends the old "no build step" rule).** Static output, vanilla CSS/JS, one dev dependency (`@11ty/eleventy`, pinned exactly in `package.json`). Pre-rendering is the point: most AI crawlers don't run JavaScript, and before this they saw an empty grid.
 
-- **Local preview:** open `index.html` directly, or run any static server (`python3 -m http.server`, `npx serve`, etc.) from this folder.
-- **Netlify:** point Netlify at this folder as the publish directory. No build command needed. `netlify.toml` is included with sane defaults (publish `.`, no build command).
+- **Layout:** `eleventy.config.mjs` (filters, passthrough copies), `src/` (templates: `_includes/base.njk` is the shared shell, plus `card.njk`, `rail.njk`, `bio-strip.njk`), `src/_data/site.js` (origin, curator and studio identity, the confirmed profile URLs), `src/_data/hub.js` (reads and validates data.js), `lib/icons.js` (line icons, rendered into the HTML as `{{ "link" | icon | safe }}`), `lib/schema.js` (JSON-LD). Output goes to `_site/` (gitignored).
+- **Local preview:** `npm install`, then `npm start` (Eleventy dev server on port 8820) or `npm run build` and serve `_site/`. Opening a source file directly no longer works.
+- **Netlify:** builds with `npm run build` on Node 22 and publishes `_site` (`netlify.toml`). Only `_site` is published, so CLAUDE.md, README, `tools/`, `lib/`, `src/` and `data.js` are never on the live site; the 404 rules stay as a backstop.
+- **Published assets** are listed explicitly in `eleventy.config.mjs` (css, img, `main.js`, `topo-motion.js`, `downloads/`). A new asset folder needs a passthrough line there or it won't deploy.
+- **JSON-LD** on every page: the hub (WebSite), Dan (Person, `sameAs` LinkedIn / GitHub / dannemirovsky.com), DN Creative (Organization), plus a CollectionPage + ItemList (home, topics) or a WebPage whose `mainEntity` is the resource, typed by what it is (SoftwareSourceCode for GitHub repos, Article for explainers, VideoObject for videos, CreativeWork otherwise), with a BreadcrumbList.
 - **Fonts:** Bebas Neue + DM Sans load from Google Fonts CDN — no local font files to manage. The cloud sandbox Claude sessions run in can't reach Google Fonts, so local screenshots render fallback faces unless you serve the `@fontsource/bebas-neue` / `@fontsource/dm-sans` woff2 files (npm is reachable) — the thumbnail renderer's `--fonts <dir>` flag does exactly that.
 - **`tools/`** holds build-time tooling (the thumbnail renderer). It's in the repo but `netlify.toml` 404s `/tools/*` so it isn't part of the published site.
 - **Downloads:** the `/downloads` folder is where any `type: "download"` artifact's actual file should live if it isn't hosted elsewhere — link `url` straight at the file (e.g. `downloads/whatever.pdf`).
@@ -86,7 +92,7 @@ This hub's chrome is **DN Creative's own brand system** (Bebas Neue + DM Sans, P
 - **Spacing:** 8px base unit with a 4px half-step for component internals (`--space-1`…`--space-8`, `--space-12`). Section, hero and CTA vertical rhythm all use `--section-y` (96px desktop / 48px mobile, inside the skill's 80–120 / 40–60).
 - **Topo:** only ever from the generator, never an image. One live `<canvas data-topo-motion>` per page, **in the hero only**, at the standard intensity (1), with `.topo-overlay` (110° Pitch Black gradient) behind the copy — never fade the lines for readability. The footer is Surface Darker, no topo (the skill allows one topo pattern per layout). `assets/js/topo-motion.js` is a copy of the skill's `scripts/topo-motion.js`; re-copy it if the skill updates.
 - **Thumbnails:** generated with `tools/thumbnails/render.js` (generator still + icon + label, real fonts, 1600×900 JPG), one fresh seed per thumbnail, recorded in `thumbs.json` so it can be reproduced byte for byte. Never screenshot an HTML mock with system fonts again — the renderer refuses to output if Bebas Neue didn't load. Supplied images (Figma, YouTube) are used as-is.
-- **Icons:** monochrome line icons from `assets/js/icons.js` (`data-icon="…"` in markup, `DN_ICON()` in JS). No emoji anywhere — they bring colours outside the palette.
+- **Icons:** monochrome line icons from `lib/icons.js`, rendered into the HTML at build time (`{{ "name" | icon | safe }}`). No emoji anywhere — they bring colours outside the palette.
 - **Motion:** `cubic-bezier(0.16, 1, 0.3, 1)` everywhere, no bounce. Grouped content (`.artifact-card`, `.format-card`) reveals on scroll with the skill's `.d1`–`.d6` stagger via a geometry check in `main.js` (`initReveal`) — not IntersectionObserver, which misses items an instant scroll jumps over. Card hover = the skill's 2px orange top-border reveal + arrow motion. Everything respects `prefers-reduced-motion`. Never `transition: all` (it animated the focus outline).
 - **Accessibility floor:** branded `:focus-visible` ring, skip link + `<main>` landmark, `aria-pressed` filter chips, a `role="status"` result count, an ARIA-wired hamburger (Escape closes), descriptive card link names, new-tab links announced. No inline `style=` attributes.
 - **Never** pure `#000000` or pure `#FFFFFF` — always Pitch Black / Warm White.
@@ -195,6 +201,14 @@ Verified at 1440px and 390px on all three pages: no page errors, no local 404s o
 - **Verified:** every entry path (deep filtered link, both legacy URLs, `#about`, `#featured`) lands its target exactly under the nav at 1440px; at 390px it lands 2–12px lower, heading fully visible. The orange budget holds at every scroll position at both widths. No page errors, no overflow, no local 404s.
 - Dead CSS from the old multi-page layout removed (`.accent`, `.eyebrow--accent`, `.section--continued`, the `→` card-arrow variant).
 
-**Next:** Phase 2 (Eleventy pre-render, per-resource and topic pages, JSON-LD, sitemap, RSS, `llms.txt`), as laid out in the Phase 0 addendum above.
+**Same-day addendum — Phase 2 shipped: Eleventy pre-render, a page per resource and per topic, JSON-LD, sitemap, feed, `llms.txt`.** §1, §3 and §5 have the structure. Decisions worth knowing:
+- **data.js stayed where it is** and stayed the source of truth; the build reads it with Node's `vm` and validates it. `icons.js` moved to `lib/` (build-only). Neither is loaded in the browser any more.
+- **Cards changed behaviour:** clicking a card now opens its `/r/<id>/` page; the "Open"/"Download" link still goes straight to the resource. Reason: every resource gets a URL Dan can share with its own social card, and search/AI engines get a page to land on and cite. Topic pills are real links to topic pages; on the home page `main.js` still filters in place (cmd/ctrl-click opens the topic page).
+- **Orange budget on resource pages:** the resource's Open button is Warm White (`.btn-cta--light`), not orange, so the rail's LinkedIn stays the one orange element. Verified at every scroll position on every page at 1440 and 390.
+- **Share images:** a resource page uses its thumbnail as `og:image` (1600×900; the Figma one is 1440×720); topic pages and pages without a thumbnail use the hub card. Purpose-made 1200×630 per-resource cards are Phase 3.
+- Pages without JavaScript now show everything; `main.js` dropped all rendering code.
+- **Verified:** all 18 pages at 1440 and 390 (one topo, max one orange element in any viewport, no overflow, one h1, valid JSON-LD, no double-escaped `&`, every internal link resolves), plus filters, legacy `?tag=` links, both redirect stubs, card vs Open click targets, and a no-JS load. The only failing checks were the two Hermes thumbnails, which are hosted on YouTube and GitHub and blocked in the sandbox.
 
-**This file, and `data.js`, should be updated together whenever the taxonomy changes or the page structure grows past two pages — don't let the narrative in this file drift from what the data actually shows.**
+**Next:** Phase 3 (per-resource 1200×630 share images, self-hosted fonts, responsive WebP thumbnails with fixed dimensions), then Phase 4 (analytics + UTM-tagged CTAs, GEO audit, Search Console + submit the sitemap).
+
+**This file, and `data.js`, should be updated together whenever the taxonomy or the page structure changes — don't let the narrative in this file drift from what the data actually shows.**

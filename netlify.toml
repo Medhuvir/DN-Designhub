@@ -1,6 +1,10 @@
+# Eleventy pre-renders the site into _site (see eleventy.config.mjs).
 [build]
-  publish = "."
-  command = ""
+  command = "npm run build"
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 [[headers]]
   for = "/*"
@@ -9,9 +13,10 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Internal files live in the repo but aren't part of the site.
-# CLAUDE.md holds working notes (Notion links, the inbox routine, decisions);
-# tools/ is build-time tooling. All 404 on the published site.
+# Internal files live in the repo but aren't part of the site. Only _site is
+# published, so they aren't there anyway; these rules keep it that way if a
+# passthrough copy ever widens. CLAUDE.md holds working notes; tools/ is
+# build-time tooling.
 [[redirects]]
   from = "/tools/*"
   to = "/404.html"

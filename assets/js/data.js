@@ -1,39 +1,37 @@
 /**
  * DN Design Hub — data source
  * ================================================
- * This file is the single source of truth for every artifact shown on
- * Home (pinned) and Resources (full archive). Edit this file to add,
- * update, or re-tag artifacts — the pages re-render from it, don't
- * hand-edit the HTML.
+ * The single source of truth for every resource on the hub. The Eleventy
+ * build (src/_data/hub.js) reads this file and generates the home page,
+ * one page per resource (/r/<id>/) and one per topic (/topics/<key>/).
+ * Edit this file, not the templates. The build checks it and fails on a
+ * typo (unknown tag or type, duplicate id, bad date) rather than shipping it.
  *
- * HOW TO ADD A NEW ARTIFACT
+ * HOW TO ADD A NEW RESOURCE
  * -------------------------
  * Copy an existing object in ARTIFACTS, give it a new unique `id`, and
  * fill in the fields:
+ *   - id: lowercase-kebab-case. It becomes the page URL (/r/<id>/), so
+ *     don't rename it once it's live.
  *   - type: exactly one of "link" | "download" | "explainer" | "video"
  *     (the format of the thing itself — see TYPE_COPY below)
  *   - tags: array of one or more keys from TAGS below (the topic).
- *     An artifact can carry more than one tag.
- *   - pinned: true surfaces it in the Home page's "Pinned" row. Keep
- *     this at exactly 4 pinned artifacts at a time — Home is designed
- *     around a 4-up grid, not a scrolling list. Promote one, demote
- *     another rather than letting the count drift.
- *   - dateAdded: "YYYY-MM-DD", used for the "Recently added" sort on
- *     Resources.
+ *     A resource can carry more than one tag.
+ *   - pinned: true features it at the top of the hub. Up to 5 at a time,
+ *     in the order they appear in this array.
+ *   - dateAdded: "YYYY-MM-DD", used for newest-first order, the feed and
+ *     the sitemap.
  *   - thumbnail: optional. A URL or local path (e.g. `assets/img/...`) to
- *     a 16:9 image shown at the top of the card. Omit the field entirely
- *     if there's no image yet — the card layout doesn't require one.
+ *     a 16:9 image. Omit the field entirely if there's no image yet.
  *
-
  * HOW TO ADD A NEW TAG
  * ---------------------
- * Add a key to TAGS with a `label` and one-line `desc`. The taxonomy
- * below is a v1 starting point, not locked — see CLAUDE.md §3 for the
- * discipline on growing it (merge before you multiply; a tag needs 2+
- * artifacts to justify existing as its own filter).
+ * Add a key to TAGS with a `label` and one-line `desc`. Topics are derived
+ * from what the resources actually contain — see CLAUDE.md §4 for the
+ * discipline (merge before you multiply). A tag with no resources gets no
+ * filter chip and no topic page until something is tagged with it.
  *
- * See /CLAUDE.md at the project root for full context on what this hub
- * is for and how it's meant to be kept current.
+ * See /CLAUDE.md at the project root for full context.
  */
 
 // `icon` is a key into the line-icon set in assets/js/icons.js (no emoji:

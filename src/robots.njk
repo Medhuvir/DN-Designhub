@@ -1,3 +1,7 @@
+---
+permalink: /robots.txt
+eleventyExcludeFromCollections: true
+---
 # DN Design Hub — https://hub.dncreative.studio
 # Policy: open to all crawlers, search and AI alike, including model training.
 # The hub is a free public resource; being found and cited is the point.
@@ -25,4 +29,4 @@ User-agent: MistralAI-User
 User-agent: cohere-ai
 Allow: /
 
-# Sitemap: added once the build step generates /sitemap.xml (Phase 2).
+Sitemap: {{ site.url }}/sitemap.xml

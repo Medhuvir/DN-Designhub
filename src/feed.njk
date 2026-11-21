@@ -1,0 +1,29 @@
+---
+permalink: /feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.name }}</title>
+  <subtitle>{{ site.description }}</subtitle>
+  <link href="{{ site.url }}/feed.xml" rel="self" type="application/atom+xml"/>
+  <link href="{{ site.url }}/" rel="alternate" type="text/html"/>
+  <id>{{ site.url }}/</id>
+  <updated>{{ hub.latest | isoDateTime }}</updated>
+  <author><name>{{ site.person.name }}</name><uri>{{ site.person.website }}</uri></author>
+  <icon>{{ site.url }}/assets/img/favicon.svg</icon>
+  {%- for r in hub.resources %}
+  <entry>
+    <title>{{ r.title }}</title>
+    <link href="{{ site.url }}/r/{{ r.id }}/" rel="alternate" type="text/html"/>
+    <link href="{{ r.url | absUrl }}" rel="related"/>
+    <id>{{ site.url }}/r/{{ r.id }}/</id>
+    <updated>{{ r.dateAdded | isoDateTime }}</updated>
+    <published>{{ r.dateAdded | isoDateTime }}</published>
+    {%- for t in r.tags %}
+    <category term="{{ t }}" label="{{ hub.tags[t].label }}"/>
+    {%- endfor %}
+    <summary type="text">{{ r.description }}{% if r.source %} (From {{ r.source }}.){% endif %}</summary>
+  </entry>
+  {%- endfor %}
+</feed>

@@ -1,0 +1,162 @@
+---
+layout: false
+permalink: /
+---
+{% extends "base.njk" %}
+
+{% block jsonld %}
+<script type="application/ld+json">{{ hub | schemaHome | jsonld | safe }}</script>
+{% endblock %}
+
+{% block hero %}
+<header class="hero">
+  <canvas class="topo-canvas" data-topo-motion aria-hidden="true"></canvas>
+  <div class="topo-overlay"></div>
+  <div class="wrap">
+    <span class="eyebrow">DN Creative &middot; Design Hub</span>
+    <h1>{{ site.title }}</h1>
+    <p class="lede">A collection of resources from around the interwebs for UX builders, designers, specialists and tinkerers. Like a cat bringing a dead bird to your bed: less mess, same sentiment.</p>
+    <div class="hero-meta">
+      <div class="stat"><span class="num">{{ hub.resources.length }}</span><span class="lbl">Resources</span></div>
+      <div class="stat"><span class="num">{{ hub.topics.length }}</span><span class="lbl">Topics</span></div>
+      <div class="stat"><span class="num">{{ hub.latest | monthYear }}</span><span class="lbl">Last added</span></div>
+    </div>
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+    <section class="section section--flush" id="featured">
+      <div class="section-head">
+        <span class="eyebrow">Featured</span>
+        <h2>Top of mind right now.</h2>
+        <p>A handful of resources, swapped in and out as what's useful changes. Everything else is in the <a href="#archive" class="text-link">archive</a> below.</p>
+      </div>
+      <div class="artifact-grid pinned-grid" id="pinned-grid">
+        {%- for a in hub.pinned %}
+        {% include "card.njk" %}
+        {%- endfor %}
+      </div>
+    </section>
+
+    <section class="section" id="archive">
+      <div class="section-head">
+        <span class="eyebrow">The archive</span>
+        <h2>Everything kept, organized and filterable.</h2>
+        <p>Every link, download, explainer and video in one place. Filter by format or topic; every filtered view is a link you can share.</p>
+      </div>
+
+      <div class="filters">
+        <div class="filter-group" role="group" aria-label="Filter by format">
+          <span class="fg-label">Format</span>
+          <button class="chip is-active" type="button" data-filter-type="all" aria-pressed="true">All</button>
+          {%- for key, t in hub.types %}
+          <button class="chip" type="button" data-filter-type="{{ key }}" aria-pressed="false"><span class="icon">{{ t.icon | icon | safe }}</span>{{ t.label }}</button>
+          {%- endfor %}
+        </div>
+      </div>
+      <div class="filters filters--stacked">
+        <div class="filter-group" role="group" aria-label="Filter by topic">
+          <span class="fg-label">Topic</span>
+          <span class="filter-chips" id="tag-filter-group">
+            <button class="chip is-active" type="button" data-filter-tag="all" aria-pressed="true">All</button>
+            {%- for t in hub.topics %}
+            <button class="chip" type="button" data-filter-tag="{{ t.key }}" aria-pressed="false">{{ t.label }}</button>
+            {%- endfor %}
+          </span>
+        </div>
+      </div>
+      <p class="results-line">Showing <span id="results-count">{{ hub.resources.length }}</span> of <span id="resources-total">{{ hub.resources.length }}</span></p>
+
+      <p class="sr-only" role="status" id="results-status"></p>
+      <div class="artifact-grid" id="resources-grid">
+        {%- for a in hub.resources %}
+        {% include "card.njk" %}
+        {%- endfor %}
+      </div>
+
+      <div class="empty-state" id="resources-empty" hidden>
+        <span class="eyebrow">No matches</span>
+        <p>Nothing here for that combination yet. Try another format or topic.</p>
+        <button class="chip" type="button" id="clear-filters">Clear filters</button>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="section-head">
+        <span class="eyebrow">How this hub works</span>
+        <h2>Four formats, tagged by topic.</h2>
+        <p>Every resource is one of four formats and carries one or more topic tags — that's the whole taxonomy. Simple on purpose: this is a personal archive first, a shareable one second.</p>
+      </div>
+      <div class="format-row">
+        <div class="format-card"><span class="fico">{{ "link" | icon | safe }}</span><h3>Link</h3><p>A page, tool, or site worth going back to.</p></div>
+        <div class="format-card"><span class="fico">{{ "download" | icon | safe }}</span><h3>Download</h3><p>A file worth keeping local — template, kit, PDF.</p></div>
+        <div class="format-card"><span class="fico">{{ "explainer" | icon | safe }}</span><h3>Explainer</h3><p>A write-up, method, or framework worth citing.</p></div>
+        <div class="format-card"><span class="fico">{{ "video" | icon | safe }}</span><h3>Video</h3><p>A talk, demo, or walkthrough worth watching.</p></div>
+      </div>
+    </section>
+
+    <section class="section section--flush" id="about">
+      <div class="section-head">
+        <span class="eyebrow">About Dan</span>
+        <h2>Human-centered. Always.</h2>
+      </div>
+      <div class="bio-layout">
+        <div class="bio-photo-wrap">
+          <img src="/assets/img/dan-headshot.jpg" alt="Dan Nemirovsky" class="bio-photo" width="474" height="512" loading="lazy">
+        </div>
+        <div class="bio-content">
+          <p>I'm a designer, strategist, and product thinker with 20+ years building teams and products across finance, healthcare, tech, big data, and automotive — in startups, in corporate environments, and on my own. Products I shipped at Prudential Financial and Northwell Health are still running, and still winning awards.</p>
+          <p>My approach is human-centered and data-informed: design that gets tested, iterated, tested again, and still keeps a spark of soul. I'm most useful when the problem is messy — merging design and engineering cultures, modernizing legacy systems, or helping a team remember what it feels like to make something people love.</p>
+        </div>
+      </div>
+
+      <h3 class="subhead">Tools I reach for</h3>
+      <div class="pill-row pill-row--flush">
+        <span class="pill">Figma</span>
+        <span class="pill">Design Systems</span>
+        <span class="pill">Motion Design</span>
+        <span class="pill">Accessibility</span>
+        <span class="pill">Claude</span>
+        <span class="pill">Gemini</span>
+        <span class="pill">Codex</span>
+        <span class="pill">Prompt Engineering</span>
+        <span class="pill">HTML / CSS / JS</span>
+        <span class="pill">Fractional CDO / UX</span>
+      </div>
+
+      <h3 class="subhead">Outside the work</h3>
+      <div class="grid grid-3">
+        <div class="format-card">
+          <span class="fico">{{ "coffee" | icon | safe }}</span>
+          <h3>Coffee. Obviously.</h3>
+          <p>Every good idea starts with a cup. Every great idea starts with two.</p>
+        </div>
+        <div class="format-card">
+          <span class="fico">{{ "camera" | icon | safe }}</span>
+          <h3>Photography &amp; Video</h3>
+          <p>If it can be framed, I'm already thinking about the shot — documentary-style, natural light, no exceptions.</p>
+        </div>
+        <div class="format-card">
+          <span class="fico">{{ "mountain" | icon | safe }}</span>
+          <h3>Hudson Valley Explorer</h3>
+          <p>Trails, farms, small towns, mountain views. It keeps showing up in the work. Hard not to be inspired.</p>
+        </div>
+        <div class="format-card">
+          <span class="fico">{{ "type" | icon | safe }}</span>
+          <h3>Obsessive Type Nerd</h3>
+          <p>Yes, I notice bad kerning in restaurant menus. No, I cannot be stopped.</p>
+        </div>
+        <div class="format-card">
+          <span class="fico">{{ "spark" | icon | safe }}</span>
+          <h3>AI-Augmented, Not AI-Dependent</h3>
+          <p>Integrated into every stage of the workflow. The strategy, craft, and decisions are still human — the speed isn't.</p>
+        </div>
+        <div class="format-card">
+          <span class="fico">{{ "target" | icon | safe }}</span>
+          <h3>Still Excited After 20 Years</h3>
+          <p>The problems keep changing. The satisfaction of solving them hasn't. That's the whole reason to keep doing this.</p>
+        </div>
+      </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,14 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>{{ site.url }}/</loc><lastmod>{{ hub.latest }}</lastmod></url>
+  {%- for t in hub.topics %}
+  <url><loc>{{ site.url }}/topics/{{ t.key }}/</loc><lastmod>{{ t.latest }}</lastmod></url>
+  {%- endfor %}
+  {%- for r in hub.resources %}
+  <url><loc>{{ site.url }}/r/{{ r.id }}/</loc><lastmod>{{ r.dateAdded }}</lastmod></url>
+  {%- endfor %}
+</urlset>
