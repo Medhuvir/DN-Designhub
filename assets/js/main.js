@@ -116,7 +116,7 @@
     var totalEl = document.getElementById("total-count");
     if (totalEl) totalEl.textContent = visible.length;
     var tagEl = document.getElementById("tag-count");
-    if (tagEl) tagEl.textContent = Object.keys(TAGS).length;
+    if (tagEl) tagEl.textContent = usedTags().length;
     // Computed from the data so it never goes stale
     var lastEl = document.getElementById("last-added");
     if (lastEl && visible.length) {
@@ -128,12 +128,29 @@
   /* ---------------- Resources: full archive render + filters ---------------- */
   var activeFilters = { tag: "all", type: "all" };
 
+  // Topics that at least one visible resource carries. Empty topics stay
+  // defined in data.js but don't show as filters or count as topics.
+  function usedTags() {
+    var used = {};
+    ARTIFACTS.forEach(function (a) { if (!a.placeholder) a.tags.forEach(function (t) { used[t] = true; }); });
+    return Object.keys(TAGS).filter(function (k) { return used[k]; });
+  }
+
+  // Links shared before the Nov 2026 topic refresh used the old tag keys.
+  // Map them to their closest new topic (old "video" tag -> the Video format).
+  var LEGACY_TAGS = {
+    "skills-agents": "claude-skills", "ux": "ux-research", "research": "ux-research",
+    "design": "design-systems", "engineering": "agent-architecture",
+  };
+
   // Filter state lives in the URL (?tag=…&type=…) so any filtered view can be
   // shared as a link. Unknown values fall back to "all".
   function readFiltersFromURL() {
     var params = new URLSearchParams(window.location.search);
     var tag = params.get("tag"), type = params.get("type");
-    activeFilters.tag = tag && TAGS[tag] ? tag : "all";
+    if (tag === "video" && !TAGS.video) { tag = null; type = type || "video"; }
+    if (tag && LEGACY_TAGS[tag]) tag = LEGACY_TAGS[tag];
+    activeFilters.tag = tag && usedTags().indexOf(tag) !== -1 ? tag : "all";
     activeFilters.type = type && TYPE_COPY[type] ? type : "all";
   }
 
@@ -213,7 +230,7 @@
     var wrap = document.getElementById("tag-filter-group");
     if (!wrap) return;
     var chips = ['<button class="chip is-active" type="button" data-filter-tag="all">All</button>'];
-    Object.keys(TAGS).forEach(function (key) {
+    usedTags().forEach(function (key) {
       chips.push('<button class="chip" type="button" data-filter-tag="' + key + '">' + TAGS[key].label + "</button>");
     });
     wrap.innerHTML = chips.join("");
