@@ -223,6 +223,6 @@ Verified at 1440px and 390px on all three pages: no page errors, no local 404s o
 
 **Same-day addendum — Phase 3 shipped: share cards, self-hosted fonts, responsive WebP thumbnails.** Details in §5. 17 share cards (12 resources, 5 topics) rendered with the real topo generator; resource and topic pages now point `og:image` at them with 1200×630 dimensions. Measured on the home page against the previous build: images 1,856KB → 288KB, layout shift 0.030 → 0.001, Google Fonts requests 3 → 0. All functional checks and the all-pages regression pass (the YouTube thumbnail can't load in the sandbox, as before).
 
-**Next:** Phase 4 (analytics + UTM-tagged CTAs, GEO audit, Search Console + submit the sitemap).
+**Phase 4, revised (Dan, Nov 21, 2026): no analytics on the hub.** Don't add an analytics script, tag manager or tracking pixel without asking him first. UTM tags on the outbound CTAs were only worth it alongside analytics, so they're dropped too (they could still help if dncreative.studio or dannemirovsky.com run analytics of their own; ask before adding). **Still open:** a GEO audit of the hub with the GEO-SEO Claude tool from the archive (on offer, not started), and Google Search Console, which is Dan's to set up: verify `hub.dncreative.studio` and submit `/sitemap.xml`.
 
 **This file, and `data.js`, should be updated together whenever the taxonomy or the page structure changes — don't let the narrative in this file drift from what the data actually shows.**
