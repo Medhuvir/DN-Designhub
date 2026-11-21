@@ -45,7 +45,8 @@
 </div>
 
 <header class="hero">
-  <div class="topo-bg"></div>
+  <canvas class="topo-canvas" data-topo-motion aria-hidden="true"></canvas>
+  <div class="topo-overlay"></div>
   <div class="wrap">
     <span class="eyebrow">About Dan</span>
     <h1>Human-centered. <span style="color:var(--blaze-orange)">Always.</span></h1>
@@ -135,7 +136,6 @@
 </section>
 
 <section class="cta-band">
-  <div class="topo-bg"></div>
   <div class="wrap">
     <span class="eyebrow">Elsewhere</span>
     <h2>More of the work, more of the person.</h2>
@@ -148,12 +148,13 @@
   </div>
 </section>
 
-<footer class="site-footer">
+<footer class="site-footer site-footer--plain">
   <div class="wrap footer-inner">
     <p class="footer-copy">&copy; DN Creative <span id="footer-year">2026</span></p>
   </div>
 </footer>
 
+<script src="assets/js/topo-motion.js"></script>
 <script src="assets/js/data.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
