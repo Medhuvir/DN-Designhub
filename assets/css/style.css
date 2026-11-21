@@ -72,13 +72,26 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---- Type scale ---------------------------------------------------- */
+/* Orange budget: ONE orange focal element per surface. Eyebrows are neutral
+   by default; .eyebrow--accent marks the one that carries the signal (the
+   hero's). Logo sub-labels and state cues (active nav, hover, focus) are
+   system chrome and don't count against the budget. */
 .eyebrow {
   font-family: var(--font-display);
   font-size: clamp(11px, 1.1vw, 13px);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--blaze-orange);
+  color: var(--gray-light);
 }
+.eyebrow--accent { color: var(--blaze-orange); }
+.accent { color: var(--blaze-orange); }
+.text-link {
+  color: var(--warm-white);
+  text-decoration: underline; text-decoration-color: var(--border-dark-strong);
+  text-underline-offset: 3px; text-decoration-thickness: 1px;
+  transition: color 0.2s var(--ease), text-decoration-color 0.2s var(--ease);
+}
+.text-link:hover { color: var(--blaze-orange); text-decoration-color: var(--blaze-orange); }
 h1, h2, h3, .display {
   font-family: var(--font-display);
   font-weight: 400;
@@ -119,7 +132,8 @@ section { position: relative; }
 .brand-lockup .mark { width: 26px; height: auto; }
 .brand-divider { width: 0.5px; height: 28px; background: var(--border-dark-strong); }
 .brand-word { font-family: var(--font-display); font-size: 18px; letter-spacing: 0.02em; line-height: 1; }
-.brand-sub { font-family: var(--font-body); font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange-dark); margin-top: 2px; }
+/* Lockup 1 on dark: sub-label in Blaze Orange (Orange Dark is for light grounds) */
+.brand-sub { display: block; font-family: var(--font-body); font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blaze-orange); margin-top: 4px; }
 
 .hub-title-inline {
   display: none;
@@ -181,7 +195,7 @@ section { position: relative; }
   margin-top: var(--space-4); padding-top: var(--space-3); border-top: 0.5px solid var(--border-dark);
 }
 .hero-meta .stat { display: flex; flex-direction: column; gap: 2px; }
-.hero-meta .stat .num { font-family: var(--font-display); font-size: 32px; color: var(--blaze-orange); line-height: 1; }
+.hero-meta .stat .num { font-family: var(--font-display); font-size: 32px; color: var(--warm-white); line-height: 1; }
 .hero-meta .stat .lbl { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--graphite); }
 
 /* ---- Full-width CTA band (dark topo, one orange focal button) --------- */
@@ -227,7 +241,7 @@ section { position: relative; }
   width: 100%; aspect-ratio: 474 / 512; object-fit: cover;
   border: 0.5px solid var(--border-dark-strong); background: var(--surface-darker);
 }
-.bio-photo-wrap::after { content: ''; display: block; width: 48px; height: 3px; margin-top: 14px; background: var(--blaze-orange); }
+.bio-photo-wrap::after { content: ''; display: block; width: 48px; height: 2px; margin-top: 16px; background: var(--gray-mid); }
 .bio-content p { max-width: 62ch; }
 
 /* ---- Legend / key bar ------------------------------------------------ */
@@ -330,7 +344,7 @@ section { position: relative; }
 }
 .footer-brand__sub {
   font-family: var(--font-body); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--orange-dark);
+  color: var(--blaze-orange);
 }
 .footer-brand__arrow {
   display: inline-block; color: var(--blaze-orange);

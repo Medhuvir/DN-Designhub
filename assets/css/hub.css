@@ -4,13 +4,6 @@
    card look can't drift between the two pages.
    ========================================================================== */
 
-:root {
-  --type-link: var(--blaze-orange);
-  --type-download: var(--gray-light);
-  --type-explainer: var(--orange-light);
-  --type-video: var(--graphite);
-}
-
 /* ---- Artifact card ------------------------------------------------- */
 .artifact-grid { display: grid; gap: var(--space-3); grid-template-columns: 1fr; }
 @media (min-width: 640px) { .artifact-grid { grid-template-columns: 1fr 1fr; } }
@@ -27,14 +20,7 @@
   animation: cardIn 0.6s var(--ease) forwards;
   transition: border-color 0.2s var(--ease);
 }
-.artifact-card::before {
-  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
-  background: var(--gray-mid);
-}
-.artifact-card[data-type="link"]::before { background: var(--type-link); }
-.artifact-card[data-type="download"]::before { background: var(--type-download); }
-.artifact-card[data-type="explainer"]::before { background: var(--type-explainer); }
-.artifact-card[data-type="video"]::before { background: var(--type-video); }
+/* Format is shown by the type label, not by colour: orange stays a signal */
 .artifact-card:hover { border-color: var(--border-dark-strong); }
 
 .ac-thumb {
@@ -70,9 +56,10 @@
 .ac-date { font-size: 11px; color: var(--graphite); }
 .ac-link {
   font-family: var(--font-body); font-size: 12.5px; font-weight: 600; letter-spacing: 0.03em;
-  color: var(--blaze-orange); display: inline-flex; align-items: center; gap: 5px;
+  color: var(--warm-white); display: inline-flex; align-items: center; gap: 5px;
+  transition: color 0.2s var(--ease);
 }
-.ac-link:hover { color: var(--orange-light); }
+.artifact-card:hover .ac-link, .ac-link:hover { color: var(--blaze-orange); }
 
 /* ---- Pinned row on Home: single full-width column ---------------------- */
 .artifact-grid.pinned-grid { grid-template-columns: 1fr; }
