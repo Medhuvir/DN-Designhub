@@ -12,12 +12,13 @@
 <link rel="stylesheet" href="assets/css/hub.css">
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<nav class="site-nav">
+<nav class="site-nav" aria-label="Primary">
   <div class="nav-inner">
     <div class="lockup-group">
       <a href="index.html" class="brand-lockup">
-        <img src="assets/img/dn-mark-white.svg" alt="DN Creative" class="mark">
+        <img src="assets/img/dn-mark-white.svg" alt="" class="mark">
         <span class="brand-divider"></span>
         <span>
           <span class="brand-word">DN Creative</span>
@@ -31,11 +32,11 @@
       <a href="resources.html">Resources</a>
       <a href="about.html">About</a>
     </div>
-    <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
-<div class="mobile-panel">
+<div class="mobile-panel" id="mobile-menu">
   <a href="index.html">Home</a>
   <a href="resources.html">Resources</a>
   <a href="about.html">About</a>
@@ -44,6 +45,7 @@
   </div>
 </div>
 
+<main id="main">
 <header class="hero">
   <canvas class="topo-canvas" data-topo-motion aria-hidden="true"></canvas>
   <div class="topo-overlay"></div>
@@ -75,7 +77,7 @@
     <span class="eyebrow">The Full Archive</span>
     <h2>Everything kept, organized and filterable.</h2>
     <p>Every link, download, explainer, and video in one place — browse by format or by topic.</p>
-    <a class="btn-cta" href="resources.html">View All Resources <span class="arrow">&rarr;</span></a>
+    <a class="btn-cta" href="resources.html">View All Resources <span class="arrow" aria-hidden="true">&rarr;</span></a>
   </div>
 </section>
 
@@ -95,12 +97,14 @@
   </div>
 </section>
 
+</main>
+
 <footer class="site-footer">
   <div class="wrap footer-inner">
     <a href="https://dncreative.studio" target="_blank" rel="noopener" class="footer-brand">
-      <img src="assets/img/dn-mark-white.svg" alt="DN Creative Studio" class="footer-brand__mark">
+      <img src="assets/img/dn-mark-white.svg" alt="" class="footer-brand__mark">
       <span class="footer-brand__lockup">
-        <span class="footer-brand__word">DN Creative <span class="footer-brand__arrow" aria-hidden="true">&rarr;</span></span>
+        <span class="footer-brand__word">DN Creative <span class="footer-brand__arrow" aria-hidden="true">&nearr;</span></span><span class="sr-only"> (opens in a new tab)</span>
         <span class="footer-brand__sub">Design Studio</span>
       </span>
     </a>

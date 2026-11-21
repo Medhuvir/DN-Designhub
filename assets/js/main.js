@@ -12,17 +12,20 @@
     var burger = document.querySelector(".hamburger");
     var panel = document.querySelector(".mobile-panel");
     if (burger && panel) {
-      burger.addEventListener("click", function () {
-        var open = burger.classList.toggle("is-open");
+      var setOpen = function (open, returnFocus) {
+        burger.classList.toggle("is-open", open);
         panel.classList.toggle("is-open", open);
+        burger.setAttribute("aria-expanded", open);
         document.body.style.overflow = open ? "hidden" : "";
-      });
+        if (open) { var first = panel.querySelector("a"); if (first) first.focus(); }
+        else if (returnFocus) burger.focus();
+      };
+      burger.addEventListener("click", function () { setOpen(!panel.classList.contains("is-open")); });
       panel.querySelectorAll("a").forEach(function (a) {
-        a.addEventListener("click", function () {
-          burger.classList.remove("is-open");
-          panel.classList.remove("is-open");
-          document.body.style.overflow = "";
-        });
+        a.addEventListener("click", function () { setOpen(false); });
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && panel.classList.contains("is-open")) setOpen(false, true);
       });
     }
 
@@ -89,7 +92,8 @@
           tagPillRow(a.tags) +
           '<div class="ac-foot">' +
             '<span class="ac-date">Added ' + fmtDate(a.dateAdded) + "</span>" +
-            '<a class="ac-link" href="' + a.url + '"' + ctaAttrs + ">" + ctaLabel + " " + arrow + "</a>" +
+            '<a class="ac-link" href="' + a.url + '"' + ctaAttrs + ">" + ctaLabel + " " + arrow +
+              '<span class="sr-only">: ' + a.title + (isDownload ? "" : " (opens in a new tab)") + "</span></a>" +
           "</div>" +
         "</div>" +
       "</article>"
@@ -143,10 +147,14 @@
 
   function syncChips() {
     document.querySelectorAll("[data-filter-tag]").forEach(function (c) {
-      c.classList.toggle("is-active", c.getAttribute("data-filter-tag") === activeFilters.tag);
+      var on = c.getAttribute("data-filter-tag") === activeFilters.tag;
+      c.classList.toggle("is-active", on);
+      c.setAttribute("aria-pressed", on);
     });
     document.querySelectorAll("[data-filter-type]").forEach(function (c) {
-      c.classList.toggle("is-active", c.getAttribute("data-filter-type") === activeFilters.type);
+      var on = c.getAttribute("data-filter-type") === activeFilters.type;
+      c.classList.toggle("is-active", on);
+      c.setAttribute("aria-pressed", on);
     });
   }
 
@@ -172,6 +180,9 @@
     });
     var resultsEl = document.getElementById("results-count");
     if (resultsEl) resultsEl.textContent = visibleCount;
+    // Announced to screen readers (role="status") when the filter changes
+    var statusEl = document.getElementById("results-status");
+    if (statusEl) statusEl.textContent = "Showing " + visibleCount + " of " + cards.length + " resources";
     var emptyEl = document.getElementById("resources-empty");
     if (emptyEl) emptyEl.hidden = visibleCount !== 0;
   }
