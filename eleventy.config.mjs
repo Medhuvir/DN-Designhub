@@ -18,6 +18,8 @@ export default function (config) {
   config.addPassthroughCopy("assets/fonts");
   config.addPassthroughCopy("assets/js/main.js");
   config.addPassthroughCopy("assets/js/topo-motion.js");
+  config.addPassthroughCopy("assets/js/dn-ring-shader.js");
+  config.addPassthroughCopy("assets/models");
   config.addPassthroughCopy("downloads/**/*.*");
   // Redirect stubs for pre-Nov 2026 URLs, copied as-is
   config.addPassthroughCopy("src/resources.html");

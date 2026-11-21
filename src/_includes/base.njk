@@ -114,5 +114,9 @@
 <script type="application/json" id="search-index">{{ hub.searchIndex | jsonld | safe }}</script>
 <script src="/assets/js/topo-motion.js"></script>
 <script src="/assets/js/main.js"></script>
+{%- if heroRing %}
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
+<script type="module" src="/assets/js/dn-ring-shader.js"></script>
+{%- endif %}
 </body>
 </html>

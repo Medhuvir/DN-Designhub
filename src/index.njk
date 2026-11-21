@@ -4,6 +4,7 @@ permalink: /
 heroCta: true        # the hero owns the orange Follow button; base.njk adds the nav handoff
 railCta: outline     # ...so the rail's copy is an outline on this page
 bioStrip: false      # the hero's curator line does the strip's job here
+heroRing: true       # the 3D ring in the hero (desktop only); base.njk loads its script
 ---
 {% extends "base.njk" %}
 
@@ -17,6 +18,9 @@ bioStrip: false      # the hero's curator line does the strip's job here
 <header class="hero hero--home">
   <canvas class="topo-canvas" data-topo-motion aria-hidden="true"></canvas>
   <div class="topo-overlay"></div>
+  {#- The ring: a hologram that spins like a ring on a table (dn-ring-shader.js).
+      Ambient art, like the topo; desktop only, nothing loads below 1100px. -#}
+  <div class="hero__ring" data-hero-ring data-model="/assets/models/one-ring.glb" aria-hidden="true"></div>
   <div class="wrap hero__inner">
     <span class="eyebrow a-fade">Free &middot; {{ hub.resources.length }} resources &middot; Added to as I find them</span>
     <h1 class="hero-title"><span class="ln"><span>One Hub to</span></span> <span class="ln"><span>Rule Them All</span></span></h1>

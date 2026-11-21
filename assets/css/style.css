@@ -576,3 +576,30 @@ a.pill:hover { color: var(--warm-white); border-color: var(--gray-light); }
   .ticker__viewport { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
   .ticker__toggle { display: none; }
 }
+
+/* ---- Hero ring (home, desktop only) ------------------------------------
+   A three.js hologram from assets/js/dn-ring-shader.js, on the right of the
+   hero between the topo overlay and the copy. Ambient art: pointer-events
+   off, aria-hidden, fades in once the model has loaded. */
+.hero__ring {
+  display: none;
+  position: absolute; z-index: 1;
+  /* beside the headline, clear of the intro, curator line and chips below it */
+  top: 0; bottom: clamp(150px, 24%, 220px);
+  right: max(24px, calc((100% - 1320px) / 2 + 24px));
+  width: clamp(360px, 36vw, 560px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s var(--ease) 0.6s;
+}
+.hero__ring canvas { width: 100% !important; height: 100% !important; display: block; }
+/* feather the canvas edges so the glow never ends in a hard line */
+.hero__ring {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 80%, transparent 100%), linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 80%, transparent 100%), linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-composite: intersect;
+}
+.hero__ring.is-ready { opacity: 1; }
+@media (min-width: 1100px) { .hero__ring { display: block; } }
+@media (prefers-reduced-motion: reduce) { .hero__ring { transition: none; } }
