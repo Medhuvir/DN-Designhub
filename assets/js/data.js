@@ -64,7 +64,7 @@ const ARTIFACTS = [
     pinned: true,
     dateAdded: "2026-08-11",
     source: "Dan Nemirovsky",
-    thumbnail: "assets/img/thumbs/ux-skills-toolkit.png",
+    thumbnail: "assets/img/thumbs/ux-skills-toolkit.jpg",
   },
   {
     id: "figma-claude-skills-for-design",
@@ -88,7 +88,7 @@ const ARTIFACTS = [
     pinned: true,
     dateAdded: "2026-08-12",
     source: "Tommy Jepsen",
-    thumbnail: "assets/img/thumbs/awesome-ux-skills.png",
+    thumbnail: "assets/img/thumbs/awesome-ux-skills.jpg",
   },
   {
     id: "ui-ux-pro-max-skill",
@@ -100,7 +100,7 @@ const ARTIFACTS = [
     pinned: true,
     dateAdded: "2026-08-12",
     source: "nextlevelbuilder",
-    thumbnail: "assets/img/thumbs/ui-ux-pro-max-skill.png",
+    thumbnail: "assets/img/thumbs/ui-ux-pro-max-skill.jpg",
   },
   {
     id: "anatomy-of-agentic-system",
@@ -112,7 +112,7 @@ const ARTIFACTS = [
     pinned: true,
     dateAdded: "2026-08-12",
     source: "Matthew Kruczek",
-    thumbnail: "assets/img/thumbs/anatomy-of-agentic-system.png",
+    thumbnail: "assets/img/thumbs/anatomy-of-agentic-system.jpg",
   },
   {
     id: "ux-skills-tony-moura",
@@ -124,7 +124,7 @@ const ARTIFACTS = [
     pinned: false,
     dateAdded: "2026-08-20",
     source: "Tony Moura",
-    thumbnail: "assets/img/thumbs/ux-skills-tony-moura.png",
+    thumbnail: "assets/img/thumbs/ux-skills-tony-moura.jpg",
   },
   {
     id: "hermes-agent-local-setup-video",
@@ -160,7 +160,7 @@ const ARTIFACTS = [
     pinned: false,
     dateAdded: "2026-08-24",
     source: "Manavarya09",
-    thumbnail: "assets/img/thumbs/design-extract.png",
+    thumbnail: "assets/img/thumbs/design-extract.jpg",
   },
   {
     id: "ai-created-ui",
@@ -172,7 +172,7 @@ const ARTIFACTS = [
     pinned: false,
     dateAdded: "2026-08-28",
     source: "TheMarco",
-    thumbnail: "assets/img/thumbs/ai-created-ui.png",
+    thumbnail: "assets/img/thumbs/ai-created-ui.jpg",
   },
   {
     id: "headcount-agent-org",
@@ -184,7 +184,7 @@ const ARTIFACTS = [
     pinned: false,
     dateAdded: "2026-09-03",
     source: "cbrock84",
-    thumbnail: "assets/img/thumbs/headcount-agent-org.png",
+    thumbnail: "assets/img/thumbs/headcount-agent-org.jpg",
   },
   {
     id: "geo-seo-claude",
@@ -196,7 +196,7 @@ const ARTIFACTS = [
     pinned: false,
     dateAdded: "2026-09-03",
     source: "zubair-trabzada",
-    thumbnail: "assets/img/thumbs/geo-seo-claude.png",
+    thumbnail: "assets/img/thumbs/geo-seo-claude.jpg",
   },
   {
     id: "seed-04",

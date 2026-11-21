@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ux-skills-toolkit",
+    "icon": "dn",
+    "title": "DN Creative",
+    "sub": "Skill Toolkit",
+    "seed": 2594089357
+  },
+  {
+    "id": "awesome-ux-skills",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Open Source Repo",
+    "seed": 498288212
+  },
+  {
+    "id": "ui-ux-pro-max-skill",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Claude Skill File",
+    "seed": 1792424343
+  },
+  {
+    "id": "anatomy-of-agentic-system",
+    "icon": "substack",
+    "title": "Substack",
+    "sub": "Newsletter",
+    "seed": 3367335128
+  },
+  {
+    "id": "ux-skills-tony-moura",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Agent Skills Repo",
+    "seed": 716135846
+  },
+  {
+    "id": "design-extract",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Design System Tool",
+    "seed": 500093843
+  },
+  {
+    "id": "ai-created-ui",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Design System",
+    "seed": 3673811707
+  },
+  {
+    "id": "headcount-agent-org",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "Agent Organization",
+    "seed": 514222688
+  },
+  {
+    "id": "geo-seo-claude",
+    "icon": "github",
+    "title": "GitHub",
+    "sub": "GEO Audit Tool",
+    "seed": 1462389625
+  }
+]

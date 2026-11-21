@@ -8,3 +8,10 @@
     X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Build-time tooling lives in the repo but isn't part of the site
+[[redirects]]
+  from = "/tools/*"
+  to = "/404"
+  status = 404
+  force = true

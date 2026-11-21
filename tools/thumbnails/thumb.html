@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --pitch-black:#0A0A0A; --warm-white:#F5F3EE; --blaze-orange:#FF5E1A; --orange-light:#FF8050; --orange-dark:#CC4C16; }
+  html, body { margin:0; width:1600px; height:900px; background:var(--pitch-black); overflow:hidden; }
+  .stage { position:relative; width:1600px; height:900px; }
+  canvas { position:absolute; inset:0; width:1600px; height:900px; }
+  /* Pitch Black overlay behind the centered copy, per the brand's topo rule */
+  .overlay { position:absolute; inset:0; background:radial-gradient(ellipse 34% 46% at 50% 50%, rgba(10,10,10,0.90) 0%, rgba(10,10,10,0.62) 55%, rgba(10,10,10,0.10) 100%); }
+  .copy { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--warm-white); }
+  .icon { height:168px; display:flex; align-items:center; justify-content:center; }
+  .icon svg, .icon img { height:100%; width:auto; display:block; }
+  .rule { width:72px; height:2px; background:rgba(245,243,238,0.35); margin:44px 0 26px; }
+  .title { font-family:'Bebas Neue',sans-serif; font-size:104px; line-height:0.92; letter-spacing:0.04em; }
+  .sub { font-family:'DM Sans',sans-serif; font-weight:600; font-size:17px; letter-spacing:0.28em; text-transform:uppercase; color:var(--blaze-orange); margin-top:18px; }
+</style></head>
+<body><div class="stage">
+  <canvas id="topo"></canvas>
+  <div class="overlay"></div>
+  <div class="copy">
+    <div class="icon" id="icon"></div>
+    <div class="rule"></div>
+    <div class="title" id="title"></div>
+    <div class="sub" id="sub"></div>
+  </div>
+</div>
+<script src="../../assets/js/topo-motion.js"></script>
+<script>
+  const ICONS = {
+    dn: '<img src="../../assets/img/dn-mark-white.svg" alt="">',
+    github: '<svg viewBox="0 0 16 16"><path fill="#F5F3EE" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>',
+    substack: '<svg viewBox="0 0 22 24"><g fill="#F5F3EE"><rect x="0" y="0" width="22" height="2.6"/><rect x="0" y="4.9" width="22" height="2.6"/><path d="M0 9.8h22V24l-11-6.1L0 24z"/></g></svg>',
+  };
+  const q = new URLSearchParams(location.search);
+  document.getElementById('icon').innerHTML = ICONS[q.get('icon')];
+  document.getElementById('title').textContent = q.get('title');
+  document.getElementById('sub').textContent = q.get('sub');
+  // Still mode of the live generator: one fully drawn frame, reproducible from its seed
+  TopoMotion.create(document.getElementById('topo'), {
+    static: true, seed: +q.get('seed'), width: 1600, height: 900, dpr: 1, background: '#0A0A0A',
+  });
+  document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body></html>
