@@ -4,7 +4,8 @@
    The ring in the home hero ("One Hub to Rule Them All"), in the
    same hologram language as the bust on dannemirovsky.com
    (dn-bust-shader.js there): additive orange, fresnel edges,
-   soft scanlines, a flicker, a halo shell behind the silhouette.
+   a flicker, a halo shell behind the silhouette. No scanlines: Dan
+   had them removed (they read as dark stripes through the ring).
 
    WHAT IS ITS OWN
      Letters    the inscription is painted into the model's colour
@@ -12,8 +13,7 @@
                 letters burn Warm White-hot and a blurred copy of the
                 mask (a high mip level) on a slightly inflated shell
                 gives them a soft glow
-     Flame      a quantised fbm flame on a plane behind the ring,
-                stepped into scan bands so it reads as digital haze
+     Flame      a soft fbm flame on a plane behind the ring
      Haze       motes drifting up through the flame
      Motion     a ring spun on a table: it stands on its edge, turns
                 about the vertical, its axis precesses a few degrees
@@ -118,7 +118,6 @@ function init(THREE, gltf) {
     uniform vec3 uOrange, uWhite, uGlow, uEmber;
     uniform sampler2D uMap;
     float noise(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
-    float scanF(float y)  { return 0.9 + 0.1 * smoothstep(-0.2, 1.0, sin(y * 520.0 - uTime * 14.0)); }
     float flickF()        { return 0.92 + 0.08 * noise(vec2(uTime * 24.0, 1.0)); }
     float breathe()       { return 0.85 + 0.15 * sin(uTime * 1.3); }
     // the inscription: orange on gold, so red well above green
@@ -176,7 +175,7 @@ function init(THREE, gltf) {
         float spec = pow(max(dot(reflect(-normalize(vec3(-0.4, 0.8, 0.6)), N), V), 0.0), 18.0);   // a glint as it turns
         float edge = clamp(fres * 1.1, 0.0, 1.0);
         vec3 body = mix(uOrange, uWhite, clamp(lum * 0.3 + edge * 0.45 + spec * 0.5 - 0.15, 0.0, 0.75));
-        float a = (0.22 + lum * 0.35 + edge * 1.3 + spec * 0.8) * scanF(vY) * flickF() * 0.62;
+        float a = (0.22 + lum * 0.35 + edge * 1.3 + spec * 0.8) * flickF() * 0.62;
         // letters: Warm White at the core, orange at the rim, always brighter than the gold
         float burn = L * breathe() * flickF();
         vec3 hot = mix(uOrange, uWhite, 0.55 + 0.35 * burn);
@@ -225,14 +224,13 @@ function init(THREE, gltf) {
       varying vec3 vN; varying vec3 vV; varying float vY;
       void main() {
         float d = abs(dot(normalize(vN), normalize(vV)));
-        float crackle = 0.65 + 0.35 * noise(vec2(floor(vY * 60.0), floor(uTime * 18.0)));
-        float a = pow(d, 1.6) * crackle * 0.4;
+        float a = pow(d, 1.6) * flickF() * 0.4;
         gl_FragColor = vec4(uGlow * a, a);
       }`,
   }));
   shell.renderOrder = 1;
 
-  /* ---------- 5. the flame behind: quantised fbm, stepped into scan bands ---------- */
+  /* ---------- 5. the flame behind: fbm, a soft teardrop with tongues ---------- */
   const FW = D * 2.0, FH = D * 2.0;
   const flame = new THREE.Mesh(
     new THREE.PlaneGeometry(FW, FH),
@@ -247,9 +245,8 @@ function init(THREE, gltf) {
           return mix(mix(h(i), h(i + vec2(1, 0)), f.x), mix(h(i + vec2(0, 1)), h(i + vec2(1, 1)), f.x), f.y); }
         float fbm(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { s += a * vn(p); p = p * 2.03 + 7.1; a *= 0.5; } return s; }
         void main() {
-          // digital: rows snap to scan bands, columns to coarse cells
           vec2 uv = vUv;
-          vec2 g = vec2(floor(uv.x * 120.0) / 120.0, floor(uv.y * 90.0) / 90.0);
+          vec2 g = uv;
           float t = uTime;
           vec2 p = vec2((g.x - 0.5) * 3.0, g.y * 3.2 - t * 0.9);
           float n = fbm(p + vec2(fbm(p * 0.8 + t * 0.15), 0.0) * 0.8);
@@ -259,11 +256,9 @@ function init(THREE, gltf) {
           float body = 1.0 - smoothstep(width * 0.35, width, x + (n - 0.5) * 0.7);
           float rise = (1.0 - smoothstep(0.35, 1.0, g.y)) * smoothstep(0.0, 0.22, g.y);
           float f = body * rise * (0.5 + n * 1.0);
-          float band = 0.9 + 0.1 * step(0.5, fract(uv.y * 90.0 + t * 0.6));   // faint scan bands drifting up
-          float drop = 0.8 + 0.2 * step(0.04, h(vec2(floor(uv.y * 90.0), floor(t * 6.0))));    // the odd row dims a touch
           vec3 col = mix(uEmber, uOrange, smoothstep(0.2, 0.75, f));
           col = mix(col, uWhite, smoothstep(0.85, 1.25, f) * 0.35);
-          float a = clamp(f * band * drop * 0.42, 0.0, 0.6);
+          float a = clamp(f * 0.42, 0.0, 0.6);
           gl_FragColor = vec4(col, a);          // additive blending already scales by alpha
         }`,
     })
