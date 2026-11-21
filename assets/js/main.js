@@ -183,6 +183,7 @@
     // Announced to screen readers (role="status") when the filter changes
     var statusEl = document.getElementById("results-status");
     if (statusEl) statusEl.textContent = "Showing " + visibleCount + " of " + cards.length + " resources";
+    if (revealCheck) revealCheck();   // cards a filter just un-hid may already be in view
     var emptyEl = document.getElementById("resources-empty");
     if (emptyEl) emptyEl.hidden = visibleCount !== 0;
   }
@@ -244,23 +245,41 @@
      Grouped content fades up as it enters the viewport. Each batch that
      enters together is staggered with the brand's .d1–.d6 steps, so items
      never all animate at once. Reduced motion: everything shows at once. */
+  // Geometry check on scroll rather than IntersectionObserver: an observer
+  // never fires for items a fast scroll or a jump skips over entirely, which
+  // left them invisible. Here anything at or above the reveal line is shown;
+  // items that went past unseen appear immediately rather than animating late.
+  var revealCheck = null;
+
   function initReveal() {
-    var items = document.querySelectorAll(".artifact-card, .format-card");
-    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var items = [].slice.call(document.querySelectorAll(".artifact-card, .format-card"));
     items.forEach(function (el) { el.classList.add("reveal"); });
-    if (reduced || !("IntersectionObserver" in window)) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       items.forEach(function (el) { el.classList.add("is-visible"); });
       return;
     }
-    var io = new IntersectionObserver(function (entries) {
-      var batch = entries.filter(function (e) { return e.isIntersecting; })
-        .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left; });
-      batch.forEach(function (entry, i) {
-        entry.target.classList.add("d" + Math.min(i + 1, 6), "is-visible");
-        io.unobserve(entry.target);
+    var pending = items, queued = false;
+    function check() {
+      queued = false;
+      var line = window.innerHeight * 0.92, step = 0;
+      pending = pending.filter(function (el) {
+        if (!el.offsetParent) return true;                 // filtered out (display: none): check later
+        var r = el.getBoundingClientRect();
+        if (r.top >= line) return true;                    // still below the reveal line
+        if (r.bottom <= 0) el.classList.add("is-visible", "no-anim");   // skipped past unseen
+        else el.classList.add("is-visible", "d" + Math.min(++step, 6)); // staggered in DOM order
+        return false;
       });
-    }, { rootMargin: "0px 0px -8% 0px" });
-    items.forEach(function (el) { io.observe(el); });
+      if (!pending.length) {
+        window.removeEventListener("scroll", schedule);
+        window.removeEventListener("resize", schedule);
+      }
+    }
+    function schedule() { if (!queued) { queued = true; requestAnimationFrame(check); } }
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    revealCheck = schedule;
+    check();
   }
 
   document.addEventListener("DOMContentLoaded", function () {

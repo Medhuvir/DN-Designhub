@@ -382,6 +382,8 @@ a.pill:hover { color: var(--warm-white); border-color: var(--gray-light); }
 .d4 { animation-delay: 0.4s; }
 .d5 { animation-delay: 0.5s; }
 .d6 { animation-delay: 0.6s; }
+.reveal.is-visible.no-anim { animation: none; opacity: 1; transform: none; }   /* scrolled past unseen */
+@media print { .reveal { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
