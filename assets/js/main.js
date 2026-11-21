@@ -72,8 +72,11 @@
     var isDownload = a.type === "download";
     var ctaLabel = isDownload ? "Download" : "Open";
     var ctaAttrs = isDownload ? ' download rel="noopener"' : ' target="_blank" rel="noopener"';
+    var arrow = isDownload
+      ? '<span class="ac-arrow ac-arrow--down" aria-hidden="true">&darr;</span>'
+      : '<span class="ac-arrow ac-arrow--out" aria-hidden="true">&nearr;</span>';
     return (
-      '<article class="artifact-card" data-type="' + a.type + '" data-tags="' + a.tags.join(",") + '" data-id="' + a.id + '">' +
+      '<article class="artifact-card reveal" data-type="' + a.type + '" data-tags="' + a.tags.join(",") + '" data-id="' + a.id + '">' +
         thumb +
         '<div class="ac-body">' +
           '<div class="ac-top">' +
@@ -86,7 +89,7 @@
           tagPillRow(a.tags) +
           '<div class="ac-foot">' +
             '<span class="ac-date">Added ' + fmtDate(a.dateAdded) + "</span>" +
-            '<a class="ac-link" href="' + a.url + '"' + ctaAttrs + ">" + ctaLabel + " &rarr;</a>" +
+            '<a class="ac-link" href="' + a.url + '"' + ctaAttrs + ">" + ctaLabel + " " + arrow + "</a>" +
           "</div>" +
         "</div>" +
       "</article>"
@@ -222,10 +225,34 @@
     applyFilters();
   }
 
+  /* ---------------- Motion: scroll reveal ----------------
+     Grouped content fades up as it enters the viewport. Each batch that
+     enters together is staggered with the brand's .d1–.d6 steps, so items
+     never all animate at once. Reduced motion: everything shows at once. */
+  function initReveal() {
+    var items = document.querySelectorAll(".artifact-card, .format-card");
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    items.forEach(function (el) { el.classList.add("reveal"); });
+    if (reduced || !("IntersectionObserver" in window)) {
+      items.forEach(function (el) { el.classList.add("is-visible"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      var batch = entries.filter(function (e) { return e.isIntersecting; })
+        .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left; });
+      batch.forEach(function (entry, i) {
+        entry.target.classList.add("d" + Math.min(i + 1, 6), "is-visible");
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initNav();
     initFooterYear();
     renderPinned();
     renderResources();
+    initReveal();
   });
 })();

@@ -16,11 +16,17 @@
   border: 0.5px solid var(--border-dark);
   background: var(--surface-dark);
   padding: var(--space-3);
-  opacity: 0; transform: translateY(14px);
-  animation: cardIn 0.6s var(--ease) forwards;
   transition: border-color 0.2s var(--ease);
 }
-/* Format is shown by the type label, not by colour: orange stays a signal */
+/* Format is shown by the type label, not by colour: orange stays a signal.
+   Hover: the brand's card top-border reveal. */
+.artifact-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 1;
+  background: var(--blaze-orange);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+.artifact-card:hover::before { transform: scaleX(1); }
 .artifact-card:hover { border-color: var(--border-dark-strong); }
 
 .ac-thumb {
@@ -61,6 +67,11 @@
   transition: color 0.2s var(--ease);
 }
 .artifact-card:hover .ac-link, .ac-link:hover { color: var(--blaze-orange); }
+/* Arrow motion: ghost-link → slides right, external ↗ lifts out, download ↓ drops */
+.ac-arrow { display: inline-block; transition: transform 0.2s var(--ease); }
+.artifact-card:hover .ac-arrow--next { transform: translateX(4px); }
+.artifact-card:hover .ac-arrow--out { transform: translate(3px, -3px); }
+.artifact-card:hover .ac-arrow--down { transform: translateY(3px); }
 
 /* ---- Pinned row on Home: single full-width column ---------------------- */
 .artifact-grid.pinned-grid { grid-template-columns: 1fr; }
