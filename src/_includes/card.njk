@@ -6,7 +6,7 @@
 {%- set isDl = a.type == "download" -%}
 <article class="artifact-card" data-type="{{ a.type }}" data-tags="{{ a.tags | join(',') }}" data-id="{{ a.id }}">
   {%- if a.thumbnail %}
-  <div class="ac-thumb"><img src="{{ a.thumbnail | url }}" alt="" loading="lazy" decoding="async"></div>
+  <div class="ac-thumb">{% include "thumb.njk" %}</div>
   {%- endif %}
   <div class="ac-body">
     <div class="ac-top"><span class="ac-type">{{ tc.icon | icon | safe }}{{ tc.label }}</span></div>

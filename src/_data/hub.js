@@ -48,6 +48,15 @@ const topics = Object.keys(TAGS)
     return { key, label: TAGS[key].label, desc: TAGS[key].desc, resources: items, latest: items[0].dateAdded };
   });
 
+// Share cards (1200x630) made by `node tools/thumbnails/render.js --og`.
+// A resource without one shares its thumbnail; a topic, the hub's card.
+const ROOT = path.join(__dirname, "../..");
+const card = (rel) => (fs.existsSync(path.join(ROOT, rel)) ? "/" + rel : null);
+const missing = [];
+resources.forEach((r) => { r.og = card(`assets/img/og/r/${r.id}.jpg`); if (!r.og) { missing.push("r/" + r.id); r.og = r.thumbnail || null; } });
+topics.forEach((t) => { t.og = card(`assets/img/og/t/${t.key}.jpg`); if (!t.og) missing.push("t/" + t.key); });
+if (missing.length) console.warn(`[hub] no share card yet for ${missing.join(", ")}: run node tools/thumbnails/render.js --og`);
+
 // "More like this": most shared topics first, then newest, up to 4
 resources.forEach((r) => {
   r.related = resources

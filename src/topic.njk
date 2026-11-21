@@ -6,6 +6,8 @@ pagination:
 permalink: "/topics/{{ t.key }}/"
 eleventyComputed:
   title: "{{ t.label | safe }}: free resources | DN Design Hub"
+  ogImage: "{{ t.og }}"
+  ogImageAlt: "{{ t.label | safe }}: free resources from the DN Design Hub"
   description: "{{ t.desc | safe }} {{ t.resources.length }} free, curated resources from Dan Nemirovsky."
 ---
 {#- One crawlable page per topic (topics with no resources get no page) -#}

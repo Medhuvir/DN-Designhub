@@ -15,6 +15,7 @@ export default function (config) {
   // Published assets. data.js and the icon set are build inputs only.
   config.addPassthroughCopy("assets/css");
   config.addPassthroughCopy("assets/img");
+  config.addPassthroughCopy("assets/fonts");
   config.addPassthroughCopy("assets/js/main.js");
   config.addPassthroughCopy("assets/js/topo-motion.js");
   config.addPassthroughCopy("downloads/**/*.*");

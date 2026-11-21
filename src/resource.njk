@@ -7,7 +7,7 @@ permalink: "/r/{{ r.id }}/"
 eleventyComputed:
   title: "{{ r.title | safe }} | DN Design Hub"
   description: "{{ r.description | metaDesc | safe }}"
-  ogImage: "{{ r.thumbnail }}"
+  ogImage: "{{ r.og }}"
   ogImageAlt: "{{ r.title | safe }}"
   ogType: article
 ---
@@ -54,7 +54,9 @@ eleventyComputed:
 {% block content %}
     <section class="section resource-detail{% if not r.related.length %} section--flush{% endif %}">
       {%- if r.thumbnail %}
-      <figure class="resource-shot"><img src="{{ r.thumbnail | url }}" alt=""></figure>
+      {%- set a = r %}{% set sizes = "(min-width: 1320px) 880px, (min-width: 1100px) calc(100vw - 440px), 100vw" %}
+      <figure class="resource-shot">{% include "thumb.njk" %}</figure>
+      {%- set sizes = "" %}
       {%- endif %}
       <h2 class="sr-only">Details</h2>
       <dl class="facts">

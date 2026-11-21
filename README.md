@@ -31,4 +31,7 @@ For a new branded thumbnail, add an entry to `tools/thumbnails/thumbs.json` and 
 
 ```
 node tools/thumbnails/render.js            # renders entries without a jpg yet, records their seeds
+node tools/thumbnails/render.js --og       # 1200x630 share cards for any new resource or topic
 ```
+
+Both need Playwright's Chromium (`CHROMIUM=/path/to/chromium` to point at a specific one). Responsive WebP versions of thumbnails are made automatically at build time.

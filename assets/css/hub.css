@@ -36,6 +36,7 @@
   background: var(--surface-darker);
   border-bottom: 0.5px solid var(--border-dark);
 }
+.ac-thumb picture { display: block; width: 100%; height: 100%; }
 .ac-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* Default: ac-body doesn't form its own box, so its children lay out
@@ -114,7 +115,8 @@
   border: 0.5px solid var(--border-dark-strong); background: var(--surface-darker);
   aspect-ratio: 16 / 9; overflow: hidden;
 }
-.resource-shot img { width: 100%; height: 100%; object-fit: cover; }
+.resource-shot picture { display: block; width: 100%; height: 100%; }
+.resource-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .facts { margin: 0; display: grid; gap: 0; border-top: 0.5px solid var(--border-dark); }
 .facts > div {
   display: grid; grid-template-columns: 1fr; gap: 4px;
